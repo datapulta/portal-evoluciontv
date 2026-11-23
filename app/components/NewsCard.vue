@@ -24,9 +24,10 @@ const formatDate = (dateStr: string) => {
     ]"
   >
     <!-- Imagen del artículo -->
-    <div
+    <NuxtLink
+      :to="`/noticias/${post.slug}`"
       :class="[
-        'relative overflow-hidden bg-neutral-950 shrink-0',
+        'relative overflow-hidden bg-neutral-950 shrink-0 block',
         horizontal ? 'md:w-2/5 aspect-video md:aspect-auto' : 'aspect-video'
       ]"
     >
@@ -51,15 +52,15 @@ const formatDate = (dateStr: string) => {
       >
         {{ post.primary_tag.name }}
       </span>
-    </div>
+    </NuxtLink>
 
     <!-- Contenido -->
     <div class="p-5 flex flex-col justify-between flex-1">
       <div>
         <h3 class="text-base md:text-lg font-bold text-white group-hover:text-red-400 transition-colors line-clamp-2 leading-snug mb-2">
-          <a :href="`#${post.slug}`">
+          <NuxtLink :to="`/noticias/${post.slug}`">
             {{ post.title }}
-          </a>
+          </NuxtLink>
         </h3>
 
         <p class="text-neutral-400 text-xs md:text-sm line-clamp-2 mb-4 leading-relaxed">

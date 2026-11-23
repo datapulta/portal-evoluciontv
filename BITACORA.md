@@ -100,3 +100,28 @@ Este documento constituye la memoria técnica y bitácora cronológica exhaustiv
   - Petición HTTP a la API de Ghost retornando artículo en vivo *"Coming soon"*.
   - Comprobación de renderizado en `http://localhost:3005/` (SSR HTML incluye *"Coming soon"*).
   - Compilación de producción exitosa (`npm run build` completado en 14.2s).
+
+---
+
+### Sesión 5 — 23 de Noviembre de 2026
+**Objetivo**: Habilitación del sistema de enrutamiento declarativo y visualización/lectura completa de artículos en el portal local (Nuxt 4 + Ghost CMS).
+- **Autorización**: Aprobación nativa formal del plan `plan_visualizacion_y_lectura_articulos.md` mediante botón Proceed del operador (§4.4 de AGENTS.md).
+- **Actividades Realizadas**:
+  1. **Extensión del Composable `useNews.ts`**:
+     - Implementación de `getArticleBySlug(slug: string)` para consultar artículos individuales vía Ghost Content API (`/ghost/api/content/posts/slug/${slug}/`).
+     - Respaldo a `BACKUP_ARTICLES` con contenido periodístico enriquecido en formato HTML para navegación offline o notas previas a publicación.
+  2. **Arquitectura de Enrutamiento Declarativo (`NuxtPage`)**:
+     - Conversión de `app/app.vue` en layout contenedor maestro con `HeaderNav`, `<NuxtPage />` y `FooterSection`.
+     - Creación de `app/pages/index.vue` encapsulando la portada de noticias destacadas, transmisión en vivo, cuadrícula de actualidad y boletín.
+  3. **Navegación SPA y Tarjetas Editoriales**:
+     - Actualización de `app/components/NewsCard.vue` y `app/pages/index.vue` sustituyendo anclas locales (`#slug`) por `<NuxtLink :to="'/noticias/' + slug">`.
+  4. **Página de Lectura Individual de Artículos (`app/pages/noticias/[slug].vue`)**:
+     - Titular H1 de alto impacto, fecha en español, tiempo de lectura, autor y metadatos dinámicos `useHead`.
+     - Imagen destacada (*feature image*) panorámica en alta resolución.
+     - Cuerpo del artículo con tipografía y estilos editoriales dedicados (`prose-news`) para párrafos, citas de bloque, encabezados y enlaces.
+     - Botón de retorno rápido *"← Volver a la Portada"*.
+     - Sección inferior de investigaciones y notas relacionadas.
+- **Verificación Técnica**:
+  - Compilación de producción exitosa con `npm run build` (0 errores en cliente, servidor y Nitro).
+  - Verificación HTTP 200 OK en portada (`/`), artículo en vivo de Ghost (`/noticias/coming-soon`) y notas de respaldo (`/noticias/evolucion-tv-nueva-plataforma-digital`).
+  - Validación de renderizado de contenido de Ghost (`This is Evolucion TV`) en el HTML SSR de la página de lectura.
