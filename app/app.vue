@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { computed } from 'vue'
 import { useNews, type Article } from '~/composables/useNews'
 import HeaderNav from '~/components/HeaderNav.vue'
 import LiveStreamSection from '~/components/LiveStreamSection.vue'
@@ -8,25 +8,12 @@ import FooterSection from '~/components/FooterSection.vue'
 
 const { getArticles } = useNews()
 
-const featuredArticle = ref<Article | null>(null)
-const secondaryArticles = ref<Article[]>([])
-const allArticles = ref<Article[]>([])
-const loading = ref(true)
+// Server-Side Rendering (SSR) optimizado para SEO y carga inmediata
+const { data: newsResult } = await useAsyncData('home-articles', () => getArticles({ limit: 8 }))
 
-onMounted(async () => {
-  try {
-    const result = await getArticles({ limit: 8 })
-    if (result.articles.length > 0) {
-      featuredArticle.value = result.articles[0]
-      secondaryArticles.value = result.articles.slice(1, 3)
-      allArticles.value = result.articles.slice(3)
-    }
-  } catch (error) {
-    console.error('Error al cargar artículos:', error)
-  } finally {
-    loading.value = false
-  }
-})
+const featuredArticle = computed<Article | null>(() => newsResult.value?.articles?.[0] || null)
+const secondaryArticles = computed<Article[]>(() => newsResult.value?.articles?.slice(1, 3) || [])
+const allArticles = computed<Article[]>(() => newsResult.value?.articles?.slice(3) || [])
 </script>
 
 <template>

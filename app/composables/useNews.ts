@@ -166,8 +166,16 @@ export const useNews = () => {
       if (params.filter) url.searchParams.set('filter', params.filter)
 
       const response = await $fetch<{ posts: Article[] }>(url.toString())
+      const livePosts = response.posts || []
+      // Los artículos reales de la redacción tienen prioridad absoluta
+      // Si hay pocos artículos al inicio, se complementa con la maqueta para mantener la cuadrícula visual
+      const targetLimit = params.limit || 8
+      const combined = livePosts.length >= targetLimit
+        ? livePosts.slice(0, targetLimit)
+        : [...livePosts, ...BACKUP_ARTICLES.slice(0, targetLimit - livePosts.length)]
+
       return {
-        articles: response.posts || [],
+        articles: combined,
         isConfigured: true
       }
     } catch (error) {

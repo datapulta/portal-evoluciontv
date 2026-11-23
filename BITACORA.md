@@ -76,3 +76,27 @@ Este documento constituye la memoria técnica y bitácora cronológica exhaustiv
   - Auditoría de cero coincidencias de etiquetas en plantillas visuales.
   - Compilación de producción limpia ejecutada con éxito (`npm run build` completado en 18.5s).
   - Servidor de desarrollo verificado en `http://localhost:3005/` libre de cualquier franja de aviso.
+
+---
+
+### Sesión 4 — 23 de Noviembre de 2026
+**Objetivo**: Puesta en marcha editorial definitiva: configuración DNS en Cloudflare, emisión SSL Let's Encrypt y enlace en vivo de Ghost CMS con Nuxt v4.
+- **Autorización**: Aprobación nativa formal del plan `plan_puesta_en_marcha_editorial.md` mediante botón Proceed del operador (§4.4 de AGENTS.md).
+- **Actividades Realizadas**:
+  1. **Configuración de Dominio en Cloudflare con Módulo Oficial Antigravity**:
+     - Autenticación OAuth del CLI oficial de Cloudflare (`cf`).
+     - Creación de registro DNS tipo `A` para `cms-etv.webia.studio` apuntando a `159.195.13.43` (zona `069a9614bab6db407df6503269088a0e`).
+     - Configuración en modo `proxied: false` (DNS Only) para permitir la validación ACME directa de Traefik.
+  2. **Emisión de Certificado SSL Let's Encrypt y Verificación de Ghost**:
+     - Recarga de Traefik mediante API de Dokploy (`/api/settings.reloadTraefik`).
+     - Emisión exitosa de certificado SSL por parte de Let's Encrypt (Emisor: `Let's Encrypt / YR2`, válido hasta febrero 2027).
+     - Validación de respuesta HTTPS 200 OK en `https://cms-etv.webia.studio/ghost/`.
+  3. **Conexión de Ghost Content API y Pipeline SSR en Nuxt v4**:
+     - Recepción de Content API Key generada por el operador en el panel de redacción (`0d0973d2adbf82eee9052eb3de`).
+     - Registro de clave en `.env` bajo `NUXT_PUBLIC_NEWS_API_KEY`.
+     - Optimización de `app/app.vue` con `useAsyncData` para Server-Side Rendering (SSR) indexable por motores de búsqueda.
+     - Refuerzo en `app/composables/useNews.ts` combinando artículos en vivo de Ghost con contenido de respaldo para mantener la cuadrícula visual completa.
+- **Verificación Técnica**:
+  - Petición HTTP a la API de Ghost retornando artículo en vivo *"Coming soon"*.
+  - Comprobación de renderizado en `http://localhost:3005/` (SSR HTML incluye *"Coming soon"*).
+  - Compilación de producción exitosa (`npm run build` completado en 14.2s).
