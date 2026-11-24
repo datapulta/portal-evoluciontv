@@ -1,7 +1,9 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @layer base {
   body {
-    @apply bg-neutral-950 text-neutral-100 font-sans antialiased selection:bg-red-600 selection:text-white;
+    @apply bg-neutral-50 text-neutral-900 dark:bg-neutral-950 dark:text-neutral-100 font-sans antialiased selection:bg-red-600 selection:text-white transition-colors duration-200;
   }
 }

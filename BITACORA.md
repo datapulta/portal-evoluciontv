@@ -237,3 +237,31 @@ Este documento constituye la memoria técnica y bitácora cronológica exhaustiv
   - Ghost Admin API confirma las 4 etiquetas creadas y activas.
   - Compilación de producción exitosa con `npm run build` (13.2s, 0 errores).
   - Validación de renderizado de las 5 opciones de navegación en el HTML SSR de `http://localhost:3005/` y `https://etv.webia.studio/`.
+
+---
+
+### Sesión 12 — 23 de Noviembre de 2026
+**Objetivo**: Depuración de categorías obsoletas en Ghost CMS, reclasificación de 2 artículos, API de categorías dinámicas en Nitro (`/api/categories`), página de categorías (`/categoria/[slug]`), y sistema de Modo Claro y Oscuro optimizado con protección anti-FOUC.
+- **Autorización**: Aprobación nativa formal del plan `plan_categorias_dinamicas_ghost_y_navegacion.md` mediante botón Proceed del operador (§4.4 de AGENTS.md).
+- **Actividades Realizadas**:
+  1. **Depuración y Reclasificación en Ghost CMS (`scripts/sync-ghost-categories.mjs`)**:
+     - Reclasificación del artículo de Jensen Huang a la categoría oficial *Coberturas ETV* (`coberturas-etv`).
+     - Reclasificación del artículo de investigación institucional a la categoría oficial *Quiénes somos* (`quienes-somos`).
+     - Eliminación exitosa de las 5 etiquetas obsoletas de Ghost CMS (*News*, *Especial*, *Investigación*, *Tecnología*, *Innovación*).
+     - Asignación de colores de acento oficiales en Ghost: `#dc2626`, `#ea580c`, `#8b5cf6`, `#0284c7`.
+  2. **Endpoint de Categorías Dinámicas en Nitro (`server/api/categories.get.ts`)**:
+     - Implementación de ruta server en Nitro que consulta la Ghost Admin API con token HMAC-SHA256 firmado con `process.env.NEWS_ADMIN_API_KEY`.
+     - Permite que cualquier nueva categoría agregada en Ghost CMS aparezca en Nuxt inmediatamente sin cambios de código.
+  3. **Sistema Optimizado de Modo Claro y Modo Oscuro**:
+     - Configuración de `@custom-variant dark (&:where(.dark, .dark *));` en Tailwind CSS v4 (`app/assets/css/main.css`).
+     - Composable reactivo `app/composables/useTheme.ts` con persistencia en `localStorage` ('etv-theme') y sincronización con el sistema operativo (`prefers-color-scheme`).
+     - Inyección de script anti-FOUC en `app/app.vue` para garantizar cero parpadeo al cargar.
+     - Botón selector conmutador (Sol ☀️ / Luna 🌙) en `app/components/HeaderNav.vue` en barra de escritorio y menú móvil.
+     - Adaptación de paleta de colores y contraste de alto estándar en `HeaderNav.vue`, `NewsCard.vue`, `index.vue`, `noticias/[slug].vue`, `en-vivo.vue` y `FooterSection.vue`.
+  4. **Página Dedicada de Categorías (`app/pages/categoria/[slug].vue`)**:
+     - Visualización de artículos filtrados por categoría (`/categoria/:slug`) con badge distintivo, metadatos y estado amigable para secciones en preparación.
+- **Verificación Técnica**:
+  - `http://localhost:3005/api/categories` responde con las 4 categorías oficiales.
+  - `http://localhost:3005/categoria/coberturas-etv` y `http://localhost:3005/categoria/quienes-somos` cargan sus respectivos artículos (200 OK).
+  - Compilación de producción limpia ejecutada con `npm run build` (13.3s, 0 errores).
+

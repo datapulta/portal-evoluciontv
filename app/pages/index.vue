@@ -14,22 +14,22 @@ const allArticles = computed<Article[]>(() => newsResult.value?.articles?.slice(
 </script>
 
 <template>
-  <div>
+  <div class="transition-colors duration-200">
     <!-- Hero de Noticias Destacadas -->
     <section class="max-w-7xl mx-auto px-4 py-8">
       <div class="flex items-center justify-between mb-6">
         <div class="flex items-center gap-2">
           <span class="w-2.5 h-6 bg-red-600 rounded-sm"></span>
-          <h1 class="text-xl md:text-2xl font-black text-white uppercase tracking-tight">
+          <h1 class="text-xl md:text-2xl font-black text-neutral-900 dark:text-white uppercase tracking-tight">
             Noticias Destacadas
           </h1>
         </div>
-        <span class="text-xs text-neutral-400">Edición en Tiempo Real</span>
+        <span class="text-xs text-neutral-500 dark:text-neutral-400 font-medium">Edición en Tiempo Real</span>
       </div>
 
       <div v-if="featuredArticle" class="grid grid-cols-1 lg:grid-cols-12 gap-6">
         <!-- Nota Principal (8 columnas) -->
-        <article class="lg:col-span-8 group relative bg-neutral-900 border border-neutral-800 rounded-3xl overflow-hidden shadow-2xl flex flex-col justify-end min-h-[420px] md:min-h-[500px]">
+        <article class="lg:col-span-8 group relative bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-3xl overflow-hidden shadow-xl flex flex-col justify-end min-h-[420px] md:min-h-[500px]">
           <!-- Enlace clickeable sobre la imagen y fondo -->
           <NuxtLink
             :to="`/noticias/${featuredArticle.slug}`"
@@ -42,7 +42,7 @@ const allArticles = computed<Article[]>(() => newsResult.value?.articles?.slice(
               :alt="featuredArticle.title"
               class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
             />
-            <div class="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/60 to-transparent"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/70 to-transparent"></div>
           </NuxtLink>
 
           <div class="relative z-10 p-6 md:p-8 space-y-3 pointer-events-none">
@@ -52,7 +52,7 @@ const allArticles = computed<Article[]>(() => newsResult.value?.articles?.slice(
               </span>
               <span
                 v-if="featuredArticle.primary_tag"
-                class="bg-neutral-800/80 backdrop-blur-md text-neutral-200 text-xs font-semibold px-2.5 py-1 rounded-md"
+                class="bg-black/60 backdrop-blur-md text-white text-xs font-semibold px-2.5 py-1 rounded-md"
               >
                 {{ featuredArticle.primary_tag.name }}
               </span>
@@ -64,12 +64,12 @@ const allArticles = computed<Article[]>(() => newsResult.value?.articles?.slice(
               </NuxtLink>
             </h2>
 
-            <p class="text-neutral-300 text-sm md:text-base line-clamp-2 max-w-3xl leading-relaxed">
+            <p class="text-neutral-200 text-sm md:text-base line-clamp-2 max-w-3xl leading-relaxed">
               {{ featuredArticle.excerpt }}
             </p>
 
-            <div class="flex items-center gap-4 text-xs text-neutral-400 pt-2">
-              <span class="font-bold text-neutral-200">
+            <div class="flex items-center gap-4 text-xs text-neutral-300 pt-2">
+              <span class="font-bold text-white">
                 {{ featuredArticle.primary_author?.name || 'Redacción Evolución TV' }}
               </span>
               <span>•</span>
@@ -91,15 +91,15 @@ const allArticles = computed<Article[]>(() => newsResult.value?.articles?.slice(
     </section>
 
     <!-- Cuadrícula de Más Noticias e Investigaciones -->
-    <section class="max-w-7xl mx-auto px-4 py-8 md:py-12 border-t border-neutral-900">
-      <div class="flex items-center justify-between mb-8 pb-3 border-b border-neutral-800">
+    <section class="max-w-7xl mx-auto px-4 py-8 md:py-12 border-t border-neutral-200 dark:border-neutral-900">
+      <div class="flex items-center justify-between mb-8 pb-3 border-b border-neutral-200 dark:border-neutral-800">
         <div class="flex items-center gap-2">
           <span class="w-2.5 h-6 bg-red-600 rounded-sm"></span>
-          <h2 class="text-xl md:text-2xl font-black text-white uppercase tracking-tight">
+          <h2 class="text-xl md:text-2xl font-black text-neutral-900 dark:text-white uppercase tracking-tight">
             Investigación y Actualidad
           </h2>
         </div>
-        <div class="flex items-center gap-2 text-xs text-neutral-400">
+        <div class="flex items-center gap-2 text-xs text-neutral-500 dark:text-neutral-400 font-medium">
           <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
           Actualizado por la Redacción
         </div>
@@ -116,15 +116,15 @@ const allArticles = computed<Article[]>(() => newsResult.value?.articles?.slice(
 
     <!-- Sección de Suscripción / Boletín de Evolución TV -->
     <section class="max-w-7xl mx-auto px-4 pb-16">
-      <div class="bg-gradient-to-r from-red-950/40 via-neutral-900 to-neutral-950 border border-red-900/40 rounded-3xl p-8 md:p-12 flex flex-col lg:flex-row items-center justify-between gap-8">
+      <div class="bg-gradient-to-r from-red-50 via-white to-neutral-50 dark:from-red-950/40 dark:via-neutral-900 dark:to-neutral-950 border border-red-200 dark:border-red-900/40 rounded-3xl p-8 md:p-12 flex flex-col lg:flex-row items-center justify-between gap-8 shadow-sm dark:shadow-2xl">
         <div class="space-y-3 max-w-xl">
-          <span class="text-red-500 font-bold text-xs uppercase tracking-widest">
+          <span class="text-red-600 dark:text-red-500 font-bold text-xs uppercase tracking-widest">
             Comunidad Independiente
           </span>
-          <h3 class="text-2xl md:text-3xl font-black text-white">
+          <h3 class="text-2xl md:text-3xl font-black text-neutral-900 dark:text-white">
             Recibe las noticias de Evolución TV en tu correo
           </h3>
-          <p class="text-neutral-400 text-sm leading-relaxed">
+          <p class="text-neutral-600 dark:text-neutral-400 text-sm leading-relaxed">
             Suscríbete a nuestro boletín matutino con las investigaciones exclusivas, análisis de coyuntura y resúmenes de nuestra señal informativa.
           </p>
         </div>
@@ -133,11 +133,11 @@ const allArticles = computed<Article[]>(() => newsResult.value?.articles?.slice(
           <input
             type="email"
             placeholder="tu.correo@ejemplo.com"
-            class="bg-neutral-900 border border-neutral-700 text-white text-sm px-4 py-3 rounded-xl focus:outline-none focus:border-red-500 min-w-[280px]"
+            class="bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white text-sm px-4 py-3 rounded-xl focus:outline-none focus:border-red-500 min-w-[280px] shadow-inner"
           />
           <button
             type="submit"
-            class="bg-red-600 hover:bg-red-500 text-white font-bold text-sm px-6 py-3 rounded-xl transition-colors cursor-pointer shadow-lg shadow-red-950/50"
+            class="bg-red-600 hover:bg-red-500 text-white font-bold text-sm px-6 py-3 rounded-xl transition-colors cursor-pointer shadow-lg shadow-red-900/30"
           >
             Suscribirme
           </button>
