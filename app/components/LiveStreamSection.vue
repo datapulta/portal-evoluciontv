@@ -17,7 +17,7 @@ const currentShow = {
     <div class="max-w-7xl mx-auto">
       <div class="flex flex-col lg:flex-row items-center justify-between gap-4 mb-6">
         <div class="flex items-center gap-3">
-          <div class="flex items-center gap-2 bg-red-600 text-white text-xs font-black px-3 py-1 rounded-full uppercase tracking-wider">
+          <div class="flex items-center gap-2 bg-etv-blue-500 text-white text-xs font-black px-3 py-1 rounded-full uppercase tracking-wider">
             <span class="w-2 h-2 rounded-full bg-white animate-ping"></span>
             En Vivo
           </div>
@@ -60,14 +60,14 @@ const currentShow = {
 
           <!-- Logo en esquina superior -->
           <div class="absolute top-4 left-4 flex items-center gap-2 bg-black/60 backdrop-blur-md px-3 py-1 rounded-lg border border-white/10">
-            <span class="text-xs font-black tracking-wider text-red-500">EVOLUCIÓN</span>
-            <span class="text-[10px] bg-red-600 text-white font-bold px-1 rounded">TV</span>
+            <span class="text-xs font-black tracking-wider text-etv-orange-500">EVOLUCIÓN</span>
+            <span class="text-[10px] bg-etv-blue-500 text-white font-bold px-1 rounded">TV</span>
             <span class="text-[10px] text-neutral-400 font-mono">VIVO</span>
           </div>
 
           <!-- Botón de Play Central -->
           <button
-            class="relative z-10 w-16 h-16 md:w-20 md:h-20 rounded-full bg-red-600/90 hover:bg-red-600 text-white flex items-center justify-center shadow-xl shadow-red-950/80 transform hover:scale-110 transition-all cursor-pointer"
+            class="relative z-10 w-16 h-16 md:w-20 md:h-20 rounded-full bg-gradient-to-br from-etv-blue-500 to-etv-orange-500 hover:brightness-110 text-white flex items-center justify-center shadow-xl shadow-etv-blue-950/60 transform hover:scale-110 transition-all cursor-pointer"
             aria-label="Reproducir señal en vivo"
           >
             <svg class="w-8 h-8 ml-1" viewBox="0 0 24 24" fill="currentColor">
@@ -103,15 +103,15 @@ const currentShow = {
         <div class="bg-neutral-900/90 rounded-2xl p-5 border border-neutral-800 flex flex-col justify-between">
           <div>
             <h3 class="text-sm font-bold text-neutral-300 uppercase tracking-wider mb-4 flex items-center gap-2">
-              <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg class="w-4 h-4 text-etv-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
               </svg>
               Programación de Hoy
             </h3>
 
             <div class="space-y-3">
-              <div class="p-3 rounded-xl bg-red-950/30 border border-red-800/40">
-                <div class="flex items-center justify-between text-xs text-red-400 font-bold mb-1">
+              <div class="p-3 rounded-xl bg-etv-blue-950/30 border border-etv-blue-800/40">
+                <div class="flex items-center justify-between text-xs text-etv-blue-400 font-bold mb-1">
                   <span>AHORA EN VIVO</span>
                   <span>22:00 - 23:30</span>
                 </div>
@@ -141,7 +141,7 @@ const currentShow = {
 
           <div class="mt-4 pt-4 border-t border-neutral-800 flex items-center justify-between text-xs">
             <span class="text-neutral-400">¿Quieres participar en vivo?</span>
-            <a href="mailto:redaccion@evoluciontv.com" class="text-red-400 hover:text-red-300 font-semibold underline">
+            <a href="mailto:redaccion@evoluciontv.com" class="text-etv-orange-400 hover:text-etv-orange-300 font-semibold underline">
               Envía tu reporte
             </a>
           </div>

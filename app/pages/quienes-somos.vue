@@ -22,9 +22,9 @@ useHead({
 const objetivos = [
   {
     plazo: 'A corto plazo',
-    color: 'text-red-600 dark:text-red-400',
-    border: 'border-red-200 dark:border-red-900/50',
-    badgeBg: 'bg-red-50 dark:bg-red-950/40',
+    color: 'text-etv-orange-700 dark:text-etv-orange-400',
+    border: 'border-etv-orange-200 dark:border-etv-orange-900/50',
+    badgeBg: 'bg-etv-orange-50 dark:bg-etv-orange-950/40',
     desc: 'Atraer la atención del público joven a través de las redes sociales para crear una comunidad que permita la interacción mutua.'
   },
   {
@@ -51,7 +51,7 @@ const objetivos = [
       <div class="flex items-center justify-between">
         <NuxtLink
           to="/"
-          class="inline-flex items-center gap-2 text-xs md:text-sm font-bold text-neutral-600 dark:text-neutral-400 hover:text-red-600 dark:hover:text-red-400 transition-colors"
+          class="inline-flex items-center gap-2 text-xs md:text-sm font-bold text-neutral-600 dark:text-neutral-400 hover:text-etv-blue-600 dark:hover:text-etv-blue-400 transition-colors"
         >
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
@@ -67,13 +67,13 @@ const objetivos = [
       <!-- Hero / Quiénes somos -->
       <header class="bg-white dark:bg-neutral-900/60 border border-neutral-200 dark:border-neutral-800 rounded-3xl p-8 md:p-12 shadow-sm relative overflow-hidden">
         <div class="max-w-3xl space-y-6 relative z-10">
-          <div class="inline-flex items-center gap-2 bg-red-600/10 border border-red-500/30 text-red-600 dark:text-red-400 px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider">
-            <span class="w-2 h-2 rounded-full bg-red-600"></span>
+          <div class="inline-flex items-center gap-2 bg-etv-blue-500/10 border border-etv-blue-500/30 text-etv-blue-600 dark:text-etv-blue-400 px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider">
+            <span class="w-2 h-2 rounded-full bg-etv-blue-500"></span>
             Quiénes Somos
           </div>
 
           <h1 class="text-3xl md:text-5xl font-black text-neutral-900 dark:text-white tracking-tight leading-tight">
-            Medio digital independiente, <span class="text-red-600">sin límites</span> y en constante evolución.
+            Medio digital independiente, <span class="text-etv-orange-500">sin límites</span> y en constante evolución.
           </h1>
 
           <div class="space-y-4 text-base md:text-lg text-neutral-700 dark:text-neutral-300 leading-relaxed">
@@ -91,7 +91,7 @@ const objetivos = [
       <section class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <!-- Misión -->
         <div class="bg-white dark:bg-neutral-900/60 border border-neutral-200 dark:border-neutral-800 rounded-3xl p-8 shadow-sm space-y-4">
-          <div class="w-12 h-12 rounded-2xl bg-red-50 dark:bg-red-950/50 border border-red-200 dark:border-red-900/60 flex items-center justify-center text-red-600 dark:text-red-400">
+          <div class="w-12 h-12 rounded-2xl bg-etv-orange-50 dark:bg-etv-orange-950/50 border border-etv-orange-200 dark:border-etv-orange-900/60 flex items-center justify-center text-etv-orange-600 dark:text-etv-orange-400">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
             </svg>
@@ -123,7 +123,7 @@ const objetivos = [
       <!-- Objetivos -->
       <section class="space-y-6">
         <div class="flex items-center gap-2 pb-2 border-b border-neutral-200 dark:border-neutral-800">
-          <span class="w-2.5 h-6 bg-red-600 rounded-sm"></span>
+          <span class="w-2.5 h-6 bg-gradient-to-b from-etv-orange-500 to-etv-blue-500 rounded-sm"></span>
           <h2 class="text-xl md:text-2xl font-black text-neutral-900 dark:text-white uppercase tracking-tight">
             Objetivos
           </h2>
@@ -156,7 +156,7 @@ const objetivos = [
       </section>
 
       <!-- Cierre / Invitación -->
-      <section class="bg-gradient-to-r from-red-50 via-white to-neutral-50 dark:from-red-950/40 dark:via-neutral-900 dark:to-neutral-950 border border-red-200 dark:border-red-900/40 rounded-3xl p-8 md:p-12 text-center space-y-6 shadow-sm">
+      <section class="bg-gradient-to-r from-etv-orange-50 via-white to-etv-blue-50 dark:from-etv-orange-950/30 dark:via-neutral-900 dark:to-etv-blue-950/30 border border-etv-orange-200 dark:border-etv-blue-900/40 rounded-3xl p-8 md:p-12 text-center space-y-6 shadow-sm">
         <div class="space-y-2 max-w-2xl mx-auto">
           <h2 class="text-2xl md:text-3xl font-black text-neutral-900 dark:text-white">
             ¿Quieres saber más de nosotros?
@@ -164,7 +164,7 @@ const objetivos = [
           <p class="text-neutral-700 dark:text-neutral-300 text-base md:text-lg">
             Entonces sigue navegando y reproduciendo nuestros vídeos.
           </p>
-          <p class="text-sm font-bold text-red-600 dark:text-red-400 pt-1">
+          <p class="text-sm font-bold text-etv-blue-600 dark:text-etv-blue-400 pt-1">
             Gracias por interesarte en conocernos
           </p>
         </div>
@@ -172,7 +172,7 @@ const objetivos = [
         <div class="flex flex-wrap items-center justify-center gap-4 pt-2">
           <NuxtLink
             to="/en-vivo"
-            class="inline-flex items-center gap-2 bg-red-600 hover:bg-red-500 text-white font-bold text-sm px-6 py-3 rounded-xl transition-colors shadow-lg shadow-red-900/30"
+            class="inline-flex items-center gap-2 bg-etv-blue-600 hover:bg-etv-blue-500 text-white font-bold text-sm px-6 py-3 rounded-xl transition-colors shadow-lg shadow-etv-blue-900/25"
           >
             <span class="w-2 h-2 rounded-full bg-white animate-pulse"></span>
             Ver Señal en Vivo

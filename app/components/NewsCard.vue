@@ -48,7 +48,7 @@ const formatDate = (dateStr: string) => {
       <span
         v-if="post.primary_tag"
         class="absolute top-3 left-3 text-[11px] font-bold tracking-wider uppercase px-2.5 py-1 rounded-md text-white shadow-md backdrop-blur-md"
-        :style="{ backgroundColor: post.primary_tag.color || '#dc2626' }"
+        :style="{ backgroundColor: post.primary_tag.color || '#01abe8' }"
       >
         {{ post.primary_tag.name }}
       </span>
@@ -57,7 +57,7 @@ const formatDate = (dateStr: string) => {
     <!-- Contenido -->
     <div class="p-5 flex flex-col justify-between flex-1">
       <div>
-        <h3 class="text-base md:text-lg font-bold text-neutral-900 dark:text-white group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors line-clamp-2 leading-snug mb-2">
+        <h3 class="text-base md:text-lg font-bold text-neutral-900 dark:text-white group-hover:text-etv-orange-600 dark:group-hover:text-etv-orange-400 transition-colors line-clamp-2 leading-snug mb-2">
           <NuxtLink :to="`/noticias/${post.slug}`">
             {{ post.title }}
           </NuxtLink>

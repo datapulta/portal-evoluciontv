@@ -63,7 +63,7 @@ const BACKUP_ARTICLES: Article[] = [
       id: 'c-1',
       name: 'Especial',
       slug: 'especial',
-      color: '#dc2626'
+      color: '#fe9903'
     }
   },
   {
@@ -174,43 +174,95 @@ const BACKUP_ARTICLES: Article[] = [
   }
 ]
 
+export interface PaginationMeta {
+  page: number
+  limit: number
+  pages: number
+  total: number
+  next: number | null
+  prev: number | null
+}
+
 export const useNews = () => {
   const config = useRuntimeConfig()
   const apiUrl = (config.public.newsApiUrl || 'https://cms-etv.webia.studio').replace(/\/+$/, '')
   const apiKey = config.public.newsApiKey
 
-  const getArticles = async (params: { limit?: number; filter?: string } = {}) => {
+  const getArticles = async (params: { limit?: number; filter?: string; page?: number } = {}) => {
+    const targetLimit = params.limit || 8
+    const targetPage = params.page || 1
+
     if (!apiKey) {
-      const limit = params.limit || BACKUP_ARTICLES.length
       return {
-        articles: BACKUP_ARTICLES.slice(0, limit),
+        articles: BACKUP_ARTICLES.slice(0, targetLimit),
+        pagination: {
+          page: 1,
+          limit: targetLimit,
+          pages: 1,
+          total: BACKUP_ARTICLES.length,
+          next: null,
+          prev: null
+        } as PaginationMeta,
         isConfigured: false
       }
     }
 
     try {
-      // Consumo de API editorial remota
       const url = new URL(`${apiUrl}/ghost/api/content/posts/`)
       url.searchParams.set('key', apiKey)
       url.searchParams.set('include', 'tags,authors')
-      if (params.limit) url.searchParams.set('limit', params.limit.toString())
+      url.searchParams.set('limit', String(targetLimit))
+      url.searchParams.set('page', String(targetPage))
       if (params.filter) url.searchParams.set('filter', params.filter)
 
-      const response = await $fetch<{ posts: Article[] }>(url.toString())
+      const response = await $fetch<{ posts: Article[]; meta?: { pagination?: PaginationMeta } }>(url.toString())
       const livePosts = response.posts || []
-      const targetLimit = params.limit || 8
 
       return {
-        articles: livePosts.slice(0, targetLimit),
+        articles: livePosts,
+        pagination: response.meta?.pagination || {
+          page: targetPage,
+          limit: targetLimit,
+          pages: 1,
+          total: livePosts.length,
+          next: null,
+          prev: null
+        },
         isConfigured: true
       }
     } catch (error) {
       console.warn('Conexión con motor editorial en espera, usando contenido de respaldo:', error)
       return {
-        articles: BACKUP_ARTICLES,
+        articles: BACKUP_ARTICLES.slice(0, targetLimit),
+        pagination: {
+          page: 1,
+          limit: targetLimit,
+          pages: 1,
+          total: BACKUP_ARTICLES.length,
+          next: null,
+          prev: null
+        } as PaginationMeta,
         isConfigured: false
       }
     }
+  }
+
+  const searchArticles = async (query: string): Promise<{ query: string; articles: Article[] }> => {
+    const trimmed = query.trim()
+    if (!trimmed) return { query: '', articles: [] }
+
+    if (!apiKey) {
+      const norm = (v: string) => v.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
+      const q = norm(trimmed)
+      return {
+        query: trimmed,
+        articles: BACKUP_ARTICLES.filter(a => norm(`${a.title} ${a.excerpt}`).includes(q))
+      }
+    }
+
+    return await $fetch<{ query: string; articles: Article[] }>('/api/search', {
+      query: { q: trimmed }
+    })
   }
 
   const getArticleBySlug = async (slug: string): Promise<Article | null> => {
@@ -222,7 +274,7 @@ export const useNews = () => {
 
         const response = await $fetch<{ posts: Article[] }>(url.toString())
         if (response.posts && response.posts.length > 0) {
-          return response.posts[0]
+          return response.posts[0] || null
         }
       } catch (error) {
         console.warn(`No se encontró en Ghost el slug "${slug}", recurriendo a contenido de respaldo:`, error)
@@ -237,6 +289,7 @@ export const useNews = () => {
     apiUrl,
     isConfigured: Boolean(apiKey),
     getArticles,
+    searchArticles,
     getArticleBySlug
   }
 }

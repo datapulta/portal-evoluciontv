@@ -2,9 +2,52 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+@theme {
+  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-serif: "Newsreader", Georgia, Cambria, "Times New Roman", Times, serif;
+
+  /* Naranja Oficial Evolución TV (#FE9903) */
+  --color-etv-orange-50: #fff8eb;
+  --color-etv-orange-100: #ffedc2;
+  --color-etv-orange-200: #ffd985;
+  --color-etv-orange-300: #ffc24d;
+  --color-etv-orange-400: #ffad1f;
+  --color-etv-orange-500: #fe9903;
+  --color-etv-orange-600: #d97700;
+  --color-etv-orange-700: #b45a00;
+  --color-etv-orange-800: #8c4300;
+  --color-etv-orange-900: #6b3400;
+  --color-etv-orange-950: #3d1c00;
+
+  /* Azul Oficial Evolución TV (#01ABE8) */
+  --color-etv-blue-50: #ecfbff;
+  --color-etv-blue-100: #d4f3ff;
+  --color-etv-blue-200: #aee7ff;
+  --color-etv-blue-300: #74d7ff;
+  --color-etv-blue-400: #33c2fb;
+  --color-etv-blue-500: #01abe8;
+  --color-etv-blue-600: #0086bd;
+  --color-etv-blue-700: #006b99;
+  --color-etv-blue-800: #06597e;
+  --color-etv-blue-900: #0a4a68;
+  --color-etv-blue-950: #052d42;
+}
+
 @layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
   body {
-    @apply bg-neutral-50 text-neutral-900 dark:bg-neutral-950 dark:text-neutral-100 font-sans antialiased selection:bg-red-600 selection:text-white transition-colors duration-200;
+    @apply bg-neutral-50 text-neutral-900 dark:bg-neutral-950 dark:text-neutral-100 font-sans antialiased selection:bg-etv-orange-500 selection:text-neutral-950 transition-colors duration-200;
+  }
+
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible {
+    @apply outline-2 outline-offset-2 outline-etv-blue-500;
   }
 }
 

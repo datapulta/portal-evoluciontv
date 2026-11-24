@@ -1,12 +1,22 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { useTheme } from '~/composables/useTheme'
+import { useNews } from '~/composables/useNews'
 import SocialLinks from '~/components/SocialLinks.vue'
+import BrandMark from '~/components/BrandMark.vue'
 import type { NavCategory } from '~~/server/api/categories.get'
 
+const route = useRoute()
+const router = useRouter()
 const { isDark, toggleTheme } = useTheme()
+const { getArticles } = useNews()
+
 const currentDate = ref('')
 const mobileMenuOpen = ref(false)
+const searchOpen = ref(false)
+const searchQuery = ref('')
+const searchInputRef = ref<HTMLInputElement | null>(null)
 
 onMounted(() => {
   const now = new Date()
@@ -18,11 +28,72 @@ onMounted(() => {
   })
 })
 
+const toggleSearch = () => {
+  searchOpen.value = !searchOpen.value
+  if (searchOpen.value) {
+    mobileMenuOpen.value = false
+    nextTick(() => {
+      searchInputRef.value?.focus()
+    })
+  }
+}
+
+const submitSearch = () => {
+  const q = searchQuery.value.trim()
+  if (!q) return
+  searchOpen.value = false
+  mobileMenuOpen.value = false
+  router.push({ path: '/buscar', query: { q } })
+}
+
 // Consulta reactiva SSR de las categorías dinámicas desde Ghost CMS
 const { data: remoteCategories } = await useAsyncData<NavCategory[]>(
   'nav-categories',
   () => $fetch('/api/categories')
 )
+
+// Últimas noticias para el ticker rotativo de Última Hora
+const { data: breakingData } = await useAsyncData(
+  'header-breaking-news',
+  () => getArticles({ limit: 5 })
+)
+const breakingItems = computed(() => breakingData.value?.articles || [])
+const breakingIndex = ref(0)
+const isTickerPaused = ref(false)
+let tickerTimer: ReturnType<typeof setInterval> | null = null
+
+const currentBreaking = computed(() => {
+  if (breakingItems.value.length === 0) return null
+  return breakingItems.value[breakingIndex.value % breakingItems.value.length] || breakingItems.value[0]
+})
+
+const nextBreaking = () => {
+  if (breakingItems.value.length <= 1) return
+  breakingIndex.value = (breakingIndex.value + 1) % breakingItems.value.length
+}
+
+const prevBreaking = () => {
+  const len = breakingItems.value.length
+  if (len <= 1) return
+  breakingIndex.value = (breakingIndex.value - 1 + len) % len
+}
+
+onMounted(() => {
+  if (!tickerTimer) {
+    tickerTimer = setInterval(() => {
+      if (!isTickerPaused.value && breakingItems.value.length > 1) {
+        nextBreaking()
+      }
+    }, 4500)
+  }
+})
+
+onUnmounted(() => {
+  if (tickerTimer) {
+    clearInterval(tickerTimer)
+    tickerTimer = null
+  }
+})
 
 interface NavItem {
   name: string
@@ -61,20 +132,77 @@ const navigationItems = computed<NavItem[]>(() => {
 
   return items
 })
+
+const isActiveRoute = (to: string) => {
+  if (to === '/') return route.path === '/' && !route.hash
+  if (to === '/#contacto') return route.path === '/' && route.hash === '#contacto'
+  return route.path === to || route.path.startsWith(`${to}/`)
+}
 </script>
 
 <template>
   <header class="border-b border-neutral-200 dark:border-neutral-800 bg-white/95 dark:bg-neutral-950/95 sticky top-0 z-50 backdrop-blur-md transition-colors duration-200">
-    <!-- Barra superior de última hora y fecha -->
-    <div class="border-b border-neutral-200/80 dark:border-neutral-800/60 bg-neutral-100/80 dark:bg-neutral-900/60 text-xs py-1.5 px-4 transition-colors">
-      <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
-        <div class="flex items-center gap-3 overflow-hidden">
-          <span class="bg-red-600 text-white font-bold px-2 py-0.5 rounded text-[10px] tracking-wider uppercase shrink-0 animate-pulse">
+    <!-- Barra superior de última hora rotativa y fecha -->
+    <div class="border-b border-neutral-200/80 dark:border-neutral-800/60 bg-neutral-100/80 dark:bg-neutral-900/60 text-xs py-1.5 px-3 sm:px-4 transition-colors">
+      <div class="max-w-7xl mx-auto flex items-center justify-between gap-2 sm:gap-4">
+        <div
+          class="flex items-center gap-2 sm:gap-3 flex-1 min-w-0"
+          @mouseenter="isTickerPaused = true"
+          @mouseleave="isTickerPaused = false"
+          @focusin="isTickerPaused = true"
+          @focusout="isTickerPaused = false"
+        >
+          <span class="bg-etv-orange-500 text-neutral-950 font-black px-2 py-0.5 rounded text-[10px] tracking-wider uppercase shrink-0 animate-pulse">
             Última Hora
           </span>
-          <p class="text-neutral-700 dark:text-neutral-300 truncate font-medium">
-            Evolución TV transmite cobertura especial y mesas de debate ciudadano en vivo.
-          </p>
+
+          <div class="flex-1 min-w-0 overflow-hidden">
+            <Transition
+              mode="out-in"
+              enter-active-class="transition-all duration-300 ease-out"
+              enter-from-class="opacity-0 translate-y-1.5"
+              enter-to-class="opacity-100 translate-y-0"
+              leave-active-class="transition-all duration-200 ease-in"
+              leave-from-class="opacity-100 translate-y-0"
+              leave-to-class="opacity-0 -translate-y-1.5"
+            >
+              <NuxtLink
+                v-if="currentBreaking"
+                :key="currentBreaking.id"
+                :to="`/noticias/${currentBreaking.slug}`"
+                class="block text-neutral-700 dark:text-neutral-300 hover:text-etv-blue-600 dark:hover:text-etv-blue-400 truncate font-medium transition-colors"
+                :title="currentBreaking.title"
+              >
+                {{ currentBreaking.title }}
+              </NuxtLink>
+              <p v-else key="fallback" class="text-neutral-700 dark:text-neutral-300 truncate font-medium">
+                Evolución TV transmite cobertura especial y mesas de debate ciudadano en vivo.
+              </p>
+            </Transition>
+          </div>
+
+          <!-- Controles compactos de rotación (adaptables móvil / desktop) -->
+          <div v-if="breakingItems.length > 1" class="flex items-center gap-1 shrink-0 text-neutral-500 dark:text-neutral-400">
+            <button
+              type="button"
+              @click="prevBreaking"
+              aria-label="Noticia anterior"
+              class="hidden sm:inline-flex w-5 h-5 items-center justify-center rounded hover:bg-neutral-200/80 dark:hover:bg-neutral-800 hover:text-etv-blue-600 dark:hover:text-etv-blue-400 transition-colors cursor-pointer"
+            >
+              ‹
+            </button>
+            <span class="hidden sm:inline text-[10px] font-mono tabular-nums px-0.5">
+              {{ (breakingIndex % breakingItems.length) + 1 }}/{{ breakingItems.length }}
+            </span>
+            <button
+              type="button"
+              @click="nextBreaking"
+              aria-label="Siguiente noticia"
+              class="inline-flex w-5 h-5 items-center justify-center rounded bg-neutral-200/60 sm:bg-transparent dark:bg-neutral-800/70 sm:dark:bg-transparent hover:bg-neutral-200 dark:hover:bg-neutral-800 hover:text-etv-blue-600 dark:hover:text-etv-blue-400 transition-colors cursor-pointer"
+            >
+              ›
+            </button>
+          </div>
         </div>
 
         <div class="hidden md:flex items-center gap-4 shrink-0 text-neutral-500 dark:text-neutral-400 capitalize">
@@ -85,21 +213,17 @@ const navigationItems = computed<NavItem[]>(() => {
       </div>
     </div>
 
-    <!-- Barra principal con Logo, Transmisión y Selector de Tema -->
-    <div class="max-w-7xl mx-auto px-4 py-3.5 flex items-center justify-between">
+    <!-- Barra principal con Logo, Transmisión, Buscador y Selector de Tema -->
+    <div class="max-w-7xl mx-auto px-4 py-3.5 flex items-center justify-between gap-3">
       <!-- Logo Evolución TV -->
-      <NuxtLink to="/" class="flex items-center gap-3 group">
-        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-red-600 to-red-800 flex items-center justify-center shadow-md shadow-red-900/30 group-hover:scale-105 transition-transform">
-          <svg class="w-6 h-6 text-white" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M8 5v14l11-7z" />
-          </svg>
-        </div>
+      <NuxtLink to="/" class="flex items-center gap-3 group shrink-0">
+        <BrandMark />
         <div class="flex flex-col">
           <div class="flex items-center gap-2">
-            <span class="text-2xl font-black tracking-tight text-neutral-900 dark:text-white group-hover:text-red-600 dark:group-hover:text-red-500 transition-colors">
+            <span class="text-2xl font-black tracking-tight text-neutral-900 dark:text-white group-hover:text-etv-orange-600 dark:group-hover:text-etv-orange-400 transition-colors">
               EVOLUCIÓN
             </span>
-            <span class="bg-red-600 text-white text-xs font-black px-1.5 py-0.5 rounded">
+            <span class="bg-etv-orange-500 text-neutral-950 text-xs font-black px-1.5 py-0.5 rounded">
               TV
             </span>
           </div>
@@ -109,9 +233,23 @@ const navigationItems = computed<NavItem[]>(() => {
         </div>
       </NuxtLink>
 
-      <!-- Acciones de Cabecera: Modo Claro/Oscuro + Botón En Vivo + Móvil -->
-      <div class="flex items-center gap-3">
-        <!-- Conmutador Modo Claro / Modo Oscuro (Desktop) -->
+      <!-- Acciones de Cabecera: Buscador + Modo Claro/Oscuro + Botón En Vivo + Móvil -->
+      <div class="flex items-center gap-2.5 sm:gap-3">
+        <!-- Botón Buscador -->
+        <button
+          @click="toggleSearch"
+          type="button"
+          title="Buscar noticias"
+          aria-label="Buscar noticias"
+          :aria-expanded="searchOpen"
+          class="p-2 rounded-xl text-neutral-600 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-white bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-900 dark:hover:bg-neutral-800 border border-neutral-200 dark:border-neutral-800 transition-all cursor-pointer shadow-sm"
+        >
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+        </button>
+
+        <!-- Conmutador Modo Claro / Modo Oscuro -->
         <button
           @click="toggleTheme"
           type="button"
@@ -119,12 +257,10 @@ const navigationItems = computed<NavItem[]>(() => {
           :aria-label="isDark ? 'Cambiar a Modo Claro' : 'Cambiar a Modo Oscuro'"
           class="p-2 rounded-xl text-neutral-600 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-white bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-900 dark:hover:bg-neutral-800 border border-neutral-200 dark:border-neutral-800 transition-all cursor-pointer shadow-sm"
         >
-          <!-- Ícono de Sol para cuando está en modo oscuro (indica pasar a claro) -->
-          <svg v-if="isDark" class="w-4 h-4 text-amber-400 transition-transform rotate-0 hover:rotate-45" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg v-if="isDark" class="w-4 h-4 text-etv-orange-400 transition-transform rotate-0 hover:rotate-45" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
           </svg>
-          <!-- Ícono de Luna para cuando está en modo claro (indica pasar a oscuro) -->
-          <svg v-else class="w-4 h-4 text-neutral-700 transition-transform -rotate-12 hover:rotate-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg v-else class="w-4 h-4 text-etv-blue-600 transition-transform -rotate-12 hover:rotate-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
           </svg>
         </button>
@@ -132,21 +268,21 @@ const navigationItems = computed<NavItem[]>(() => {
         <!-- Botón Transmisión en Vivo -->
         <NuxtLink
           to="/en-vivo"
-          class="hidden md:flex items-center gap-2.5 bg-red-600/10 hover:bg-red-600/20 text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 border border-red-500/30 px-3.5 py-2 rounded-full text-xs font-bold transition-all shadow-sm"
+          class="hidden md:flex items-center gap-2.5 bg-etv-blue-500/10 hover:bg-etv-blue-500/20 text-etv-blue-600 dark:text-etv-blue-400 hover:text-etv-blue-700 dark:hover:text-etv-blue-300 border border-etv-blue-500/35 px-3.5 py-2 rounded-full text-xs font-bold transition-all shadow-sm"
         >
           <span class="relative flex h-2.5 w-2.5">
-            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-            <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500"></span>
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-etv-blue-400 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-etv-blue-500"></span>
           </span>
           SEÑAL EN VIVO
         </NuxtLink>
 
         <!-- Botón menú móvil -->
         <button
-          @click="mobileMenuOpen = !mobileMenuOpen"
+          @click="mobileMenuOpen = !mobileMenuOpen; searchOpen = false"
           :aria-expanded="mobileMenuOpen"
           aria-label="Abrir menú de navegación"
-          class="md:hidden p-2 rounded-lg text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-100 dark:hover:bg-neutral-900 focus:outline-none transition-colors"
+          class="md:hidden p-2 rounded-lg text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-100 dark:hover:bg-neutral-900 transition-colors cursor-pointer"
         >
           <svg v-if="!mobileMenuOpen" class="w-6 h-6 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
@@ -158,20 +294,59 @@ const navigationItems = computed<NavItem[]>(() => {
       </div>
     </div>
 
-    <!-- Navegación de categorías dinámicas (Desktop) -->
+    <!-- Buscador desplegable -->
+    <Transition
+      enter-active-class="transition duration-150 ease-out"
+      enter-from-class="opacity-0 -translate-y-1"
+      enter-to-class="opacity-100 translate-y-0"
+      leave-active-class="transition duration-100 ease-in"
+      leave-from-class="opacity-100 translate-y-0"
+      leave-to-class="opacity-0 -translate-y-1"
+    >
+      <div v-if="searchOpen" class="border-t border-neutral-200 dark:border-neutral-800 bg-neutral-50/95 dark:bg-neutral-900/95 px-4 py-3">
+        <form @submit.prevent="submitSearch" class="max-w-3xl mx-auto flex items-center gap-2">
+          <input
+            ref="searchInputRef"
+            v-model="searchQuery"
+            type="search"
+            placeholder="Buscar noticias, reportajes, artistas o temas..."
+            class="flex-1 bg-white dark:bg-neutral-950 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white text-sm px-4 py-2 rounded-xl focus:border-etv-blue-500"
+          />
+          <button
+            type="submit"
+            class="bg-etv-orange-500 hover:bg-etv-orange-400 text-neutral-950 text-xs font-black px-4 py-2.5 rounded-xl transition-colors cursor-pointer shrink-0"
+          >
+            Buscar
+          </button>
+          <button
+            type="button"
+            @click="searchOpen = false"
+            class="p-2 text-neutral-500 hover:text-neutral-900 dark:hover:text-white rounded-lg cursor-pointer"
+            aria-label="Cerrar buscador"
+          >
+            ✕
+          </button>
+        </form>
+      </div>
+    </Transition>
+
+    <!-- Navegación de categorías dinámicas centrada en Desktop -->
     <nav class="hidden md:block border-t border-neutral-200/80 dark:border-neutral-800/60 bg-neutral-50/50 dark:bg-neutral-900/30 transition-colors">
-      <div class="max-w-7xl mx-auto px-4 flex items-center gap-7 text-sm overflow-x-auto scrollbar-none">
+      <div class="max-w-7xl mx-auto px-4 flex flex-wrap items-center justify-center gap-x-6 lg:gap-x-7 text-sm">
         <NuxtLink
           v-for="cat in navigationItems"
           :key="cat.name"
           :to="cat.to"
           :class="[
-            'py-3 font-semibold transition-colors border-b-2 whitespace-nowrap',
-            cat.highlight
-              ? 'text-red-600 dark:text-red-400 border-red-600'
-              : 'text-neutral-700 dark:text-neutral-300 hover:text-neutral-950 dark:hover:text-white border-transparent hover:border-neutral-400 dark:hover:border-neutral-500'
+            'py-3 font-semibold transition-colors border-b-2 whitespace-nowrap flex items-center gap-1.5',
+            isActiveRoute(cat.to)
+              ? 'text-etv-orange-600 dark:text-etv-orange-400 border-etv-orange-500 font-bold'
+              : cat.highlight
+                ? 'text-etv-blue-600 dark:text-etv-blue-400 border-transparent hover:border-etv-blue-500/60 hover:text-etv-blue-700 dark:hover:text-etv-blue-300'
+                : 'text-neutral-700 dark:text-neutral-300 hover:text-neutral-950 dark:hover:text-white border-transparent hover:border-etv-blue-400 dark:hover:border-etv-blue-500'
           ]"
         >
+          <span v-if="cat.highlight" class="w-1.5 h-1.5 rounded-full bg-etv-blue-500 animate-pulse"></span>
           {{ cat.name }}
         </NuxtLink>
       </div>
@@ -191,7 +366,7 @@ const navigationItems = computed<NavItem[]>(() => {
           <span class="text-xs font-bold text-neutral-500 dark:text-neutral-400 uppercase tracking-wider">Apariencia</span>
           <button
             @click="toggleTheme"
-            class="flex items-center gap-2 text-xs font-semibold px-3 py-1.5 rounded-lg bg-neutral-100 dark:bg-neutral-800 text-neutral-800 dark:text-neutral-200"
+            class="flex items-center gap-2 text-xs font-semibold px-3 py-1.5 rounded-lg bg-neutral-100 dark:bg-neutral-800 text-neutral-800 dark:text-neutral-200 cursor-pointer"
           >
             <span>{{ isDark ? 'Modo Oscuro Activo' : 'Modo Claro Activo' }}</span>
             <span class="text-sm">{{ isDark ? '🌙' : '☀️' }}</span>
@@ -203,7 +378,12 @@ const navigationItems = computed<NavItem[]>(() => {
           :key="cat.name"
           :to="cat.to"
           @click="mobileMenuOpen = false"
-          class="block py-2 text-neutral-800 dark:text-neutral-200 font-medium hover:text-red-600 dark:hover:text-red-400 transition-colors"
+          :class="[
+            'block py-2 px-2 rounded-lg font-medium transition-colors',
+            isActiveRoute(cat.to)
+              ? 'bg-etv-orange-50 dark:bg-etv-orange-950/40 text-etv-orange-600 dark:text-etv-orange-400 font-bold'
+              : 'text-neutral-800 dark:text-neutral-200 hover:text-etv-orange-600 dark:hover:text-etv-orange-400'
+          ]"
         >
           {{ cat.name }}
         </NuxtLink>

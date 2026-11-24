@@ -4,6 +4,160 @@ Este documento constituye la memoria técnica y bitácora cronológica exhaustiv
 
 ---
 
+## Sesión 32 — 2026-11-24 · Corrección de Cajas del Hero y Ticker Rotativo "Última Hora"
+
+**Rama activa**: `feat/setup-nuxt4-ghost-cms` (pendiente autorización de merge a `main` y deploy)
+**Autorización**: `plan_correccion_cajas_portada_y_ticker.md` (Proceed button, §4.4 AGENTS.md)
+
+### Diagnóstico
+1. En `app/pages/index.vue`, `items-stretch` + `flex-1` + `justify-between h-full` obligaba a las 2 tarjetas secundarias del Hero a estirarse verticalmente (~335 px) generando huecos vacíos entre el extracto y la fecha.
+2. En `app/components/HeaderNav.vue`, la barra *Última Hora* consultaba solo 1 noticia estática sin rotación ni adaptación móvil/desktop.
+
+### Cambios realizados
+- **`app/pages/index.vue`**:
+  - Reemplazado `items-stretch` por `items-start`, eliminado `flex-1` y `justify-between h-full` de las tarjetas secundarias (altura natural compacta y sin huecos vacíos).
+  - Equilibrada la columna lateral `lg:col-span-4` con un bloque compacto **"Señal Digital 24/7"** (control directo de Evolución Radio con pista en vivo, enlace a Cabina TV y chips de secciones).
+- **`app/components/HeaderNav.vue`**:
+  - Ticker rotativo de hasta 5 noticias recientes cada `4.5s` con `<Transition mode="out-in">` vertical suave, pausa en `:hover`/`:focus-in` y controles `‹` `1/N` `›` responsivos en móvil y desktop.
+
+### Verificación
+- `npm run build` y comprobación SSR local en `http://localhost:3005/`.
+
+---
+
+## Sesión 31 — 2026-11-24 · Emblema Oficial Extraído (`logo-etv.png` y `BrandMark.vue`)
+
+**Rama activa**: `feat/setup-nuxt4-ghost-cms` (pendiente autorización de merge a `main` y deploy)
+**Autorización**: `plan_logo_isotipo_etv.md` / `plan_logo_emblema_oficial.md` (Proceed button, §4.4 AGENTS.md)
+
+### Cambios realizados
+- **`public/logo-etv.png` [NEW]**: Extracción limpia del emblema oficial (triángulo Play azul `#01ABE8` + siglas `ETV` naranja `#FE9903` con su contorno blanco) mediante segmentación C# `LockBits` con canal alfa transparente, omitiendo el fondo negro y el texto inferior.
+- **`app/components/BrandMark.vue`**: Reemplazo de la caja cuadrada y SVG por `<img src="/logo-etv.png">` directo en cabecera y pie de página.
+- **`public/favicon.svg`**: Sincronizado incrustando el emblema oficial transparente sin tocar `nuxt.config.ts`.
+
+### Verificación
+- Inspección visual directa de `public/logo-etv.png` (`619×663`).
+- `npm run build` y validación HTTP local (`200 OK` en `/`, `/logo-etv.png` y `/favicon.svg`).
+
+---
+
+## Sesión 30 — 2026-11-24 · Rediseño del Isotipo de Marca (`BrandMark.vue`)
+
+**Rama activa**: `feat/setup-nuxt4-ghost-cms` (pendiente autorización de merge a `main` y deploy)
+**Autorización**: `plan_logo_isotipo_etv.md` (Proceed button, §4.4 AGENTS.md)
+
+### Diagnóstico
+El isotipo previo invertía la jerarquía cromática del logo oficial (fondo azul con triángulo naranja y contorno grueso) y usaba un ícono genérico duplicado en cabecera y footer.
+
+### Cambios realizados
+- **`app/components/BrandMark.vue` [NEW]**: Componente reutilizable (`size: 'sm' | 'md'`) con triángulo Play Azul `#01ABE8` detrás y pantalla/señal de TV digital Naranja `#FE9903` al frente con ondas blancas nítidas sobre contenedor adaptativo claro/oscuro.
+- **`app/components/HeaderNav.vue` y `app/components/FooterSection.vue`**: Reemplazo del SVG duplicado por `<BrandMark />`.
+- **`public/favicon.svg`**: Sincronizado con el nuevo isotipo de TV + Play sin fondo negro opaco.
+
+### Verificación
+- `npm run build` y validación HTTP local en `http://localhost:3005/`.
+
+---
+
+## Sesión 29 — 2026-11-24 · Identidad Cromática Oficial (Naranja `#FE9903` y Azul `#01ABE8`)
+
+**Rama activa**: `feat/setup-nuxt4-ghost-cms` (pendiente autorización de merge a `main` y deploy)
+**Autorización**: `plan_paleta_naranja_azul_logo.md` (Proceed button, §4.4 AGENTS.md)
+
+### Origen de datos
+Muestreo hexadecimal directo del logotipo oficial de Evolución TV (omitiendo el negro de fondo del JPG):
+- **Naranja ETV (`etv-orange-500`)**: `#FE9903` (`RGB 254, 153, 3`)
+- **Azul ETV (`etv-blue-500`)**: `#01ABE8` (`RGB 1, 171, 232`)
+
+### Cambios realizados (19 archivos)
+1. **`app/assets/css/main.css` y `public/favicon.svg`**:
+   - Definición de las escalas completas `etv-orange-*` y `etv-blue-*` en `@theme` de Tailwind CSS v4 (`selection:bg-etv-orange-500`, `outline-etv-blue-500`).
+   - Nuevo isotipo vectorial limpio en `public/favicon.svg` usando `#01ABE8` y `#FE9903` sin fondo negro opaco.
+2. **Componentes globales** (`HeaderNav.vue`, `FooterSection.vue`, `RadioPlayer.vue`, `NewsCard.vue`, `SocialLinks.vue`, `LiveStreamSection.vue`):
+   - Sustitución completa de la paleta roja anterior por Naranja `#FE9903` (marca, pestaña activa, botones principales con `text-neutral-950` accesible, hover editorial) y Azul `#01ABE8` (play, streaming en vivo, radio y focos).
+3. **Páginas y fallbacks** (`index.vue`, `radio.vue`, `en-vivo.vue`, `noticias/[slug].vue`, `categoria/[slug].vue`, `buscar.vue`, `quienes-somos.vue`, `codigo-etica.vue`, `privacidad.vue`, `categories.get.ts`, `useNews.ts`):
+   - Migración integral de gradientes, badges, barras de progreso, reglas CSS `.prose-news` y colores de respaldo.
+
+### Verificación
+- Escaneo de residuos rojos (`red-*`, `#dc2626`, `#ef4444`, `#991b1b`, `rgba(220`) → `ZERO_RED_LEFTOVERS`.
+- `npm run build` → ✅ 0 errores (`13.9s`), CSS compilado verificado con `#fe9903` y `#01abe8`.
+- Verificación HTTP local (`http://localhost:3005`) → ✅ `200 OK` en todas las rutas y `favicon.svg`.
+
+---
+
+## Sesión 28 — 2026-11-24 · Optimización Integral UX y UI de la Plataforma
+
+**Rama activa**: `feat/setup-nuxt4-ghost-cms` (pendiente autorización de merge a `main` y deploy)
+**Autorización**: `plan_mejoras_ux_ui_plataforma.md` (Proceed button, §4.4 AGENTS.md)
+
+### Diagnóstico y alcance
+Auditoría completa de los 17 archivos en `app/` y endpoints en `server/`, integrando además dos observaciones visuales del operador en desktop (`/radio`): centrado del menú de navegación y eliminación total de espacios vacíos en la cabina del reproductor de radio.
+
+### Cambios realizados
+
+1. **Backend Nitro & Utilidades**:
+   - `server/utils/ghostAdmin.ts`: helper compartido para configuración y JWT HMAC-SHA256 de Ghost Admin API (eliminando duplicación en `categories.get.ts`).
+   - `server/api/radio/nowplaying.get.ts`: proxy con caché 15s a AzuraCast (`r3.webia.studio/api/nowplaying/estereo_fonik`) exponiendo canción, artista, carátula y oyentes.
+   - `server/api/newsletter.post.ts`: alta real de suscriptores en Ghost Members API con etiqueta `boletin-web` y manejo de duplicados (`422`).
+   - `server/api/search.get.ts`: búsqueda insensible a acentos (`NFD`) sobre posts públicos de Ghost CMS.
+   - Actualizados `sitemap.xml.get.ts` y `llms.txt.get.ts` con `/codigo-etica`, `/privacidad` y `/buscar`.
+
+2. **Tipografía, Accesibilidad y Composables**:
+   - `app/app.vue` y `app/assets/css/main.css`: Google Fonts (`Plus Jakarta Sans` + `Newsreader`) configuradas vía `useHead` + `@theme` (sin modificar `nuxt.config.ts`) y anillos `:focus-visible` accesibles.
+   - `app/composables/useNews.ts`: paginación real (`PaginationMeta`) y método `searchArticles`.
+   - `app/composables/useRadio.ts`: polling de metadatos en vivo (`/api/radio/nowplaying`), `MediaSession` con carátula y dock minimizado por defecto en móvil (`< 640px`) sin preferencia previa.
+
+3. **Navegación, Pie y Dock**:
+   - `app/components/HeaderNav.vue`: menú de navegación centrado simétricamente en desktop (`md:flex-wrap md:justify-center`), indicador de ruta activa, barra *Última Hora* dinámica enlazada al artículo más reciente, y buscador rápido desplegable.
+   - `app/components/FooterSection.vue`: ancla `id="contacto"` (`scroll-mt-32`) y enlaces reales a `/codigo-etica`, `/privacidad` y `/buscar`.
+   - `app/components/RadioPlayer.vue`: carátula de pista actual en el botón Play y título en vivo actualizado.
+
+4. **Páginas**:
+   - `app/pages/radio.vue`: ultra-optimización desktop (`max-w-3xl`, cabecera integrada sin banda vacía superior, bloque Play de ancho exacto `md:w-44` eliminando huecos laterales y carátula/metadatos reales de AzuraCast).
+   - `app/pages/index.vue`: fecha/autoría consistente en Hero, botón *"Cargar más noticias"* con paginación real y boletín conectado a `/api/newsletter`.
+   - `app/pages/noticias/[slug].vue`: reemplazo de `sticky top-14` oculto bajo el header por breadcrumbs limpios, barra superior de progreso de lectura, cuerpo `font-serif`, skeleton loader, compartir en WhatsApp/X/Facebook/nativo y botón *"Volver arriba"*.
+   - `app/pages/categoria/[slug].vue`: skeletons de carga y paginación *"Cargar más artículos"*.
+   - `app/pages/en-vivo.vue`: corrección de `sticky top-14` y rediseño transparente hacia *"Cabina Digital en Espera de Emisión"* con acceso a YouTube y Evolución Radio.
+   - Nuevas páginas: `app/pages/buscar.vue`, `app/pages/codigo-etica.vue` y `app/pages/privacidad.vue`.
+
+### Verificación
+- `npm run build` → ✅ 0 errores (208 módulos cliente, 118 server).
+- Verificación HTTP local (`http://localhost:3005`): `/api/radio/nowplaying`, `/api/search`, `/api/newsletter`, `/`, `/radio`, `/buscar`, `/codigo-etica`, `/privacidad`, `/en-vivo`, `/noticias/<slug>`, `/sitemap.xml` y `/llms.txt` → ✅ todos `200 OK`.
+
+---
+
+## Sesión 27 — 2026-11-24 · v1.0.8: Optimización UX Desktop Página /radio
+
+**Rama activa**: `feat/setup-nuxt4-ghost-cms` → merge a `main`
+**Commit**: `3e9341e` (feature) · `092ccfc` (merge main)
+**Tag**: `v1.0.8`
+**Autorización**: `plan_optimizacion_ux_desktop_radio.md` (Proceed button)
+
+### Diagnóstico
+La página `/radio` presentaba exceso de espacio visual en viewport desktop (≥768px) debido a paddings generosos heredados del diseño mobile-first y botones del dock flotante en posición `absolute` que generaban espacio muerto superior.
+
+### Cambios realizados
+
+**`app/pages/radio.vue`** (6 ajustes de clases Tailwind):
+- Padding wrapper desktop: `md:py-8` → `md:py-6`
+- Padding sección cabina: `md:p-12` → `md:p-10`
+- Gap grid columnas: `gap-8` → `gap-6`
+- Col. izquierda (botón play): `py-6 gap-5` → `py-2 gap-4`
+- Col. derecha (info): `space-y-6` → `space-y-4`
+- Sección social links: `pt-4 gap-4` → `pt-3 gap-3`
+
+**`app/components/RadioPlayer.vue`** — Refactor dock expandido:
+- Eliminado layout `relative` con botones en `absolute top-2 right-2`
+- Nuevo layout de **2 filas**: fila 1 (play + título + acciones inline) · fila 2 (volumen ancho completo)
+- Botón play reducido: `w-14 h-14` → `w-12 h-12` para proporcionar mejor con el nuevo layout
+- Eliminado `pr-4` en área de texto (ya no necesario sin botones absolutos)
+
+### Verificación
+- `npm run build` → ✅ 0 errores, 201 módulos transformados
+- Desplegado a producción Dokploy (`OD0duHt9W9jees8yl_TEa`)
+
+---
+
 ## 1. Identificación y Autoría del Sistema
 
 - **Proyecto**: Panel Evolución TV (`panel-evoluciontv`)
