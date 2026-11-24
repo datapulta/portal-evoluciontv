@@ -6,7 +6,7 @@ useHead({
   meta: [
     {
       name: 'description',
-      content: 'Evolución TV es un proyecto de televisión en internet, sin límites, con contenidos propios y creativos creados por jóvenes emprendedores.'
+      content: 'Evolución TV es un medio de comunicación independiente, sin límites, con contenidos propios y creativos creados por jóvenes emprendedores.'
     },
     {
       property: 'og:title',
@@ -78,10 +78,10 @@ const objetivos = [
 
           <div class="space-y-4 text-base md:text-lg text-neutral-700 dark:text-neutral-300 leading-relaxed">
             <p>
-              <strong>Evolución TV</strong> es un proyecto de televisión en internet, sin límites, con contenidos propios y creativos que muestran diferentes ángulos con respecto a los medios tradicionales.
+              <strong>Evolución TV</strong> es un medio de comunicación independiente, sin límites, con contenidos propios y creativos que muestran diferentes ángulos con respecto a los medios tradicionales.
             </p>
             <p>
-              Somos un grupo de jóvenes emprendedores que por medio de reportajes, entrevistas, notas, fotografías y programas en vivo, se mantiene presente haciendo uso de las nuevas tecnologías, evolucionando.
+              Somos un grupo de jóvenes emprendedores que por medio de reportajes, entrevistas, notas, fotografías y sesiones en vivo, se mantiene presente haciendo uso de las nuevas tecnologías, evolucionando.
             </p>
           </div>
         </div>

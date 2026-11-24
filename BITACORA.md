@@ -4,6 +4,20 @@ Este documento constituye la memoria técnica y bitácora cronológica exhaustiv
 
 ---
 
+## Sesión 35 — 2026-11-24 · Actualización de Texto Institucional en "Quiénes Somos"
+
+**Rama activa**: `feat/setup-nuxt4-ghost-cms` (pendiente autorización de merge a `main` y deploy)
+**Autorización**: `plan_actualizacion_texto_quienes_somos.md` (Proceed button, §4.4 AGENTS.md)
+
+### Cambios realizados
+- **`app/pages/quienes-somos.vue`**:
+  - Actualizada la descripción principal y meta `description` sustituyendo *"proyecto de televisión en internet"* por **"medio de comunicación independiente"** y *"programas en vivo"* por **"sesiones en vivo"**.
+
+### Verificación
+- `npm run build` y validación HTTP local en `http://localhost:3005/quienes-somos`.
+
+---
+
 ## Sesión 34 — 2026-11-24 · Ajuste Responsive Móvil y Barra de Navegación Visible
 
 **Rama activa**: `feat/setup-nuxt4-ghost-cms` (pendiente autorización de merge a `main` y deploy)
