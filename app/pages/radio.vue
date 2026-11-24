@@ -29,7 +29,7 @@ const {
 </script>
 
 <template>
-  <div class="min-h-[calc(100vh-8rem)] flex items-center py-4 md:py-8 transition-colors duration-200">
+  <div class="min-h-[calc(100vh-8rem)] flex items-center py-4 md:py-6 transition-colors duration-200">
     <div class="max-w-5xl w-full mx-auto px-4 space-y-4">
       <!-- Barra superior con botón Explorar la plataforma -->
       <div class="flex items-center justify-between gap-3">
@@ -50,10 +50,10 @@ const {
       </div>
 
       <!-- Cabina Principal de Evolución Radio -->
-      <section class="bg-white dark:bg-neutral-900/70 border border-neutral-200 dark:border-neutral-800 rounded-3xl p-6 sm:p-10 md:p-12 shadow-xl relative overflow-hidden">
-        <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+      <section class="bg-white dark:bg-neutral-900/70 border border-neutral-200 dark:border-neutral-800 rounded-3xl p-6 sm:p-8 md:p-10 shadow-xl relative overflow-hidden">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
           <!-- Botón Protagonista con Ondas Radiales de Transmisión -->
-          <div class="md:col-span-5 flex flex-col items-center justify-center gap-5 py-6">
+          <div class="md:col-span-5 flex flex-col items-center justify-center gap-4 py-2">
             <div class="relative flex items-center justify-center">
               <!-- Ondas concéntricas animadas cuando está transmitiendo -->
               <span
@@ -104,7 +104,7 @@ const {
           </div>
 
           <!-- Información de la Estación -->
-          <div class="md:col-span-7 space-y-6">
+          <div class="md:col-span-7 space-y-4">
             <div class="space-y-2">
               <span class="text-xs font-black uppercase tracking-widest text-red-600 dark:text-red-400">
                 Estación Digital 24/7
@@ -133,7 +133,7 @@ const {
             </div>
 
             <!-- Redes sociales y salto rápido a TV -->
-            <div class="pt-4 flex flex-wrap items-center justify-between gap-4 border-t border-neutral-200 dark:border-neutral-800">
+            <div class="pt-3 flex flex-wrap items-center justify-between gap-3 border-t border-neutral-200 dark:border-neutral-800">
               <SocialLinks />
               <NuxtLink
                 to="/en-vivo"
