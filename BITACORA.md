@@ -160,3 +160,17 @@ Este documento constituye la memoria técnica y bitácora cronológica exhaustiv
   - El portal local `http://localhost:3005/` actualiza inmediatamente la Nota Principal con el nuevo artículo.
   - La página de lectura `http://localhost:3005/noticias/investigacion-especial-el-futuro-del-periodismo-digital-en-evolucion-tv` responde HTTP 200 OK y renderiza el contenido completo en SSR.
   - Compilación exitosa con `npm run build` (15.0s, 0 errores).
+
+---
+
+### Sesión 8 — 23 de Noviembre de 2026
+**Objetivo**: Redacción y publicación remota en vivo del artículo sobre Jensen Huang en Ghost CMS y validación de renderizado completo en local.
+- **Autorización**: Aprobación nativa formal del plan `plan_publicacion_articulo_jensen_huang.md` mediante botón Proceed del operador (§4.4 de AGENTS.md).
+- **Actividades Realizadas**:
+  1. **Redacción y Publicación Automática**:
+     - Noticia creada mediante Ghost Admin API: *"El Retorno de Jensen Huang: La Nueva Era de la Computación Acelerada y las Fábricas de IA"* (`id: 6b04d6c5c506c700013dce58`, `slug: el-retorno-de-jensen-huang-la-nueva-era-de-la-computacion-acelerada-y-las-fabricas-de-ia`).
+     - Metadatos: etiquetas `Tecnología` e `Innovación`, imagen de microarquitectura de IA y formato periodístico `prose-news`.
+  2. **Verificación de Indexación y Renderizado**:
+     - Ghost Content API incrementa el total de artículos publicados a 3.
+     - Portada de `http://localhost:3005/` actualizada en tiempo real: la nota de Jensen Huang asume la posición de Nota Principal (Hero).
+     - Ruta de lectura individual `http://localhost:3005/noticias/el-retorno-de-jensen-huang-la-nueva-era-de-la-computacion-acelerada-y-las-fabricas-de-ia` responde 200 OK y renderiza el contenido íntegro con autor, tiempo de lectura y enlaces de regreso.
