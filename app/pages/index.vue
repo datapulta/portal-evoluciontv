@@ -16,10 +16,10 @@ const allArticles = computed<Article[]>(() => newsResult.value?.articles?.slice(
 <template>
   <div class="transition-colors duration-200">
     <!-- Hero Editorial con Tarjetas de Ligera Curvatura -->
-    <section class="max-w-7xl mx-auto px-4 py-6 md:py-8">
-      <div v-if="featuredArticle" class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8">
-        <!-- Nota Principal en Tarjeta (8 columnas en escritorio) -->
-        <article class="lg:col-span-8 group flex flex-col bg-white dark:bg-neutral-900/60 border border-neutral-200 dark:border-neutral-800 hover:border-neutral-300 dark:hover:border-neutral-700 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300">
+    <section class="max-w-7xl mx-auto px-0 pt-0 pb-6 md:px-4 md:py-8">
+      <div v-if="featuredArticle" class="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-8">
+        <!-- Nota Principal en Tarjeta (full-bleed en móvil, 8 columnas en escritorio) -->
+        <article class="lg:col-span-8 group flex flex-col bg-white dark:bg-neutral-900/60 border-b border-x-0 border-t-0 md:border border-neutral-200 dark:border-neutral-800 hover:border-neutral-300 dark:hover:border-neutral-700 rounded-b-2xl md:rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300">
           <!-- Imagen protagonista sin texto encimado -->
           <NuxtLink
             :to="`/noticias/${featuredArticle.slug}`"
@@ -35,7 +35,7 @@ const allArticles = computed<Article[]>(() => newsResult.value?.articles?.slice(
           </NuxtLink>
 
           <!-- Bloque editorial limpio debajo de la imagen -->
-          <div class="p-5 md:p-7 space-y-2.5">
+          <div class="p-4 sm:p-5 md:p-6 space-y-2.5">
             <div class="flex items-center gap-2.5">
               <span
                 v-if="featuredArticle.primary_tag"
@@ -72,7 +72,7 @@ const allArticles = computed<Article[]>(() => newsResult.value?.articles?.slice(
         <!-- Notas Secundarias (tarjetas individuales con ligera curvatura) -->
         <div
           v-if="secondaryArticles.length > 0"
-          class="lg:col-span-4 flex flex-col gap-4"
+          class="lg:col-span-4 flex flex-col gap-4 px-3 md:px-0"
         >
           <article
             v-for="article in secondaryArticles"

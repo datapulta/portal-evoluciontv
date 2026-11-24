@@ -357,3 +357,13 @@ Este documento constituye la memoria técnica y bitácora cronológica exhaustiv
 - **Verificación Técnica**:
   - Compilación de producción limpia ejecutada con `npm run build` (0 errores).
 
+---
+
+### Sesión 19 — 24 de Noviembre de 2026
+**Objetivo**: Eliminación de márgenes exteriores alrededor de la Nota Principal en móvil (`app/pages/index.vue`).
+- **Autorización**: Aprobación nativa formal del plan `plan_ajuste_espacios_caja_principal.md` mediante botón Proceed del operador (§4.4 de AGENTS.md).
+- **Actividades Realizadas**:
+  - Se retiró el padding lateral y superior (`px-0 pt-0`) del contenedor Hero en móvil y se ajustó la tarjeta principal a `rounded-b-2xl md:rounded-2xl` para ocupar el ancho completo sin espacios sobrantes.
+- **Verificación Técnica**:
+  - Compilación de producción limpia ejecutada con `npm run build` (0 errores).
+
