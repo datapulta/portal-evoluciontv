@@ -4,6 +4,22 @@ Este documento constituye la memoria técnica y bitácora cronológica exhaustiv
 
 ---
 
+## Sesión 31 — 2026-11-24 · Emblema Oficial Extraído (`logo-etv.png` y `BrandMark.vue`)
+
+**Rama activa**: `feat/setup-nuxt4-ghost-cms` (pendiente autorización de merge a `main` y deploy)
+**Autorización**: `plan_logo_isotipo_etv.md` / `plan_logo_emblema_oficial.md` (Proceed button, §4.4 AGENTS.md)
+
+### Cambios realizados
+- **`public/logo-etv.png` [NEW]**: Extracción limpia del emblema oficial (triángulo Play azul `#01ABE8` + siglas `ETV` naranja `#FE9903` con su contorno blanco) mediante segmentación C# `LockBits` con canal alfa transparente, omitiendo el fondo negro y el texto inferior.
+- **`app/components/BrandMark.vue`**: Reemplazo de la caja cuadrada y SVG por `<img src="/logo-etv.png">` directo en cabecera y pie de página.
+- **`public/favicon.svg`**: Sincronizado incrustando el emblema oficial transparente sin tocar `nuxt.config.ts`.
+
+### Verificación
+- Inspección visual directa de `public/logo-etv.png` (`619×663`).
+- `npm run build` y validación HTTP local (`200 OK` en `/`, `/logo-etv.png` y `/favicon.svg`).
+
+---
+
 ## Sesión 30 — 2026-11-24 · Rediseño del Isotipo de Marca (`BrandMark.vue`)
 
 **Rama activa**: `feat/setup-nuxt4-ghost-cms` (pendiente autorización de merge a `main` y deploy)
