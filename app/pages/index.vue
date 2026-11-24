@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useNews, type Article } from '~/composables/useNews'
-import LiveStreamSection from '~/components/LiveStreamSection.vue'
 import NewsCard from '~/components/NewsCard.vue'
 
 const { getArticles } = useNews()
@@ -91,11 +90,8 @@ const allArticles = computed<Article[]>(() => newsResult.value?.articles?.slice(
       </div>
     </section>
 
-    <!-- Transmisión de Televisión en Vivo (24/7) -->
-    <LiveStreamSection />
-
     <!-- Cuadrícula de Más Noticias e Investigaciones -->
-    <section class="max-w-7xl mx-auto px-4 py-12">
+    <section class="max-w-7xl mx-auto px-4 py-8 md:py-12 border-t border-neutral-900">
       <div class="flex items-center justify-between mb-8 pb-3 border-b border-neutral-800">
         <div class="flex items-center gap-2">
           <span class="w-2.5 h-6 bg-red-600 rounded-sm"></span>

@@ -200,3 +200,23 @@ Este documento constituye la memoria técnica y bitácora cronológica exhaustiv
   - Petición HTTPS a `https://etv.webia.studio/` responde HTTP 200 OK con SSR íntegro (título oficial, señal en vivo y noticias publicadas en Ghost).
   - Petición a nota individual `https://etv.webia.studio/noticias/el-retorno-de-jensen-huang-la-nueva-era-de-la-computacion-acelerada-y-las-fabricas-de-ia` responde HTTP 200 OK.
   - Validación TLS confirma certificado emitido por Let's Encrypt.
+
+---
+
+### Sesión 10 — 23 de Noviembre de 2026
+**Objetivo**: Desacoplamiento de la sección de streaming de televisión de la portada y creación de la página dedicada `/en-vivo`.
+- **Autorización**: Aprobación nativa formal del plan `plan_pagina_dedicada_senal_en_vivo.md` mediante botón Proceed del operador (§4.4 de AGENTS.md).
+- **Actividades Realizadas**:
+  1. **Creación de la Página Dedicada (`app/pages/en-vivo.vue`)**:
+     - Vista cinematográfica de transmisión digital con reproductor 16:9 interactivo, selector 1080p HD, contador de espectadores y barra de programa actual.
+     - Guía interactiva de programación del día con estados dinámicos (*En Vivo Ahora*, *Siguiente*, *Madrugada*, *Mañana*).
+     - Módulo de participación y denuncia ciudadana en vivo enlazado a la redacción.
+     - Sección de investigaciones y coberturas periodísticas recientes al pie.
+  2. **Purificación de la Portada (`app/pages/index.vue`)**:
+     - Retiro del componente `LiveStreamSection` de la portada para enfocarla enteramente en el contenido editorial escrito y las investigaciones de Ghost CMS.
+  3. **Navegación Global en `app/components/HeaderNav.vue`**:
+     - Botón pulsante "SEÑAL EN VIVO" y enlace de categoría actualizados a `<NuxtLink to="/en-vivo">`.
+     - Logo y enlace "Portada" configurados a `<NuxtLink to="/">`.
+- **Verificación Técnica**:
+  - Compilación de producción limpia ejecutada con `npm run build` (13.2s, 0 errores).
+  - Comprobación local: `http://localhost:3005/` libre del bloque de video y `http://localhost:3005/en-vivo` con la experiencia televisiva completa (200 OK).

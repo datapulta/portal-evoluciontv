@@ -16,13 +16,13 @@ onMounted(() => {
 })
 
 const categories = [
-  { name: 'Portada', href: '#' },
-  { name: 'Nacional', href: '#nacional' },
-  { name: 'Política', href: '#politica' },
-  { name: 'Economía', href: '#economia' },
-  { name: 'Investigación', href: '#investigacion' },
-  { name: 'Señal en Vivo', href: '#en-vivo', highlight: true },
-  { name: 'Opinión', href: '#opinion' }
+  { name: 'Portada', to: '/' },
+  { name: 'Nacional', to: '/#nacional' },
+  { name: 'Política', to: '/#politica' },
+  { name: 'Economía', to: '/#economia' },
+  { name: 'Investigación', to: '/#investigacion' },
+  { name: 'Señal en Vivo', to: '/en-vivo', highlight: true },
+  { name: 'Opinión', to: '/#opinion' }
 ]
 </script>
 
@@ -58,7 +58,7 @@ const categories = [
     <!-- Barra principal con Logo -->
     <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
       <!-- Logo Evolución TV -->
-      <a href="/" class="flex items-center gap-3 group">
+      <NuxtLink to="/" class="flex items-center gap-3 group">
         <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-red-600 to-red-800 flex items-center justify-center shadow-lg shadow-red-950/50 group-hover:scale-105 transition-transform">
           <svg class="w-6 h-6 text-white" viewBox="0 0 24 24" fill="currentColor">
             <path d="M8 5v14l11-7z" />
@@ -77,12 +77,12 @@ const categories = [
             Medio Digital Independiente
           </span>
         </div>
-      </a>
+      </NuxtLink>
 
       <!-- Botón Transmisión en Vivo -->
       <div class="flex items-center gap-3">
-        <a
-          href="#en-vivo"
+        <NuxtLink
+          to="/en-vivo"
           class="flex items-center gap-2.5 bg-red-600/10 hover:bg-red-600/20 text-red-400 hover:text-red-300 border border-red-500/30 px-3.5 py-2 rounded-full text-xs font-bold transition-all shadow-sm"
         >
           <span class="relative flex h-2.5 w-2.5">
@@ -90,7 +90,7 @@ const categories = [
             <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500"></span>
           </span>
           SEÑAL EN VIVO
-        </a>
+        </NuxtLink>
 
         <!-- Botón menú móvil -->
         <button
@@ -107,10 +107,10 @@ const categories = [
     <!-- Navegación de categorías -->
     <nav class="hidden md:block border-t border-neutral-800/60 bg-neutral-900/30">
       <div class="max-w-7xl mx-auto px-4 flex items-center gap-8 text-sm">
-        <a
+        <NuxtLink
           v-for="cat in categories"
           :key="cat.name"
-          :href="cat.href"
+          :to="cat.to"
           :class="[
             'py-3 font-semibold transition-colors border-b-2',
             cat.highlight
@@ -119,21 +119,21 @@ const categories = [
           ]"
         >
           {{ cat.name }}
-        </a>
+        </NuxtLink>
       </div>
     </nav>
 
     <!-- Menú móvil colapsable -->
     <div v-if="mobileMenuOpen" class="md:hidden border-t border-neutral-800 bg-neutral-900 px-4 py-3 space-y-2">
-      <a
+      <NuxtLink
         v-for="cat in categories"
         :key="cat.name"
-        :href="cat.href"
+        :to="cat.to"
         @click="mobileMenuOpen = false"
         class="block py-2 text-neutral-200 font-medium hover:text-red-400"
       >
         {{ cat.name }}
-      </a>
+      </NuxtLink>
       <a
         href="https://cms-etv.webia.studio/ghost"
         target="_blank"
