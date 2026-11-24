@@ -1,9 +1,13 @@
 <script setup lang="ts">
+import { computed } from 'vue'
+import { useRoute } from 'vue-router'
 import HeaderNav from '~/components/HeaderNav.vue'
 import FooterSection from '~/components/FooterSection.vue'
 import RadioPlayer from '~/components/RadioPlayer.vue'
 import { useTheme } from '~/composables/useTheme'
 
+const route = useRoute()
+const isRadioPage = computed(() => route.path === '/radio')
 const { isDark } = useTheme()
 
 useHead({
@@ -29,12 +33,12 @@ useHead({
       <NuxtPage />
     </main>
 
-    <!-- Pie de Página -->
-    <FooterSection />
+    <!-- Pie de Página (oculto en /radio para una experiencia limpia) -->
+    <FooterSection v-if="!isRadioPage" />
 
     <!-- Reproductor Flotante Persistente Evolución Radio -->
     <ClientOnly>
-      <RadioPlayer />
+      <RadioPlayer v-if="!isRadioPage" />
     </ClientOnly>
   </div>
 </template>

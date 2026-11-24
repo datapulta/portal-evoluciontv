@@ -410,3 +410,15 @@ Este documento constituye la memoria técnica y bitácora cronológica exhaustiv
   - Compilación de producción limpia ejecutada con `npm run build` (0 errores).
   - Validación local en `http://localhost:3005/radio` (`200 OK`).
 
+---
+
+### Sesión 23 — 24 de Noviembre de 2026
+**Objetivo**: Optimización minimalista de `/radio` (`app/app.vue`, `app/pages/radio.vue`).
+- **Autorización**: Aprobación nativa formal del plan `plan_optimizacion_pagina_radio.md` mediante botón Proceed del operador (§4.4 de AGENTS.md).
+- **Actividades Realizadas**:
+  1. Se ocultaron `<FooterSection />` y `<RadioPlayer />` en la ruta `/radio` (`app/app.vue`) para dejar el reproductor completamente limpio.
+  2. Se retiró el control deslizante de volumen en `app/pages/radio.vue` y se reemplazó el espectro de barras por ondas radiales concéntricas animadas alrededor del botón Play/Pause + píldora de estado.
+- **Verificación Técnica**:
+  - Compilación de producción limpia ejecutada con `npm run build` (0 errores).
+  - Validación local en `http://localhost:3005/radio` (`200 OK`, sin `<footer>`, sin control de volumen).
+
