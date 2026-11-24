@@ -115,7 +115,7 @@ const submitNewsletter = async () => {
               <div class="flex items-center gap-2.5">
                 <span
                   v-if="featuredArticle.primary_tag"
-                  class="text-xs font-extrabold uppercase tracking-wider text-red-600 dark:text-red-400"
+                  class="text-xs font-extrabold uppercase tracking-wider text-etv-orange-600 dark:text-etv-orange-400"
                 >
                   {{ featuredArticle.primary_tag.name }}
                 </span>
@@ -125,7 +125,7 @@ const submitNewsletter = async () => {
                 </span>
               </div>
 
-              <h1 class="text-2xl sm:text-3xl md:text-4xl font-black text-neutral-900 dark:text-white group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors leading-tight tracking-tight">
+              <h1 class="text-2xl sm:text-3xl md:text-4xl font-black text-neutral-900 dark:text-white group-hover:text-etv-orange-600 dark:group-hover:text-etv-orange-400 transition-colors leading-tight tracking-tight">
                 <NuxtLink :to="`/noticias/${featuredArticle.slug}`">
                   {{ featuredArticle.title }}
                 </NuxtLink>
@@ -184,11 +184,11 @@ const submitNewsletter = async () => {
               <div class="space-y-1">
                 <span
                   v-if="article.primary_tag"
-                  class="block text-[11px] font-extrabold uppercase tracking-wider text-red-600 dark:text-red-400"
+                  class="block text-[11px] font-extrabold uppercase tracking-wider text-etv-blue-600 dark:text-etv-blue-400"
                 >
                   {{ article.primary_tag.name }}
                 </span>
-                <h2 class="text-sm sm:text-base font-black text-neutral-900 dark:text-white group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors leading-snug line-clamp-2">
+                <h2 class="text-sm sm:text-base font-black text-neutral-900 dark:text-white group-hover:text-etv-orange-600 dark:group-hover:text-etv-orange-400 transition-colors leading-snug line-clamp-2">
                   <NuxtLink :to="`/noticias/${article.slug}`">
                     {{ article.title }}
                   </NuxtLink>
@@ -212,13 +212,13 @@ const submitNewsletter = async () => {
     <section v-if="allArticles.length > 0" class="max-w-7xl mx-auto px-4 py-8 md:py-12 border-t border-neutral-200 dark:border-neutral-900">
       <div class="flex items-center justify-between mb-8 pb-3 border-b border-neutral-200 dark:border-neutral-800">
         <div class="flex items-center gap-2">
-          <span class="w-2.5 h-6 bg-red-600 rounded-sm"></span>
+          <span class="w-2.5 h-6 bg-gradient-to-b from-etv-orange-500 to-etv-blue-500 rounded-sm"></span>
           <h2 class="text-xl md:text-2xl font-black text-neutral-900 dark:text-white uppercase tracking-tight">
             Más Noticias y Coberturas
           </h2>
         </div>
         <div class="flex items-center gap-2 text-xs text-neutral-500 dark:text-neutral-400 font-medium">
-          <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+          <span class="w-2 h-2 rounded-full bg-etv-blue-500"></span>
           Actualizado por la Redacción
         </div>
       </div>
@@ -237,7 +237,7 @@ const submitNewsletter = async () => {
           type="button"
           :disabled="loadingMore"
           @click="loadMoreArticles"
-          class="inline-flex items-center gap-2 bg-white dark:bg-neutral-900 hover:bg-neutral-100 dark:hover:bg-neutral-800 text-neutral-900 dark:text-white font-bold text-sm px-6 py-3 rounded-xl border border-neutral-300 dark:border-neutral-700 shadow-sm transition-colors cursor-pointer disabled:opacity-60"
+          class="inline-flex items-center gap-2 bg-white dark:bg-neutral-900 hover:bg-neutral-100 dark:hover:bg-neutral-800 text-neutral-900 dark:text-white font-bold text-sm px-6 py-3 rounded-xl border border-neutral-300 dark:border-neutral-700 hover:border-etv-blue-500 shadow-sm transition-colors cursor-pointer disabled:opacity-60"
         >
           <span>{{ loadingMore ? 'Cargando noticias...' : 'Cargar más noticias' }}</span>
         </button>
@@ -246,9 +246,9 @@ const submitNewsletter = async () => {
 
     <!-- Sección de Suscripción / Boletín de Evolución TV -->
     <section class="max-w-7xl mx-auto px-4 pb-24 md:pb-16">
-      <div class="bg-gradient-to-r from-red-50 via-white to-neutral-50 dark:from-red-950/40 dark:via-neutral-900 dark:to-neutral-950 border border-red-200 dark:border-red-900/40 rounded-3xl p-8 md:p-12 flex flex-col lg:flex-row items-center justify-between gap-8 shadow-sm dark:shadow-2xl">
+      <div class="bg-gradient-to-r from-etv-orange-50 via-white to-etv-blue-50 dark:from-etv-orange-950/30 dark:via-neutral-900 dark:to-etv-blue-950/30 border border-etv-orange-200 dark:border-etv-blue-900/40 rounded-3xl p-8 md:p-12 flex flex-col lg:flex-row items-center justify-between gap-8 shadow-sm dark:shadow-2xl">
         <div class="space-y-3 max-w-xl">
-          <span class="text-red-600 dark:text-red-500 font-bold text-xs uppercase tracking-widest">
+          <span class="text-etv-blue-600 dark:text-etv-blue-400 font-bold text-xs uppercase tracking-widest">
             Comunidad Independiente
           </span>
           <h3 class="text-2xl md:text-3xl font-black text-neutral-900 dark:text-white">
@@ -268,12 +268,12 @@ const submitNewsletter = async () => {
               :disabled="newsletterStatus === 'loading'"
               placeholder="tu.correo@ejemplo.com"
               aria-label="Correo electrónico para el boletín"
-              class="bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white text-sm px-4 py-3 rounded-xl focus:border-red-500 min-w-[280px] shadow-inner disabled:opacity-60"
+              class="bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white text-sm px-4 py-3 rounded-xl focus:border-etv-blue-500 min-w-[280px] shadow-inner disabled:opacity-60"
             />
             <button
               type="submit"
               :disabled="newsletterStatus === 'loading'"
-              class="bg-red-600 hover:bg-red-500 text-white font-bold text-sm px-6 py-3 rounded-xl transition-colors cursor-pointer shadow-lg shadow-red-900/30 disabled:opacity-60 shrink-0"
+              class="bg-etv-orange-500 hover:bg-etv-orange-400 text-neutral-950 font-black text-sm px-6 py-3 rounded-xl transition-colors cursor-pointer shadow-lg shadow-etv-orange-900/20 disabled:opacity-60 shrink-0"
             >
               {{ newsletterStatus === 'loading' ? 'Registrando...' : 'Suscribirme' }}
             </button>
@@ -285,7 +285,7 @@ const submitNewsletter = async () => {
               'text-xs font-semibold px-1',
               newsletterStatus === 'success'
                 ? 'text-emerald-600 dark:text-emerald-400'
-                : 'text-red-600 dark:text-red-400'
+                : 'text-etv-orange-700 dark:text-etv-orange-400'
             ]"
             role="status"
           >

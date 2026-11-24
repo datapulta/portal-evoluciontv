@@ -4,6 +4,32 @@ Este documento constituye la memoria técnica y bitácora cronológica exhaustiv
 
 ---
 
+## Sesión 29 — 2026-11-24 · Identidad Cromática Oficial (Naranja `#FE9903` y Azul `#01ABE8`)
+
+**Rama activa**: `feat/setup-nuxt4-ghost-cms` (pendiente autorización de merge a `main` y deploy)
+**Autorización**: `plan_paleta_naranja_azul_logo.md` (Proceed button, §4.4 AGENTS.md)
+
+### Origen de datos
+Muestreo hexadecimal directo del logotipo oficial de Evolución TV (omitiendo el negro de fondo del JPG):
+- **Naranja ETV (`etv-orange-500`)**: `#FE9903` (`RGB 254, 153, 3`)
+- **Azul ETV (`etv-blue-500`)**: `#01ABE8` (`RGB 1, 171, 232`)
+
+### Cambios realizados (19 archivos)
+1. **`app/assets/css/main.css` y `public/favicon.svg`**:
+   - Definición de las escalas completas `etv-orange-*` y `etv-blue-*` en `@theme` de Tailwind CSS v4 (`selection:bg-etv-orange-500`, `outline-etv-blue-500`).
+   - Nuevo isotipo vectorial limpio en `public/favicon.svg` usando `#01ABE8` y `#FE9903` sin fondo negro opaco.
+2. **Componentes globales** (`HeaderNav.vue`, `FooterSection.vue`, `RadioPlayer.vue`, `NewsCard.vue`, `SocialLinks.vue`, `LiveStreamSection.vue`):
+   - Sustitución completa de la paleta roja anterior por Naranja `#FE9903` (marca, pestaña activa, botones principales con `text-neutral-950` accesible, hover editorial) y Azul `#01ABE8` (play, streaming en vivo, radio y focos).
+3. **Páginas y fallbacks** (`index.vue`, `radio.vue`, `en-vivo.vue`, `noticias/[slug].vue`, `categoria/[slug].vue`, `buscar.vue`, `quienes-somos.vue`, `codigo-etica.vue`, `privacidad.vue`, `categories.get.ts`, `useNews.ts`):
+   - Migración integral de gradientes, badges, barras de progreso, reglas CSS `.prose-news` y colores de respaldo.
+
+### Verificación
+- Escaneo de residuos rojos (`red-*`, `#dc2626`, `#ef4444`, `#991b1b`, `rgba(220`) → `ZERO_RED_LEFTOVERS`.
+- `npm run build` → ✅ 0 errores (`13.9s`), CSS compilado verificado con `#fe9903` y `#01abe8`.
+- Verificación HTTP local (`http://localhost:3005`) → ✅ `200 OK` en todas las rutas y `favicon.svg`.
+
+---
+
 ## Sesión 28 — 2026-11-24 · Optimización Integral UX y UI de la Plataforma
 
 **Rama activa**: `feat/setup-nuxt4-ghost-cms` (pendiente autorización de merge a `main` y deploy)

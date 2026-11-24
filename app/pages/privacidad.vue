@@ -16,7 +16,7 @@ useHead({
       <div class="flex items-center justify-between">
         <NuxtLink
           to="/"
-          class="inline-flex items-center gap-2 text-xs md:text-sm font-bold text-neutral-600 dark:text-neutral-400 hover:text-red-600 dark:hover:text-red-400 transition-colors"
+          class="inline-flex items-center gap-2 text-xs md:text-sm font-bold text-neutral-600 dark:text-neutral-400 hover:text-etv-blue-600 dark:hover:text-etv-blue-400 transition-colors"
         >
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
@@ -30,7 +30,7 @@ useHead({
 
       <article class="bg-white dark:bg-neutral-900/60 border border-neutral-200 dark:border-neutral-800 rounded-3xl p-8 md:p-10 shadow-sm space-y-6">
         <div class="space-y-3">
-          <span class="inline-flex items-center gap-2 bg-red-600/10 border border-red-500/30 text-red-600 dark:text-red-400 px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider">
+          <span class="inline-flex items-center gap-2 bg-etv-blue-500/10 border border-etv-blue-500/30 text-etv-blue-600 dark:text-etv-blue-400 px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider">
             Transparencia Digital
           </span>
           <h1 class="text-3xl md:text-4xl font-black text-neutral-900 dark:text-white tracking-tight">
@@ -59,7 +59,7 @@ useHead({
           <section class="space-y-2">
             <h2 class="text-lg font-black text-neutral-900 dark:text-white">3. Derechos y contacto</h2>
             <p>
-              Puedes solicitar en cualquier momento la baja de nuestro boletín o la eliminación de tu dirección de correo electrónico escribiendo a <a href="mailto:redaccion@evoluciontv.com" class="text-red-600 dark:text-red-400 font-semibold underline">redaccion@evoluciontv.com</a>.
+              Puedes solicitar en cualquier momento la baja de nuestro boletín o la eliminación de tu dirección de correo electrónico escribiendo a <a href="mailto:redaccion@evoluciontv.com" class="text-etv-blue-600 dark:text-etv-blue-400 font-semibold underline hover:text-etv-orange-600 dark:hover:text-etv-orange-400 transition-colors">redaccion@evoluciontv.com</a>.
             </p>
           </section>
         </div>

@@ -35,7 +35,7 @@ const principles = [
       <div class="flex items-center justify-between">
         <NuxtLink
           to="/"
-          class="inline-flex items-center gap-2 text-xs md:text-sm font-bold text-neutral-600 dark:text-neutral-400 hover:text-red-600 dark:hover:text-red-400 transition-colors"
+          class="inline-flex items-center gap-2 text-xs md:text-sm font-bold text-neutral-600 dark:text-neutral-400 hover:text-etv-blue-600 dark:hover:text-etv-blue-400 transition-colors"
         >
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
@@ -48,7 +48,7 @@ const principles = [
       </div>
 
       <header class="bg-white dark:bg-neutral-900/60 border border-neutral-200 dark:border-neutral-800 rounded-3xl p-8 md:p-10 shadow-sm space-y-4">
-        <span class="inline-flex items-center gap-2 bg-red-600/10 border border-red-500/30 text-red-600 dark:text-red-400 px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider">
+        <span class="inline-flex items-center gap-2 bg-etv-blue-500/10 border border-etv-blue-500/30 text-etv-blue-600 dark:text-etv-blue-400 px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider">
           Ética y Periodismo
         </span>
         <h1 class="text-3xl md:text-4xl font-black text-neutral-900 dark:text-white tracking-tight">
@@ -65,7 +65,7 @@ const principles = [
           :key="item.title"
           class="bg-white dark:bg-neutral-900/60 border border-neutral-200 dark:border-neutral-800 rounded-3xl p-6 md:p-7 shadow-sm space-y-2.5"
         >
-          <span class="text-xs font-mono font-bold text-red-600 dark:text-red-400">
+          <span class="text-xs font-mono font-bold text-etv-orange-600 dark:text-etv-orange-400">
             0{{ idx + 1 }}
           </span>
           <h2 class="text-lg font-black text-neutral-900 dark:text-white">
@@ -83,7 +83,7 @@ const principles = [
         </p>
         <a
           href="mailto:redaccion@evoluciontv.com?subject=Aclaraci%C3%B3n%20Editorial"
-          class="bg-red-600 hover:bg-red-500 text-white font-bold text-xs px-4 py-2.5 rounded-xl transition-colors shrink-0"
+          class="bg-etv-orange-500 hover:bg-etv-orange-400 text-neutral-950 font-black text-xs px-4 py-2.5 rounded-xl transition-colors shrink-0"
         >
           Escribir a Redacción
         </a>

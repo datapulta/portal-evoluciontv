@@ -268,7 +268,7 @@ const formatDate = (dateStr?: string) => {
     <!-- Barra de progreso de lectura fija en borde superior -->
     <div
       aria-hidden="true"
-      class="fixed top-0 left-0 h-1 bg-red-600 z-[60] transition-[width] duration-75"
+      class="fixed top-0 left-0 h-1 bg-gradient-to-r from-etv-blue-500 to-etv-orange-500 z-[60] transition-[width] duration-75"
       :style="{ width: `${readingProgress}%` }"
     ></div>
 
@@ -278,7 +278,7 @@ const formatDate = (dateStr?: string) => {
         <div class="flex items-center gap-2 text-xs md:text-sm">
           <NuxtLink
             to="/"
-            class="inline-flex items-center gap-1.5 font-bold text-neutral-600 dark:text-neutral-400 hover:text-red-600 dark:hover:text-red-400 transition-colors"
+            class="inline-flex items-center gap-1.5 font-bold text-neutral-600 dark:text-neutral-400 hover:text-etv-blue-600 dark:hover:text-etv-blue-400 transition-colors"
           >
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
@@ -289,7 +289,7 @@ const formatDate = (dateStr?: string) => {
           <NuxtLink
             v-if="article?.primary_tag"
             :to="`/categoria/${article.primary_tag.slug}`"
-            class="font-semibold text-neutral-500 dark:text-neutral-400 hover:text-red-600 dark:hover:text-red-400 transition-colors truncate"
+            class="font-semibold text-neutral-500 dark:text-neutral-400 hover:text-etv-orange-600 dark:hover:text-etv-orange-400 transition-colors truncate"
           >
             {{ article.primary_tag.name }}
           </NuxtLink>
@@ -298,7 +298,7 @@ const formatDate = (dateStr?: string) => {
         <div v-if="article?.primary_tag" class="flex items-center gap-2 shrink-0">
           <span
             class="text-[11px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full text-white shadow-sm"
-            :style="{ backgroundColor: article.primary_tag.color || '#dc2626' }"
+            :style="{ backgroundColor: article.primary_tag.color || '#01abe8' }"
           >
             {{ article.primary_tag.name }}
           </span>
@@ -346,7 +346,7 @@ const formatDate = (dateStr?: string) => {
               :alt="article.primary_author.name"
               class="w-10 h-10 rounded-full object-cover border border-neutral-300 dark:border-neutral-700"
             />
-            <div v-else class="w-10 h-10 rounded-full bg-red-100 dark:bg-red-950 border border-red-300 dark:border-red-800 flex items-center justify-center text-red-700 dark:text-red-300 font-bold text-sm">
+            <div v-else class="w-10 h-10 rounded-full bg-etv-orange-100 dark:bg-etv-orange-950 border border-etv-orange-300 dark:border-etv-orange-800 flex items-center justify-center text-etv-orange-700 dark:text-etv-orange-300 font-bold text-sm">
               {{ (article.primary_author?.name || 'ETV')[0] }}
             </div>
             <div>
@@ -443,7 +443,7 @@ const formatDate = (dateStr?: string) => {
             :href="chatGptUrl"
             target="_blank"
             rel="noopener noreferrer"
-            class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-900 dark:hover:bg-neutral-800 border border-neutral-200 dark:border-neutral-800 text-neutral-700 dark:text-neutral-300 hover:text-red-600 dark:hover:text-red-400 transition-colors"
+            class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-900 dark:hover:bg-neutral-800 border border-neutral-200 dark:border-neutral-800 text-neutral-700 dark:text-neutral-300 hover:text-etv-blue-600 dark:hover:text-etv-blue-400 transition-colors"
           >
             Resumir en ChatGPT
           </a>
@@ -451,7 +451,7 @@ const formatDate = (dateStr?: string) => {
             :href="perplexityUrl"
             target="_blank"
             rel="noopener noreferrer"
-            class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-900 dark:hover:bg-neutral-800 border border-neutral-200 dark:border-neutral-800 text-neutral-700 dark:text-neutral-300 hover:text-red-600 dark:hover:text-red-400 transition-colors"
+            class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-900 dark:hover:bg-neutral-800 border border-neutral-200 dark:border-neutral-800 text-neutral-700 dark:text-neutral-300 hover:text-etv-blue-600 dark:hover:text-etv-blue-400 transition-colors"
           >
             Consultar en Perplexity
           </a>
@@ -467,15 +467,15 @@ const formatDate = (dateStr?: string) => {
         <NuxtLink
           v-if="prevArticle"
           :to="`/noticias/${prevArticle.slug}`"
-          class="group p-5 rounded-2xl bg-white dark:bg-neutral-900/60 border border-neutral-200 dark:border-neutral-800 hover:border-red-500/50 dark:hover:border-red-500/50 transition-all shadow-sm flex flex-col gap-1.5"
+          class="group p-5 rounded-2xl bg-white dark:bg-neutral-900/60 border border-neutral-200 dark:border-neutral-800 hover:border-etv-blue-500/50 dark:hover:border-etv-blue-500/50 transition-all shadow-sm flex flex-col gap-1.5"
         >
-          <span class="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400 group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors">
+          <span class="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400 group-hover:text-etv-blue-600 dark:group-hover:text-etv-blue-400 transition-colors">
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
             </svg>
             Nota anterior
           </span>
-          <span class="text-sm md:text-base font-bold text-neutral-900 dark:text-white group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors line-clamp-2">
+          <span class="text-sm md:text-base font-bold text-neutral-900 dark:text-white group-hover:text-etv-orange-600 dark:group-hover:text-etv-orange-400 transition-colors line-clamp-2">
             {{ prevArticle.title }}
           </span>
         </NuxtLink>
@@ -484,15 +484,15 @@ const formatDate = (dateStr?: string) => {
         <NuxtLink
           v-if="nextArticle"
           :to="`/noticias/${nextArticle.slug}`"
-          class="group p-5 rounded-2xl bg-white dark:bg-neutral-900/60 border border-neutral-200 dark:border-neutral-800 hover:border-red-500/50 dark:hover:border-red-500/50 transition-all shadow-sm flex flex-col items-end text-right gap-1.5"
+          class="group p-5 rounded-2xl bg-white dark:bg-neutral-900/60 border border-neutral-200 dark:border-neutral-800 hover:border-etv-blue-500/50 dark:hover:border-etv-blue-500/50 transition-all shadow-sm flex flex-col items-end text-right gap-1.5"
         >
-          <span class="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400 group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors">
+          <span class="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400 group-hover:text-etv-blue-600 dark:group-hover:text-etv-blue-400 transition-colors">
             Nota siguiente
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
             </svg>
           </span>
-          <span class="text-sm md:text-base font-bold text-neutral-900 dark:text-white group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors line-clamp-2">
+          <span class="text-sm md:text-base font-bold text-neutral-900 dark:text-white group-hover:text-etv-orange-600 dark:group-hover:text-etv-orange-400 transition-colors line-clamp-2">
             {{ nextArticle.title }}
           </span>
         </NuxtLink>
@@ -501,7 +501,7 @@ const formatDate = (dateStr?: string) => {
 
     <!-- Estado si no existe el artículo -->
     <div v-else-if="!pending" class="max-w-2xl mx-auto px-4 py-24 text-center space-y-6">
-      <div class="w-16 h-16 mx-auto rounded-2xl bg-neutral-100 dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-800 flex items-center justify-center text-red-500">
+      <div class="w-16 h-16 mx-auto rounded-2xl bg-neutral-100 dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-800 flex items-center justify-center text-etv-blue-500">
         <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
@@ -512,7 +512,7 @@ const formatDate = (dateStr?: string) => {
       </p>
       <NuxtLink
         to="/"
-        class="inline-block bg-red-600 hover:bg-red-500 text-white font-bold px-6 py-2.5 rounded-xl transition-colors text-sm shadow-md"
+        class="inline-block bg-etv-orange-500 hover:bg-etv-orange-400 text-neutral-950 font-black px-6 py-2.5 rounded-xl transition-colors text-sm shadow-md"
       >
         Regresar al Inicio
       </NuxtLink>
@@ -522,7 +522,7 @@ const formatDate = (dateStr?: string) => {
     <section v-if="relatedArticles.length > 0" class="max-w-7xl mx-auto px-4 py-16 border-t border-neutral-200 dark:border-neutral-800/80">
       <div class="flex items-center justify-between gap-4 mb-8">
         <div class="flex items-center gap-2">
-          <span class="w-2.5 h-6 bg-red-600 rounded-sm"></span>
+          <span class="w-2.5 h-6 bg-gradient-to-b from-etv-orange-500 to-etv-blue-500 rounded-sm"></span>
           <h2 class="text-xl md:text-2xl font-black text-neutral-900 dark:text-white uppercase tracking-tight">
             Más Noticias y Coberturas
           </h2>
@@ -537,7 +537,7 @@ const formatDate = (dateStr?: string) => {
             :class="[
               'p-2.5 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 text-neutral-700 dark:text-neutral-300 transition-colors shadow-sm',
               canScrollPrev
-                ? 'hover:text-red-600 dark:hover:text-red-400 hover:border-red-500/40 cursor-pointer'
+                ? 'hover:text-etv-blue-600 dark:hover:text-etv-blue-400 hover:border-etv-blue-500/40 cursor-pointer'
                 : 'opacity-40 cursor-not-allowed'
             ]"
           >
@@ -553,7 +553,7 @@ const formatDate = (dateStr?: string) => {
             :class="[
               'p-2.5 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 text-neutral-700 dark:text-neutral-300 transition-colors shadow-sm',
               canScrollNext
-                ? 'hover:text-red-600 dark:hover:text-red-400 hover:border-red-500/40 cursor-pointer'
+                ? 'hover:text-etv-blue-600 dark:hover:text-etv-blue-400 hover:border-etv-blue-500/40 cursor-pointer'
                 : 'opacity-40 cursor-not-allowed'
             ]"
           >
@@ -593,7 +593,7 @@ const formatDate = (dateStr?: string) => {
         @click="scrollToTop"
         aria-label="Volver arriba"
         title="Volver arriba"
-        class="fixed bottom-4 right-4 z-40 w-10 h-10 rounded-full bg-white/90 dark:bg-neutral-900/90 backdrop-blur-md border border-neutral-300 dark:border-neutral-700 text-neutral-700 dark:text-neutral-200 hover:text-red-600 dark:hover:text-red-400 hover:border-red-500 shadow-lg flex items-center justify-center transition-colors cursor-pointer"
+        class="fixed bottom-4 right-4 z-40 w-10 h-10 rounded-full bg-white/90 dark:bg-neutral-900/90 backdrop-blur-md border border-neutral-300 dark:border-neutral-700 text-neutral-700 dark:text-neutral-200 hover:text-etv-orange-600 dark:hover:text-etv-orange-400 hover:border-etv-orange-500 shadow-lg flex items-center justify-center transition-colors cursor-pointer"
       >
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 15l7-7 7 7" />
@@ -628,7 +628,7 @@ const formatDate = (dateStr?: string) => {
   margin-top: 2.5rem;
   margin-bottom: 1rem;
   letter-spacing: -0.025em;
-  border-left: 3px solid #dc2626;
+  border-left: 3px solid #fe9903;
   padding-left: 0.75rem;
 }
 :root:not(.dark) .prose-news h2 {
@@ -664,7 +664,7 @@ const formatDate = (dateStr?: string) => {
 }
 
 .prose-news blockquote {
-  border-left: 4px solid #dc2626;
+  border-left: 4px solid #01abe8;
   padding: 1.25rem 1.5rem;
   margin: 2rem 0;
   border-radius: 0 1rem 1rem 0;
@@ -672,21 +672,24 @@ const formatDate = (dateStr?: string) => {
   font-size: 1.15rem;
 }
 :root:not(.dark) .prose-news blockquote {
-  background-color: rgba(220, 38, 38, 0.04);
+  background-color: rgba(1, 171, 232, 0.05);
   color: #262626;
 }
 :root.dark .prose-news blockquote {
-  background-color: rgba(220, 38, 38, 0.08);
+  background-color: rgba(1, 171, 232, 0.1);
   color: #e5e5e5;
 }
 
 .prose-news a {
-  color: #dc2626;
+  color: #0086bd;
   text-decoration: underline;
   text-underline-offset: 4px;
 }
+:root.dark .prose-news a {
+  color: #33c2fb;
+}
 .prose-news a:hover {
-  color: #ef4444;
+  color: #fe9903;
 }
 
 .prose-news img {

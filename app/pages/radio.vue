@@ -34,10 +34,10 @@ const {
 
 <template>
   <div class="relative py-6 md:py-10 px-4 transition-colors duration-200 overflow-hidden">
-    <!-- Resplandor ambiental sutil para evitar vacío plano en desktop -->
+    <!-- Resplandor ambiental sutil dual Azul y Naranja para evitar vacío plano en desktop -->
     <div
       aria-hidden="true"
-      class="pointer-events-none absolute inset-x-0 top-0 h-72 bg-[radial-gradient(ellipse_at_top,rgba(220,38,38,0.12),transparent_70%)] dark:bg-[radial-gradient(ellipse_at_top,rgba(220,38,38,0.16),transparent_70%)]"
+      class="pointer-events-none absolute inset-x-0 top-0 h-72 bg-[radial-gradient(ellipse_at_top,rgba(1,171,232,0.14),rgba(254,153,3,0.06)_50%,transparent_75%)] dark:bg-[radial-gradient(ellipse_at_top,rgba(1,171,232,0.16),rgba(254,153,3,0.08)_50%,transparent_75%)]"
     ></div>
 
     <div class="relative max-w-3xl w-full mx-auto">
@@ -63,8 +63,8 @@ const {
               <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
               {{ listenersCount }} {{ listenersCount === 1 ? 'oyente' : 'oyentes' }}
             </span>
-            <span class="inline-flex items-center gap-2 bg-red-600/10 border border-red-500/30 text-red-600 dark:text-red-400 font-bold px-3 py-1 rounded-full text-xs">
-              <span class="w-2 h-2 rounded-full bg-red-600 animate-ping"></span>
+            <span class="inline-flex items-center gap-2 bg-etv-blue-500/10 border border-etv-blue-500/30 text-etv-blue-600 dark:text-etv-blue-400 font-bold px-3 py-1 rounded-full text-xs">
+              <span class="w-2 h-2 rounded-full bg-etv-blue-500 animate-ping"></span>
               RADIO EN VIVO · 24/7
             </span>
           </div>
@@ -78,12 +78,12 @@ const {
               <!-- Ondas concéntricas animadas cuando está transmitiendo -->
               <span
                 v-if="isPlaying"
-                class="absolute w-40 h-40 rounded-full border-2 border-red-500/30 animate-ping"
+                class="absolute w-40 h-40 rounded-full border-2 border-etv-blue-500/35 animate-ping"
                 style="animation-duration: 2.2s;"
               ></span>
               <span
                 v-if="isPlaying"
-                class="absolute w-36 h-36 rounded-full bg-red-600/10 animate-pulse"
+                class="absolute w-36 h-36 rounded-full bg-etv-blue-500/10 animate-pulse"
               ></span>
               <span
                 v-else
@@ -94,7 +94,7 @@ const {
                 type="button"
                 @click="togglePlay"
                 :aria-label="isPlaying ? 'Pausar Evolución Radio' : 'Reproducir Evolución Radio'"
-                class="relative z-10 overflow-hidden w-28 h-28 sm:w-32 sm:h-32 rounded-full bg-gradient-to-br from-red-500 to-red-700 hover:from-red-500 hover:to-red-600 text-white flex items-center justify-center shadow-2xl shadow-red-900/40 hover:scale-105 active:scale-95 transition-all cursor-pointer ring-8 ring-red-600/15"
+                class="relative z-10 overflow-hidden w-28 h-28 sm:w-32 sm:h-32 rounded-full bg-gradient-to-br from-etv-blue-500 to-etv-orange-500 hover:brightness-110 text-white flex items-center justify-center shadow-2xl shadow-etv-blue-900/35 hover:scale-105 active:scale-95 transition-all cursor-pointer ring-8 ring-etv-blue-500/15"
               >
                 <img
                   v-if="currentArt"
@@ -119,11 +119,11 @@ const {
               :class="[
                 'inline-flex items-center gap-2 text-xs font-bold px-3 py-1 rounded-full border transition-colors',
                 isPlaying
-                  ? 'bg-red-50 dark:bg-red-950/40 border-red-200 dark:border-red-900/60 text-red-600 dark:text-red-400'
+                  ? 'bg-etv-orange-50 dark:bg-etv-orange-950/40 border-etv-orange-200 dark:border-etv-orange-900/60 text-etv-orange-700 dark:text-etv-orange-400'
                   : 'bg-neutral-100 dark:bg-neutral-800/70 border-neutral-200 dark:border-neutral-700 text-neutral-600 dark:text-neutral-300'
               ]"
             >
-              <span :class="['w-2 h-2 rounded-full', isPlaying ? 'bg-red-600 animate-pulse' : 'bg-neutral-400']"></span>
+              <span :class="['w-2 h-2 rounded-full', isPlaying ? 'bg-etv-orange-500 animate-pulse' : 'bg-neutral-400']"></span>
               {{ isLoading ? 'Conectando...' : isPlaying ? 'Transmisión Activa' : 'Toca para escuchar' }}
             </span>
           </div>
@@ -132,7 +132,7 @@ const {
           <div class="flex-1 min-w-0 w-full space-y-4">
             <div class="space-y-1.5 text-center md:text-left">
               <h1 class="text-3xl sm:text-4xl font-black tracking-tight text-neutral-900 dark:text-white">
-                Evolución <span class="text-red-600">Radio</span>
+                Evolución <span class="text-etv-orange-500">Radio</span>
               </h1>
               <p class="text-sm text-neutral-600 dark:text-neutral-300 leading-relaxed">
                 Música independiente, cultura alternativa y programación continua. La señal sigue activa aunque navegues por nuestras noticias.
@@ -149,7 +149,7 @@ const {
                     :alt="currentTitle || currentTrack"
                     class="w-full h-full object-cover"
                   />
-                  <svg v-else class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg v-else class="w-5 h-5 text-etv-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
                   </svg>
                 </div>
@@ -167,7 +167,7 @@ const {
                 </div>
               </div>
 
-              <span class="text-[11px] font-mono font-bold px-2.5 py-1 rounded-lg bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 text-neutral-700 dark:text-neutral-300 shrink-0">
+              <span class="text-[11px] font-mono font-bold px-2.5 py-1 rounded-lg bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 text-etv-blue-600 dark:text-etv-blue-400 shrink-0">
                 AUDIO HD
               </span>
             </div>
@@ -177,7 +177,7 @@ const {
               <SocialLinks />
               <NuxtLink
                 to="/en-vivo"
-                class="text-xs font-bold text-red-600 dark:text-red-400 hover:underline"
+                class="text-xs font-bold text-etv-blue-600 dark:text-etv-blue-400 hover:underline"
               >
                 Ir a Señal en Vivo (TV) →
               </NuxtLink>

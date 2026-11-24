@@ -109,13 +109,13 @@ const isActiveRoute = (to: string) => {
     <div class="border-b border-neutral-200/80 dark:border-neutral-800/60 bg-neutral-100/80 dark:bg-neutral-900/60 text-xs py-1.5 px-4 transition-colors">
       <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
         <div class="flex items-center gap-3 overflow-hidden">
-          <span class="bg-red-600 text-white font-bold px-2 py-0.5 rounded text-[10px] tracking-wider uppercase shrink-0 animate-pulse">
+          <span class="bg-etv-orange-500 text-neutral-950 font-black px-2 py-0.5 rounded text-[10px] tracking-wider uppercase shrink-0 animate-pulse">
             Última Hora
           </span>
           <NuxtLink
             v-if="breakingNews"
             :to="`/noticias/${breakingNews.slug}`"
-            class="text-neutral-700 dark:text-neutral-300 hover:text-red-600 dark:hover:text-red-400 truncate font-medium transition-colors"
+            class="text-neutral-700 dark:text-neutral-300 hover:text-etv-blue-600 dark:hover:text-etv-blue-400 truncate font-medium transition-colors"
             :title="breakingNews.title"
           >
             {{ breakingNews.title }}
@@ -137,17 +137,17 @@ const isActiveRoute = (to: string) => {
     <div class="max-w-7xl mx-auto px-4 py-3.5 flex items-center justify-between gap-3">
       <!-- Logo Evolución TV -->
       <NuxtLink to="/" class="flex items-center gap-3 group shrink-0">
-        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-red-600 to-red-800 flex items-center justify-center shadow-md shadow-red-900/30 group-hover:scale-105 transition-transform">
-          <svg class="w-6 h-6 text-white" viewBox="0 0 24 24" fill="currentColor">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-etv-blue-500 to-etv-blue-600 flex items-center justify-center shadow-md shadow-etv-blue-900/25 group-hover:scale-105 transition-transform ring-2 ring-etv-orange-500/80">
+          <svg class="w-6 h-6 text-etv-orange-400" viewBox="0 0 24 24" fill="currentColor">
             <path d="M8 5v14l11-7z" />
           </svg>
         </div>
         <div class="flex flex-col">
           <div class="flex items-center gap-2">
-            <span class="text-2xl font-black tracking-tight text-neutral-900 dark:text-white group-hover:text-red-600 dark:group-hover:text-red-500 transition-colors">
+            <span class="text-2xl font-black tracking-tight text-neutral-900 dark:text-white group-hover:text-etv-orange-600 dark:group-hover:text-etv-orange-400 transition-colors">
               EVOLUCIÓN
             </span>
-            <span class="bg-red-600 text-white text-xs font-black px-1.5 py-0.5 rounded">
+            <span class="bg-etv-orange-500 text-neutral-950 text-xs font-black px-1.5 py-0.5 rounded">
               TV
             </span>
           </div>
@@ -181,10 +181,10 @@ const isActiveRoute = (to: string) => {
           :aria-label="isDark ? 'Cambiar a Modo Claro' : 'Cambiar a Modo Oscuro'"
           class="p-2 rounded-xl text-neutral-600 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-white bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-900 dark:hover:bg-neutral-800 border border-neutral-200 dark:border-neutral-800 transition-all cursor-pointer shadow-sm"
         >
-          <svg v-if="isDark" class="w-4 h-4 text-amber-400 transition-transform rotate-0 hover:rotate-45" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg v-if="isDark" class="w-4 h-4 text-etv-orange-400 transition-transform rotate-0 hover:rotate-45" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
           </svg>
-          <svg v-else class="w-4 h-4 text-neutral-700 transition-transform -rotate-12 hover:rotate-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg v-else class="w-4 h-4 text-etv-blue-600 transition-transform -rotate-12 hover:rotate-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
           </svg>
         </button>
@@ -192,11 +192,11 @@ const isActiveRoute = (to: string) => {
         <!-- Botón Transmisión en Vivo -->
         <NuxtLink
           to="/en-vivo"
-          class="hidden md:flex items-center gap-2.5 bg-red-600/10 hover:bg-red-600/20 text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 border border-red-500/30 px-3.5 py-2 rounded-full text-xs font-bold transition-all shadow-sm"
+          class="hidden md:flex items-center gap-2.5 bg-etv-blue-500/10 hover:bg-etv-blue-500/20 text-etv-blue-600 dark:text-etv-blue-400 hover:text-etv-blue-700 dark:hover:text-etv-blue-300 border border-etv-blue-500/35 px-3.5 py-2 rounded-full text-xs font-bold transition-all shadow-sm"
         >
           <span class="relative flex h-2.5 w-2.5">
-            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-            <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500"></span>
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-etv-blue-400 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-etv-blue-500"></span>
           </span>
           SEÑAL EN VIVO
         </NuxtLink>
@@ -234,11 +234,11 @@ const isActiveRoute = (to: string) => {
             v-model="searchQuery"
             type="search"
             placeholder="Buscar noticias, reportajes, artistas o temas..."
-            class="flex-1 bg-white dark:bg-neutral-950 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white text-sm px-4 py-2 rounded-xl focus:border-red-500"
+            class="flex-1 bg-white dark:bg-neutral-950 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white text-sm px-4 py-2 rounded-xl focus:border-etv-blue-500"
           />
           <button
             type="submit"
-            class="bg-red-600 hover:bg-red-500 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition-colors cursor-pointer shrink-0"
+            class="bg-etv-orange-500 hover:bg-etv-orange-400 text-neutral-950 text-xs font-black px-4 py-2.5 rounded-xl transition-colors cursor-pointer shrink-0"
           >
             Buscar
           </button>
@@ -264,13 +264,13 @@ const isActiveRoute = (to: string) => {
           :class="[
             'py-3 font-semibold transition-colors border-b-2 whitespace-nowrap flex items-center gap-1.5',
             isActiveRoute(cat.to)
-              ? 'text-red-600 dark:text-red-400 border-red-600 font-bold'
+              ? 'text-etv-orange-600 dark:text-etv-orange-400 border-etv-orange-500 font-bold'
               : cat.highlight
-                ? 'text-red-600/85 dark:text-red-400/90 border-transparent hover:border-red-500/60 hover:text-red-600 dark:hover:text-red-300'
-                : 'text-neutral-700 dark:text-neutral-300 hover:text-neutral-950 dark:hover:text-white border-transparent hover:border-neutral-400 dark:hover:border-neutral-500'
+                ? 'text-etv-blue-600 dark:text-etv-blue-400 border-transparent hover:border-etv-blue-500/60 hover:text-etv-blue-700 dark:hover:text-etv-blue-300'
+                : 'text-neutral-700 dark:text-neutral-300 hover:text-neutral-950 dark:hover:text-white border-transparent hover:border-etv-blue-400 dark:hover:border-etv-blue-500'
           ]"
         >
-          <span v-if="cat.highlight" class="w-1.5 h-1.5 rounded-full bg-red-600 animate-pulse"></span>
+          <span v-if="cat.highlight" class="w-1.5 h-1.5 rounded-full bg-etv-blue-500 animate-pulse"></span>
           {{ cat.name }}
         </NuxtLink>
       </div>
@@ -305,8 +305,8 @@ const isActiveRoute = (to: string) => {
           :class="[
             'block py-2 px-2 rounded-lg font-medium transition-colors',
             isActiveRoute(cat.to)
-              ? 'bg-red-50 dark:bg-red-950/40 text-red-600 dark:text-red-400 font-bold'
-              : 'text-neutral-800 dark:text-neutral-200 hover:text-red-600 dark:hover:text-red-400'
+              ? 'bg-etv-orange-50 dark:bg-etv-orange-950/40 text-etv-orange-600 dark:text-etv-orange-400 font-bold'
+              : 'text-neutral-800 dark:text-neutral-200 hover:text-etv-orange-600 dark:hover:text-etv-orange-400'
           ]"
         >
           {{ cat.name }}

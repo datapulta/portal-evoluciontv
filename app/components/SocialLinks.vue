@@ -12,7 +12,7 @@ const socialNetworks = [
   {
     name: 'YouTube',
     url: 'https://www.youtube.com/@EvolucionTV',
-    hoverClass: 'hover:text-red-600 dark:hover:text-red-400 hover:border-red-500/40'
+    hoverClass: 'hover:text-etv-orange-600 dark:hover:text-etv-orange-400 hover:border-etv-orange-500/40'
   },
   {
     name: 'X',

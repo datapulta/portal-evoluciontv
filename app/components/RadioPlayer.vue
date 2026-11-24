@@ -29,13 +29,13 @@ const onVolumeInput = (e: Event) => {
     <!-- Modo Mini-Dock compacto (con Play/Pause directo y expandir) -->
     <div
       v-if="isMinimized"
-      class="flex items-center gap-2.5 bg-white/95 dark:bg-neutral-950/95 backdrop-blur-md border-2 border-red-600/80 text-neutral-900 dark:text-white pl-2 pr-3 py-1.5 rounded-full shadow-2xl transition-all"
+      class="flex items-center gap-2.5 bg-white/95 dark:bg-neutral-950/95 backdrop-blur-md border-2 border-etv-blue-500/80 text-neutral-900 dark:text-white pl-2 pr-3 py-1.5 rounded-full shadow-2xl transition-all"
     >
       <button
         type="button"
         @click="togglePlay"
         :aria-label="isPlaying ? 'Pausar Evolución Radio' : 'Reproducir Evolución Radio'"
-        class="w-8 h-8 rounded-full bg-red-600 hover:bg-red-500 text-white flex items-center justify-center shrink-0 shadow-sm cursor-pointer transition-transform active:scale-95"
+        class="w-8 h-8 rounded-full bg-gradient-to-br from-etv-blue-500 to-etv-orange-500 hover:brightness-110 text-white flex items-center justify-center shrink-0 shadow-sm cursor-pointer transition-transform active:scale-95"
       >
         <svg v-if="isLoading" class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
           <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
@@ -56,13 +56,13 @@ const onVolumeInput = (e: Event) => {
         title="Expandir reproductor"
       >
         <span class="relative flex h-2 w-2 shrink-0" v-if="isPlaying">
-          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-          <span class="relative inline-flex rounded-full h-2 w-2 bg-red-600"></span>
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-etv-blue-400 opacity-75"></span>
+          <span class="relative inline-flex rounded-full h-2 w-2 bg-etv-blue-500"></span>
         </span>
-        <span class="text-xs font-black tracking-tight group-hover:text-red-600 transition-colors">
-          EVOLUCIÓN <span class="text-red-600 font-bold">radio</span>
+        <span class="text-xs font-black tracking-tight group-hover:text-etv-orange-600 dark:group-hover:text-etv-orange-400 transition-colors">
+          EVOLUCIÓN <span class="text-etv-blue-600 dark:text-etv-blue-400 font-bold">radio</span>
         </span>
-        <svg class="w-3.5 h-3.5 text-neutral-400 group-hover:text-red-600 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg class="w-3.5 h-3.5 text-neutral-400 group-hover:text-etv-blue-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" />
         </svg>
       </button>
@@ -71,16 +71,16 @@ const onVolumeInput = (e: Event) => {
     <!-- Vista expandida estilo reproductor flotante -->
     <div
       v-else
-      class="w-[320px] sm:w-[340px] bg-white/95 dark:bg-neutral-950/95 backdrop-blur-md border-2 border-red-600/80 rounded-2xl p-3 shadow-2xl flex flex-col gap-2 transition-colors"
+      class="w-[320px] sm:w-[340px] bg-white/95 dark:bg-neutral-950/95 backdrop-blur-md border-2 border-etv-blue-500/80 rounded-2xl p-3 shadow-2xl flex flex-col gap-2 transition-colors"
     >
       <!-- Fila principal: play + info + acciones -->
       <div class="flex items-center gap-3">
-        <!-- Botón circular rojo Play / Pause con carátula de fondo opcional -->
+        <!-- Botón circular Play / Pause con gradiente del logo y carátula opcional -->
         <button
           type="button"
           @click="togglePlay"
           :aria-label="isPlaying ? 'Pausar Evolución Radio' : 'Reproducir Evolución Radio'"
-          class="relative overflow-hidden w-12 h-12 rounded-full bg-gradient-to-br from-red-500 to-red-700 hover:from-red-500 hover:to-red-600 text-white flex items-center justify-center shrink-0 shadow-lg shadow-red-900/30 hover:scale-105 active:scale-95 transition-all cursor-pointer ring-4 ring-red-600/15"
+          class="relative overflow-hidden w-12 h-12 rounded-full bg-gradient-to-br from-etv-blue-500 to-etv-orange-500 hover:brightness-110 text-white flex items-center justify-center shrink-0 shadow-lg shadow-etv-blue-900/25 hover:scale-105 active:scale-95 transition-all cursor-pointer ring-4 ring-etv-blue-500/20"
         >
           <img
             v-if="currentArt"
@@ -103,10 +103,10 @@ const onVolumeInput = (e: Event) => {
         <!-- Título y estado -->
         <div class="flex-1 min-w-0">
           <NuxtLink to="/radio" class="flex flex-col leading-none group w-fit" title="Ir a página de Evolución Radio">
-            <span class="text-base font-black tracking-tight text-red-600 group-hover:underline">
+            <span class="text-base font-black tracking-tight text-etv-orange-600 dark:text-etv-orange-500 group-hover:underline">
               EVOLUCIÓN
             </span>
-            <span class="text-xs font-bold tracking-wide text-neutral-900 dark:text-white -mt-0.5">
+            <span class="text-xs font-bold tracking-wide text-etv-blue-600 dark:text-etv-blue-400 -mt-0.5">
               radio
             </span>
           </NuxtLink>
@@ -116,7 +116,7 @@ const onVolumeInput = (e: Event) => {
           >
             <span
               v-if="isPlaying"
-              class="w-1.5 h-1.5 rounded-full bg-red-600 animate-pulse shrink-0"
+              class="w-1.5 h-1.5 rounded-full bg-etv-blue-500 animate-pulse shrink-0"
             ></span>
             <span class="truncate">{{ isPlaying ? `En vivo · ${currentTrack}` : currentTrack }}</span>
           </p>
@@ -127,7 +127,7 @@ const onVolumeInput = (e: Event) => {
           <NuxtLink
             to="/radio"
             title="Abrir página dedicada de Evolución Radio"
-            class="inline-flex items-center gap-1 bg-red-600/10 hover:bg-red-600/20 text-red-600 dark:text-red-400 border border-red-500/30 px-2 py-0.5 rounded-lg text-[10px] font-bold transition-colors"
+            class="inline-flex items-center gap-1 bg-etv-blue-500/10 hover:bg-etv-blue-500/20 text-etv-blue-600 dark:text-etv-blue-400 border border-etv-blue-500/30 px-2 py-0.5 rounded-lg text-[10px] font-bold transition-colors"
           >
             Ir a Radio
             <svg class="w-2.5 h-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -139,7 +139,7 @@ const onVolumeInput = (e: Event) => {
             @click="toggleMinimize"
             aria-label="Minimizar reproductor de radio"
             title="Minimizar"
-            class="p-1 rounded-lg text-red-600/80 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/40 transition-colors cursor-pointer"
+            class="p-1 rounded-lg text-etv-blue-600 dark:text-etv-blue-400 hover:bg-etv-blue-50 dark:hover:bg-etv-blue-950/40 transition-colors cursor-pointer"
           >
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 14h6v6M20 10h-6V4M14 10l7-7M3 21l7-7" />
@@ -154,7 +154,7 @@ const onVolumeInput = (e: Event) => {
           type="button"
           @click="toggleMute"
           :aria-label="isMuted ? 'Activar sonido' : 'Silenciar radio'"
-          class="text-neutral-700 dark:text-neutral-300 hover:text-red-600 dark:hover:text-red-400 transition-colors cursor-pointer shrink-0"
+          class="text-neutral-700 dark:text-neutral-300 hover:text-etv-orange-600 dark:hover:text-etv-orange-400 transition-colors cursor-pointer shrink-0"
         >
           <svg v-if="isMuted || volume === 0" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
@@ -171,7 +171,7 @@ const onVolumeInput = (e: Event) => {
           :value="isMuted ? 0 : volume"
           @input="onVolumeInput"
           aria-label="Volumen de Evolución Radio"
-          class="w-full h-1.5 bg-neutral-200 dark:bg-neutral-800 rounded-lg appearance-none cursor-pointer accent-red-600"
+          class="w-full h-1.5 bg-neutral-200 dark:bg-neutral-800 rounded-lg appearance-none cursor-pointer accent-etv-orange-500"
         />
       </div>
     </div>

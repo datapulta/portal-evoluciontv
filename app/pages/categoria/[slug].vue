@@ -84,7 +84,7 @@ useHead({
       <div class="mb-8 flex items-center justify-between gap-4">
         <NuxtLink
           to="/"
-          class="inline-flex items-center gap-2 text-xs md:text-sm font-bold text-neutral-600 dark:text-neutral-400 hover:text-red-600 dark:hover:text-red-400 transition-colors"
+          class="inline-flex items-center gap-2 text-xs md:text-sm font-bold text-neutral-600 dark:text-neutral-400 hover:text-etv-blue-600 dark:hover:text-etv-blue-400 transition-colors"
         >
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
@@ -94,7 +94,7 @@ useHead({
 
         <NuxtLink
           to="/buscar"
-          class="text-xs text-neutral-500 dark:text-neutral-400 hover:text-red-600 dark:hover:text-red-400 font-medium transition-colors"
+          class="text-xs text-neutral-500 dark:text-neutral-400 hover:text-etv-orange-600 dark:hover:text-etv-orange-400 font-medium transition-colors"
         >
           Buscar en el archivo →
         </NuxtLink>
@@ -105,11 +105,11 @@ useHead({
         <div class="flex items-center gap-3 mb-4">
           <span
             class="w-3.5 h-3.5 rounded-full"
-            :style="{ backgroundColor: currentCategory?.color || '#dc2626' }"
+            :style="{ backgroundColor: currentCategory?.color || '#fe9903' }"
           ></span>
           <span
             class="text-xs font-black uppercase tracking-widest px-3 py-1 rounded-full text-white shadow-sm"
-            :style="{ backgroundColor: currentCategory?.color || '#dc2626' }"
+            :style="{ backgroundColor: currentCategory?.color || '#01abe8' }"
           >
             {{ currentCategory?.name || slug }}
           </span>
@@ -173,7 +173,7 @@ useHead({
         v-else
         class="bg-white dark:bg-neutral-900/40 border border-neutral-200 dark:border-neutral-800 rounded-3xl p-12 text-center max-w-2xl mx-auto space-y-4 my-8 shadow-sm"
       >
-        <div class="w-14 h-14 mx-auto rounded-2xl bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-800 flex items-center justify-center text-red-600 dark:text-red-400">
+        <div class="w-14 h-14 mx-auto rounded-2xl bg-etv-blue-50 dark:bg-etv-blue-950/40 border border-etv-blue-200 dark:border-etv-blue-800 flex items-center justify-center text-etv-blue-600 dark:text-etv-blue-400">
           <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
           </svg>

@@ -59,7 +59,7 @@ useHead({
       <div class="flex items-center justify-between gap-4">
         <NuxtLink
           to="/"
-          class="inline-flex items-center gap-2 text-xs md:text-sm font-bold text-neutral-600 dark:text-neutral-400 hover:text-red-600 dark:hover:text-red-400 transition-colors"
+          class="inline-flex items-center gap-2 text-xs md:text-sm font-bold text-neutral-600 dark:text-neutral-400 hover:text-etv-blue-600 dark:hover:text-etv-blue-400 transition-colors"
         >
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
@@ -89,11 +89,11 @@ useHead({
             type="search"
             placeholder="Escribe una palabra clave, tema o artista..."
             aria-label="Término de búsqueda"
-            class="flex-1 bg-neutral-50 dark:bg-neutral-950 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white text-sm md:text-base px-4 py-3 rounded-xl focus:border-red-500"
+            class="flex-1 bg-neutral-50 dark:bg-neutral-950 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white text-sm md:text-base px-4 py-3 rounded-xl focus:border-etv-blue-500"
           />
           <button
             type="submit"
-            class="bg-red-600 hover:bg-red-500 text-white font-bold text-sm px-6 py-3 rounded-xl transition-colors cursor-pointer shadow-md shrink-0"
+            class="bg-etv-orange-500 hover:bg-etv-orange-400 text-neutral-950 font-black text-sm px-6 py-3 rounded-xl transition-colors cursor-pointer shadow-md shrink-0"
           >
             Buscar
           </button>

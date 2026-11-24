@@ -63,7 +63,7 @@ const BACKUP_ARTICLES: Article[] = [
       id: 'c-1',
       name: 'Especial',
       slug: 'especial',
-      color: '#dc2626'
+      color: '#fe9903'
     }
   },
   {

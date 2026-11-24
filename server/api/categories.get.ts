@@ -11,8 +11,8 @@ export interface NavCategory {
 const FALLBACK_CATEGORIES: NavCategory[] = [
   { id: 'cat-1', name: 'Coberturas ETV', slug: 'coberturas-etv', color: '#ea580c', description: 'Coberturas especiales y despachos periodísticos.' },
   { id: 'cat-2', name: 'Más bandas', slug: 'mas-bandas', color: '#8b5cf6', description: 'Música y cultura alternativa.' },
-  { id: 'cat-3', name: 'EvolucioNotas', slug: 'evolucionotas', color: '#0284c7', description: 'Columna crítica y apuntes de redacción.' },
-  { id: 'cat-4', name: 'Quiénes somos', slug: 'quienes-somos', color: '#dc2626', description: 'Manifiesto y equipo de Evolución TV.' }
+  { id: 'cat-3', name: 'EvolucioNotas', slug: 'evolucionotas', color: '#01abe8', description: 'Columna crítica y apuntes de redacción.' },
+  { id: 'cat-4', name: 'Quiénes somos', slug: 'quienes-somos', color: '#fe9903', description: 'Manifiesto y equipo de Evolución TV.' }
 ]
 
 export default defineEventHandler(async () => {
@@ -41,7 +41,7 @@ export default defineEventHandler(async () => {
       id: t.id,
       name: t.name,
       slug: t.slug,
-      color: t.accent_color || '#dc2626',
+      color: t.accent_color || '#01abe8',
       description: t.description || ''
     }))
   } catch (error) {
