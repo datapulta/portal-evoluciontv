@@ -4,6 +4,40 @@ Este documento constituye la memoria técnica y bitácora cronológica exhaustiv
 
 ---
 
+## Sesión 37 — 2026-11-24 · Restauración de Texto Original Íntegro en Ghost CMS
+
+**Rama activa**: `feat/setup-nuxt4-ghost-cms`
+**Autorización**: `plan_restaurar_texto_original_articulo_ghost.md` (Proceed button, §4.4 AGENTS.md)
+
+### Diagnóstico y Causa Raíz
+En la publicación inicial del artículo *"Evolución TV regresa a sus orígenes con portal oficial"* (`6b06218fc506c700013dceba`), se incorporaron subtítulos `<h2>`, citas destacadas `<blockquote>` y paráfrasis que no formaban parte de la redacción oficial original de la dirección editorial de Evolución TV.
+
+### Cambios realizados
+- **Ghost CMS Admin API (`/ghost/api/admin/posts/6b06218fc506c700013dceba/?source=html`)**:
+  - Actualizado el cuerpo HTML del post sustituyéndolo de forma literal por los 5 párrafos exactos provistos por el usuario, sin subtítulos intermedios ni citas añadidas.
+  - Conservado título oficial, tags (`EvolucioNotas`, `Más bandas`) y featured image intactos.
+
+### Verificación
+- Content API (`/ghost/api/content/posts/slug/...`): Comprobada entrega de los 5 párrafos limpios sin etiquetas `<h2>`.
+- SSR local (`http://localhost:3005/noticias/evolucion-tv-regresa-a-sus-origenes-con-portal-oficial`): Renderizado verificado con `200 OK`.
+
+---
+
+## Sesión 36 — 2026-11-24 · Página de Contacto Musical, Dominio @evoluciontv.mx, Anti-Spam y Titular Oficial
+
+**Rama activa**: `feat/setup-nuxt4-ghost-cms`
+**Autorización**: `plan_pagina_contacto.md`, `plan_enfoque_musical_bandas_contacto.md`, `plan_dominio_mx_y_proteccion_antispam_emails.md`, `plan_ocultar_menu_horizontal_en_movil.md`, `plan_titular_contacto_evolucion_tv.md` (Proceed button, §4.4 AGENTS.md)
+
+### Cambios realizados
+- **`app/pages/contacto.vue` [NEW]**: Página de contacto orientada a bandas independientes (ska, rock, reggae), prensa y coberturas, sin formularios vulnerables, con botones de copiado y canales oficiales.
+- **Protección Anti-Spam (`app/components/ProtectedEmail.vue` [NEW])**:
+  - Dominio migrado a `@evoluciontv.mx` en todos los archivos de la plataforma.
+  - Ofuscación en cliente (`atob`) y honeypot invisible para crawlers.
+- **`app/components/HeaderNav.vue`**: Navegación horizontal secundaria oculta en móvil (`hidden md:block`) para priorizar el menú hamburguesa.
+- **Titular de Contacto**: Actualizado `h1` en `/contacto` a *"Contacto y Enlace con Evolución TV"*.
+
+---
+
 ## Sesión 35 — 2026-11-24 · Actualización de Texto Institucional en "Quiénes Somos"
 
 **Rama activa**: `feat/setup-nuxt4-ghost-cms` (pendiente autorización de merge a `main` y deploy)
