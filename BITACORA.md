@@ -139,3 +139,24 @@ Este documento constituye la memoria técnica y bitácora cronológica exhaustiv
 - **Verificación Técnica**:
   - Compilación de producción limpia ejecutada con `npm run build` (13.4s, 0 errores).
   - Verificación de renderizado de `href="/noticias/coming-soon"` envolviendo la imagen destacada en `http://localhost:3005/`.
+
+---
+
+### Sesión 7 — 23 de Noviembre de 2026
+**Objetivo**: Integración de la Ghost Admin API y automatización de creación/publicación de artículos programáticos desde Node.js hacia Ghost CMS.
+- **Autorización**: Aprobación nativa formal del plan `plan_creacion_articulos_ghost_admin_api.md` mediante botón Proceed del operador (§4.4 de AGENTS.md) y suministro de `Admin API Key`.
+- **Actividades Realizadas**:
+  1. **Autenticación Criptográfica JWT Nativa (HS256)**:
+     - Desarrollo del generador de tokens en `scripts/publish-article.mjs` utilizando `node:crypto` sin dependencias externas.
+     - Firma HMAC-SHA256 con el secreto hexadecimal y cabecera `kid: keyId` según el estándar de Ghost Admin API v5.
+  2. **Configuración Segura de Credenciales**:
+     - Registro de `NEWS_ADMIN_API_KEY` en `.env` (área restringida del servidor, aislada de `runtimeConfig.public`).
+     - Actualización del contrato de variables en `.env.example`.
+  3. **Publicación y Verificación en Vivo**:
+     - Ejecución de publicación de prueba: *"Investigación Especial: El Futuro del Periodismo Digital en Evolución TV"* (`id: 6b04d5c2c506c700013dce4e`).
+     - Artículo creado con éxito con estado `published`, etiquetas `Especial` e `Investigación` e imagen de portada en alta resolución.
+- **Verificación Técnica**:
+  - Ghost Content API confirma 2 posts publicados en total (`/ghost/api/content/posts/?limit=all`).
+  - El portal local `http://localhost:3005/` actualiza inmediatamente la Nota Principal con el nuevo artículo.
+  - La página de lectura `http://localhost:3005/noticias/investigacion-especial-el-futuro-del-periodismo-digital-en-evolucion-tv` responde HTTP 200 OK y renderiza el contenido completo en SSR.
+  - Compilación exitosa con `npm run build` (15.0s, 0 errores).
