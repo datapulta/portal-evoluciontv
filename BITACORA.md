@@ -265,3 +265,18 @@ Este documento constituye la memoria técnica y bitácora cronológica exhaustiv
   - `http://localhost:3005/categoria/coberturas-etv` y `http://localhost:3005/categoria/quienes-somos` cargan sus respectivos artículos (200 OK).
   - Compilación de producción limpia ejecutada con `npm run build` (13.3s, 0 errores).
 
+---
+
+### Sesión 13 — 24 de Noviembre de 2026
+**Objetivo**: Ajuste de cabecera móvil (`HeaderNav.vue`) y eliminación de enlaces públicos al Panel de Redacción (`cms-etv.webia.studio/ghost`) para proteger la plataforma.
+- **Autorización**: Aprobación nativa formal del plan `plan_ajuste_header_movil.md` mediante botón Proceed del operador (§4.4 de AGENTS.md).
+- **Actividades Realizadas**:
+  1. **Cabecera Móvil Limpia (`app/components/HeaderNav.vue`)**:
+     - Se ocultó el botón flotante "SEÑAL EN VIVO" en la vista móvil (`hidden md:flex`), evitando que desplace el menú hamburguesa; el acceso permanece disponible dentro del menú móvil desplegable.
+  2. **Endurecimiento de Seguridad en Interfaz Pública**:
+     - Se eliminaron todos los enlaces y textos públicos hacia `https://cms-etv.webia.studio/ghost` ("Panel de Redacción" y "Acceso Redacción (CMS)") en `HeaderNav.vue` y `FooterSection.vue`.
+     - Se actualizó el botón "Contactar a Cabina" en `app/pages/en-vivo.vue` hacia `mailto:redaccion@evoluciontv.com`.
+- **Verificación Técnica**:
+  - Búsqueda en `app/` confirma 0 enlaces restantes a `cms-etv.webia.studio/ghost`.
+  - Compilación de producción limpia ejecutada con `npm run build` (0 errores).
+

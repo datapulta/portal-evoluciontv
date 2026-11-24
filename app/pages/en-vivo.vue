@@ -195,8 +195,7 @@ const recentNews = computed(() => newsData.value?.articles || [])
               </div>
             </div>
             <a
-              href="https://cms-etv.webia.studio/ghost"
-              target="_blank"
+              href="mailto:redaccion@evoluciontv.com"
               class="bg-neutral-900 hover:bg-neutral-800 dark:bg-neutral-800 dark:hover:bg-neutral-700 text-white font-bold text-xs px-4 py-2.5 rounded-xl border border-neutral-700 transition-colors shrink-0 shadow-sm"
             >
               Contactar a Cabina

@@ -77,15 +77,6 @@ const navigationItems = computed<NavItem[]>(() => {
 
         <div class="hidden md:flex items-center gap-4 shrink-0 text-neutral-500 dark:text-neutral-400 capitalize">
           <span>{{ currentDate }}</span>
-          <span class="text-neutral-300 dark:text-neutral-700">|</span>
-          <a
-            href="https://cms-etv.webia.studio/ghost"
-            target="_blank"
-            class="text-neutral-700 dark:text-neutral-300 hover:text-red-600 dark:hover:text-red-400 transition-colors flex items-center gap-1.5 font-semibold"
-          >
-            <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-            Panel de Redacción
-          </a>
         </div>
       </div>
     </div>
@@ -137,7 +128,7 @@ const navigationItems = computed<NavItem[]>(() => {
         <!-- Botón Transmisión en Vivo -->
         <NuxtLink
           to="/en-vivo"
-          class="flex items-center gap-2.5 bg-red-600/10 hover:bg-red-600/20 text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 border border-red-500/30 px-3.5 py-2 rounded-full text-xs font-bold transition-all shadow-sm"
+          class="hidden md:flex items-center gap-2.5 bg-red-600/10 hover:bg-red-600/20 text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 border border-red-500/30 px-3.5 py-2 rounded-full text-xs font-bold transition-all shadow-sm"
         >
           <span class="relative flex h-2.5 w-2.5">
             <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
@@ -199,14 +190,6 @@ const navigationItems = computed<NavItem[]>(() => {
       >
         {{ cat.name }}
       </NuxtLink>
-
-      <a
-        href="https://cms-etv.webia.studio/ghost"
-        target="_blank"
-        class="block py-2 text-emerald-600 dark:text-emerald-400 font-semibold border-t border-neutral-200 dark:border-neutral-800 pt-3"
-      >
-        Acceso Redacción (CMS)
-      </a>
     </div>
   </header>
 </template>
