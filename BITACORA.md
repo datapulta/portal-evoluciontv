@@ -4,6 +4,47 @@ Este documento constituye la memoria técnica y bitácora cronológica exhaustiv
 
 ---
 
+## Sesión 28 — 2026-11-24 · Optimización Integral UX y UI de la Plataforma
+
+**Rama activa**: `feat/setup-nuxt4-ghost-cms` (pendiente autorización de merge a `main` y deploy)
+**Autorización**: `plan_mejoras_ux_ui_plataforma.md` (Proceed button, §4.4 AGENTS.md)
+
+### Diagnóstico y alcance
+Auditoría completa de los 17 archivos en `app/` y endpoints en `server/`, integrando además dos observaciones visuales del operador en desktop (`/radio`): centrado del menú de navegación y eliminación total de espacios vacíos en la cabina del reproductor de radio.
+
+### Cambios realizados
+
+1. **Backend Nitro & Utilidades**:
+   - `server/utils/ghostAdmin.ts`: helper compartido para configuración y JWT HMAC-SHA256 de Ghost Admin API (eliminando duplicación en `categories.get.ts`).
+   - `server/api/radio/nowplaying.get.ts`: proxy con caché 15s a AzuraCast (`r3.webia.studio/api/nowplaying/estereo_fonik`) exponiendo canción, artista, carátula y oyentes.
+   - `server/api/newsletter.post.ts`: alta real de suscriptores en Ghost Members API con etiqueta `boletin-web` y manejo de duplicados (`422`).
+   - `server/api/search.get.ts`: búsqueda insensible a acentos (`NFD`) sobre posts públicos de Ghost CMS.
+   - Actualizados `sitemap.xml.get.ts` y `llms.txt.get.ts` con `/codigo-etica`, `/privacidad` y `/buscar`.
+
+2. **Tipografía, Accesibilidad y Composables**:
+   - `app/app.vue` y `app/assets/css/main.css`: Google Fonts (`Plus Jakarta Sans` + `Newsreader`) configuradas vía `useHead` + `@theme` (sin modificar `nuxt.config.ts`) y anillos `:focus-visible` accesibles.
+   - `app/composables/useNews.ts`: paginación real (`PaginationMeta`) y método `searchArticles`.
+   - `app/composables/useRadio.ts`: polling de metadatos en vivo (`/api/radio/nowplaying`), `MediaSession` con carátula y dock minimizado por defecto en móvil (`< 640px`) sin preferencia previa.
+
+3. **Navegación, Pie y Dock**:
+   - `app/components/HeaderNav.vue`: menú de navegación centrado simétricamente en desktop (`md:flex-wrap md:justify-center`), indicador de ruta activa, barra *Última Hora* dinámica enlazada al artículo más reciente, y buscador rápido desplegable.
+   - `app/components/FooterSection.vue`: ancla `id="contacto"` (`scroll-mt-32`) y enlaces reales a `/codigo-etica`, `/privacidad` y `/buscar`.
+   - `app/components/RadioPlayer.vue`: carátula de pista actual en el botón Play y título en vivo actualizado.
+
+4. **Páginas**:
+   - `app/pages/radio.vue`: ultra-optimización desktop (`max-w-3xl`, cabecera integrada sin banda vacía superior, bloque Play de ancho exacto `md:w-44` eliminando huecos laterales y carátula/metadatos reales de AzuraCast).
+   - `app/pages/index.vue`: fecha/autoría consistente en Hero, botón *"Cargar más noticias"* con paginación real y boletín conectado a `/api/newsletter`.
+   - `app/pages/noticias/[slug].vue`: reemplazo de `sticky top-14` oculto bajo el header por breadcrumbs limpios, barra superior de progreso de lectura, cuerpo `font-serif`, skeleton loader, compartir en WhatsApp/X/Facebook/nativo y botón *"Volver arriba"*.
+   - `app/pages/categoria/[slug].vue`: skeletons de carga y paginación *"Cargar más artículos"*.
+   - `app/pages/en-vivo.vue`: corrección de `sticky top-14` y rediseño transparente hacia *"Cabina Digital en Espera de Emisión"* con acceso a YouTube y Evolución Radio.
+   - Nuevas páginas: `app/pages/buscar.vue`, `app/pages/codigo-etica.vue` y `app/pages/privacidad.vue`.
+
+### Verificación
+- `npm run build` → ✅ 0 errores (208 módulos cliente, 118 server).
+- Verificación HTTP local (`http://localhost:3005`): `/api/radio/nowplaying`, `/api/search`, `/api/newsletter`, `/`, `/radio`, `/buscar`, `/codigo-etica`, `/privacidad`, `/en-vivo`, `/noticias/<slug>`, `/sitemap.xml` y `/llms.txt` → ✅ todos `200 OK`.
+
+---
+
 ## Sesión 27 — 2026-11-24 · v1.0.8: Optimización UX Desktop Página /radio
 
 **Rama activa**: `feat/setup-nuxt4-ghost-cms` → merge a `main`

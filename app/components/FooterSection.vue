@@ -10,6 +10,7 @@ const footerCategories = [
   { name: 'EvolucioNotas', to: '/categoria/evolucionotas' },
   { name: 'Evolución Radio', to: '/radio' },
   { name: 'Señal en Vivo (24/7)', to: '/en-vivo', highlight: true },
+  { name: 'Buscar Noticias', to: '/buscar' },
   { name: 'Quiénes somos', to: '/quienes-somos' }
 ]
 </script>
@@ -64,12 +65,13 @@ const footerCategories = [
       </div>
 
       <!-- Columna 3: Editorial y Contacto -->
-      <div>
-        <h4 class="text-sm font-bold text-neutral-900 dark:text-white uppercase tracking-wider mb-3">Redacción</h4>
+      <div id="contacto" class="scroll-mt-32">
+        <h4 class="text-sm font-bold text-neutral-900 dark:text-white uppercase tracking-wider mb-3">Redacción y Contacto</h4>
         <ul class="space-y-2 text-xs md:text-sm">
-          <li><a href="mailto:redaccion@evoluciontv.com" class="hover:text-neutral-900 dark:hover:text-white transition-colors">Buzón de Denuncias</a></li>
-          <li><a href="#" class="hover:text-neutral-900 dark:hover:text-white transition-colors">Código de Ética Periodística</a></li>
-          <li><a href="#" class="hover:text-neutral-900 dark:hover:text-white transition-colors">Aviso de Privacidad</a></li>
+          <li><a href="mailto:redaccion@evoluciontv.com" class="hover:text-neutral-900 dark:hover:text-white transition-colors">redaccion@evoluciontv.com</a></li>
+          <li><a href="mailto:redaccion@evoluciontv.com?subject=Reporte%20Ciudadano" class="hover:text-neutral-900 dark:hover:text-white transition-colors">Buzón de Denuncias</a></li>
+          <li><NuxtLink to="/codigo-etica" class="hover:text-red-600 dark:hover:text-red-400 transition-colors">Código de Ética Periodística</NuxtLink></li>
+          <li><NuxtLink to="/privacidad" class="hover:text-red-600 dark:hover:text-red-400 transition-colors">Aviso de Privacidad</NuxtLink></li>
         </ul>
       </div>
     </div>

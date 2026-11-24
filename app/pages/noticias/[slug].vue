@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, watch, nextTick } from 'vue'
+import { ref, computed, onMounted, onUnmounted, watch, nextTick } from 'vue'
 import { useRoute } from 'vue-router'
 import { useNews } from '~/composables/useNews'
 import NewsCard from '~/components/NewsCard.vue'
@@ -66,8 +66,34 @@ const scrollSlider = (direction: 'prev' | 'next') => {
   })
 }
 
+const readingProgress = ref(0)
+const showBackToTop = ref(false)
+const canNativeShare = ref(false)
+
+const updateReadingMetrics = () => {
+  if (typeof window === 'undefined' || typeof document === 'undefined') return
+  const scrollTop = window.scrollY || document.documentElement.scrollTop
+  const docHeight = document.documentElement.scrollHeight - window.innerHeight
+  readingProgress.value = docHeight > 0 ? Math.min(100, Math.max(0, (scrollTop / docHeight) * 100)) : 0
+  showBackToTop.value = scrollTop > 500
+}
+
+const scrollToTop = () => {
+  if (typeof window === 'undefined') return
+  window.scrollTo({ top: 0, behavior: 'smooth' })
+}
+
 onMounted(() => {
   nextTick(updateSliderState)
+  canNativeShare.value = typeof navigator !== 'undefined' && typeof navigator.share === 'function'
+  window.addEventListener('scroll', updateReadingMetrics, { passive: true })
+  updateReadingMetrics()
+})
+
+onUnmounted(() => {
+  if (typeof window !== 'undefined') {
+    window.removeEventListener('scroll', updateReadingMetrics)
+  }
 })
 
 watch(relatedArticles, () => {
@@ -88,6 +114,31 @@ const copyArticleLink = async () => {
     }, 2000)
   } catch {}
 }
+
+const nativeShare = async () => {
+  if (typeof navigator === 'undefined' || !navigator.share || !article.value) return
+  try {
+    await navigator.share({
+      title: article.value.title,
+      text: article.value.excerpt || article.value.title,
+      url: canonicalUrl.value
+    })
+  } catch {}
+}
+
+const whatsappShareUrl = computed(() => {
+  const title = article.value?.title || 'Evolución TV'
+  return `https://wa.me/?text=${encodeURIComponent(`${title} — ${canonicalUrl.value}`)}`
+})
+
+const xShareUrl = computed(() => {
+  const title = article.value?.title || 'Evolución TV'
+  return `https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(canonicalUrl.value)}`
+})
+
+const facebookShareUrl = computed(() => {
+  return `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(canonicalUrl.value)}`
+})
 
 const chatGptUrl = computed(() => {
   const prompt = `Resume y analiza los puntos clave de este artículo de Evolución TV: ${canonicalUrl.value}`
@@ -214,20 +265,37 @@ const formatDate = (dateStr?: string) => {
 
 <template>
   <div class="min-h-screen transition-colors duration-200">
-    <!-- Barra superior de navegación / Retorno -->
-    <div class="border-b border-neutral-200 dark:border-neutral-800/80 bg-white/80 dark:bg-neutral-900/40 backdrop-blur-md sticky top-14 z-40 transition-colors">
-      <div class="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
-        <NuxtLink
-          to="/"
-          class="inline-flex items-center gap-2 text-xs md:text-sm font-bold text-neutral-600 dark:text-neutral-400 hover:text-red-600 dark:hover:text-red-400 transition-colors"
-        >
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-          </svg>
-          Volver a la Portada
-        </NuxtLink>
+    <!-- Barra de progreso de lectura fija en borde superior -->
+    <div
+      aria-hidden="true"
+      class="fixed top-0 left-0 h-1 bg-red-600 z-[60] transition-[width] duration-75"
+      :style="{ width: `${readingProgress}%` }"
+    ></div>
 
-        <div v-if="article?.primary_tag" class="flex items-center gap-2">
+    <!-- Barra superior de navegación / Breadcrumb (no-sticky para no quedar tapada por HeaderNav) -->
+    <div class="border-b border-neutral-200 dark:border-neutral-800/80 bg-white/80 dark:bg-neutral-900/40 transition-colors">
+      <div class="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
+        <div class="flex items-center gap-2 text-xs md:text-sm">
+          <NuxtLink
+            to="/"
+            class="inline-flex items-center gap-1.5 font-bold text-neutral-600 dark:text-neutral-400 hover:text-red-600 dark:hover:text-red-400 transition-colors"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            Portada
+          </NuxtLink>
+          <span v-if="article?.primary_tag" class="text-neutral-400">/</span>
+          <NuxtLink
+            v-if="article?.primary_tag"
+            :to="`/categoria/${article.primary_tag.slug}`"
+            class="font-semibold text-neutral-500 dark:text-neutral-400 hover:text-red-600 dark:hover:text-red-400 transition-colors truncate"
+          >
+            {{ article.primary_tag.name }}
+          </NuxtLink>
+        </div>
+
+        <div v-if="article?.primary_tag" class="flex items-center gap-2 shrink-0">
           <span
             class="text-[11px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full text-white shadow-sm"
             :style="{ backgroundColor: article.primary_tag.color || '#dc2626' }"
@@ -238,8 +306,21 @@ const formatDate = (dateStr?: string) => {
       </div>
     </div>
 
+    <!-- Skeleton de carga -->
+    <div v-if="pending && !article" class="max-w-4xl mx-auto px-4 py-8 md:py-12 space-y-6 animate-pulse">
+      <div class="h-4 w-48 bg-neutral-200 dark:bg-neutral-800 rounded"></div>
+      <div class="h-12 w-full bg-neutral-200 dark:bg-neutral-800 rounded-xl"></div>
+      <div class="h-6 w-3/4 bg-neutral-200 dark:bg-neutral-800 rounded"></div>
+      <div class="aspect-video md:aspect-[21/9] w-full bg-neutral-200 dark:bg-neutral-800 rounded-3xl"></div>
+      <div class="space-y-3 pt-4">
+        <div class="h-4 w-full bg-neutral-200 dark:bg-neutral-800 rounded"></div>
+        <div class="h-4 w-11/12 bg-neutral-200 dark:bg-neutral-800 rounded"></div>
+        <div class="h-4 w-4/5 bg-neutral-200 dark:bg-neutral-800 rounded"></div>
+      </div>
+    </div>
+
     <!-- Contenido del Artículo -->
-    <article v-if="article" class="max-w-4xl mx-auto px-4 py-8 md:py-12">
+    <article v-else-if="article" class="max-w-4xl mx-auto px-4 py-8 md:py-12">
       <!-- Encabezado Editorial -->
       <header class="space-y-4 mb-8">
         <div class="flex items-center gap-3 text-xs md:text-sm text-neutral-500 dark:text-neutral-400">
@@ -289,29 +370,68 @@ const formatDate = (dateStr?: string) => {
         />
       </div>
 
-      <!-- Cuerpo del Artículo con Tipografía Optimizada para Ambos Modos -->
+      <!-- Cuerpo del Artículo con Tipografía Editorial Serif (Newsreader) -->
       <div
         v-if="article.html"
-        class="prose-news text-neutral-800 dark:text-neutral-200 leading-relaxed space-y-6 text-base md:text-lg"
+        class="prose-news font-serif text-neutral-800 dark:text-neutral-200 leading-relaxed space-y-6 text-lg md:text-[1.2rem]"
         v-html="article.html"
       ></div>
-      <div v-else class="text-neutral-600 dark:text-neutral-400 text-base leading-relaxed py-8">
+      <div v-else class="font-serif text-neutral-600 dark:text-neutral-400 text-lg leading-relaxed py-8">
         <p>{{ article.excerpt }}</p>
       </div>
 
-      <!-- Pie del Artículo y Compartir -->
-      <div class="mt-12 pt-8 border-t border-neutral-200 dark:border-neutral-800 flex flex-col sm:flex-row items-center justify-between gap-4">
-        <NuxtLink
-          to="/"
-          class="inline-flex items-center gap-2 bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-900 dark:hover:bg-neutral-800 text-neutral-900 dark:text-white font-bold px-5 py-2.5 rounded-xl border border-neutral-300 dark:border-neutral-700 transition-colors text-sm shadow-sm"
-        >
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-          </svg>
-          Volver a la Portada
-        </NuxtLink>
+      <!-- Pie del Artículo, Compartir y Herramientas IA -->
+      <div class="mt-12 pt-8 border-t border-neutral-200 dark:border-neutral-800 space-y-4">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <NuxtLink
+            to="/"
+            class="inline-flex items-center gap-2 bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-900 dark:hover:bg-neutral-800 text-neutral-900 dark:text-white font-bold px-5 py-2.5 rounded-xl border border-neutral-300 dark:border-neutral-700 transition-colors text-sm shadow-sm w-fit"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            Volver a la Portada
+          </NuxtLink>
 
-        <div class="flex flex-wrap items-center gap-2 text-xs text-neutral-500 dark:text-neutral-400 font-medium">
+          <!-- Botones de compartir directo -->
+          <div class="flex flex-wrap items-center gap-2 text-xs font-semibold">
+            <span class="text-neutral-500 dark:text-neutral-400 mr-1">Compartir:</span>
+            <a
+              :href="whatsappShareUrl"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 dark:bg-emerald-950/40 dark:hover:bg-emerald-900/50 border border-emerald-200 dark:border-emerald-800/60 text-emerald-700 dark:text-emerald-300 transition-colors"
+            >
+              WhatsApp
+            </a>
+            <a
+              :href="xShareUrl"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-900 dark:hover:bg-neutral-800 border border-neutral-200 dark:border-neutral-800 text-neutral-800 dark:text-neutral-200 transition-colors"
+            >
+              X
+            </a>
+            <a
+              :href="facebookShareUrl"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-blue-50 hover:bg-blue-100 dark:bg-blue-950/40 dark:hover:bg-blue-900/50 border border-blue-200 dark:border-blue-800/60 text-blue-700 dark:text-blue-300 transition-colors"
+            >
+              Facebook
+            </a>
+            <button
+              v-if="canNativeShare"
+              type="button"
+              @click="nativeShare"
+              class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-900 dark:hover:bg-neutral-800 border border-neutral-200 dark:border-neutral-800 text-neutral-700 dark:text-neutral-300 transition-colors cursor-pointer"
+            >
+              Más...
+            </button>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap items-center justify-end gap-2 text-xs text-neutral-500 dark:text-neutral-400 font-medium">
           <button
             type="button"
             @click="copyArticleLink"
@@ -457,6 +577,29 @@ const formatDate = (dateStr?: string) => {
         />
       </div>
     </section>
+
+    <!-- Botón flotante Volver arriba (derecha, sin chocar con RadioPlayer en izquierda) -->
+    <Transition
+      enter-active-class="transition duration-200 ease-out"
+      enter-from-class="opacity-0 translate-y-2"
+      enter-to-class="opacity-100 translate-y-0"
+      leave-active-class="transition duration-150 ease-in"
+      leave-from-class="opacity-100 translate-y-0"
+      leave-to-class="opacity-0 translate-y-2"
+    >
+      <button
+        v-if="showBackToTop"
+        type="button"
+        @click="scrollToTop"
+        aria-label="Volver arriba"
+        title="Volver arriba"
+        class="fixed bottom-4 right-4 z-40 w-10 h-10 rounded-full bg-white/90 dark:bg-neutral-900/90 backdrop-blur-md border border-neutral-300 dark:border-neutral-700 text-neutral-700 dark:text-neutral-200 hover:text-red-600 dark:hover:text-red-400 hover:border-red-500 shadow-lg flex items-center justify-center transition-colors cursor-pointer"
+      >
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 15l7-7 7 7" />
+        </svg>
+      </button>
+    </Transition>
   </div>
 </template>
 

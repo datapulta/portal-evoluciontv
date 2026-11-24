@@ -1,4 +1,5 @@
 import { ref, onMounted } from 'vue'
+import type { RadioNowPlaying } from '~~/server/api/radio/nowplaying.get'
 
 // URL de streaming configurable para Evolución Radio (Icecast / Shoutcast / MP3 / AAC)
 export const DEFAULT_RADIO_STREAM_URL = 'https://r3.webia.studio/listen/estereo_fonik/radio-320.mp3'
@@ -9,10 +10,17 @@ const volume = ref(80)
 const isMinimized = ref(false)
 const isLoading = ref(false)
 const currentTrack = ref('Señal Digital 24/7')
+const currentArtist = ref('')
+const currentTitle = ref('Señal Digital 24/7')
+const currentArt = ref<string | null>(null)
+const listenersCount = ref(0)
+const isLiveBroadcast = ref(false)
 const streamUrl = ref(DEFAULT_RADIO_STREAM_URL)
 
 const GLOBAL_AUDIO_KEY = '__EVOLUCION_RADIO_AUDIO__'
 let reconnectTimer: ReturnType<typeof setTimeout> | null = null
+let nowPlayingInterval: ReturnType<typeof setInterval> | null = null
+let lastNowPlayingFetch = 0
 let userPaused = true
 
 const getGlobalAudio = (): HTMLAudioElement | null => {
@@ -31,9 +39,12 @@ export const useRadio = () => {
   const setupMediaSession = () => {
     if (typeof navigator === 'undefined' || !('mediaSession' in navigator)) return
     navigator.mediaSession.metadata = new MediaMetadata({
-      title: currentTrack.value,
-      artist: 'Evolución Radio',
-      album: 'Evolución TV — Medio Digital Independiente'
+      title: currentTitle.value || currentTrack.value,
+      artist: currentArtist.value || 'Evolución Radio',
+      album: 'Evolución TV — Medio Digital Independiente',
+      artwork: currentArt.value
+        ? [{ src: currentArt.value, sizes: '512x512', type: 'image/jpeg' }]
+        : undefined
     })
     navigator.mediaSession.setActionHandler('play', () => {
       if (!isPlaying.value) togglePlay()
@@ -41,6 +52,29 @@ export const useRadio = () => {
     navigator.mediaSession.setActionHandler('pause', () => {
       if (isPlaying.value) togglePlay()
     })
+  }
+
+  const fetchNowPlaying = async (force = false) => {
+    if (typeof window === 'undefined') return
+    const now = Date.now()
+    if (!force && now - lastNowPlayingFetch < 12_000) return
+    lastNowPlayingFetch = now
+
+    try {
+      const data = await $fetch<RadioNowPlaying>('/api/radio/nowplaying')
+      if (data.songText) currentTrack.value = data.songText
+      currentArtist.value = data.artist || ''
+      currentTitle.value = data.title || data.songText || 'Señal Digital 24/7'
+      currentArt.value = data.art || null
+      listenersCount.value = data.listeners || 0
+      isLiveBroadcast.value = Boolean(data.isLive)
+
+      if (isPlaying.value) {
+        setupMediaSession()
+      }
+    } catch {
+      // Silenciar fallo transitorio manteniendo último metadato válido
+    }
   }
 
   const scheduleReconnect = () => {
@@ -178,12 +212,21 @@ export const useRadio = () => {
     }
     if (savedMin !== null) {
       isMinimized.value = savedMin === 'true'
+    } else if (window.innerWidth < 640) {
+      isMinimized.value = true
     }
 
     const existing = getGlobalAudio()
     if (existing) {
       existing.volume = isMuted.value ? 0 : volume.value / 100
       isPlaying.value = !existing.paused
+    }
+
+    fetchNowPlaying()
+    if (!nowPlayingInterval) {
+      nowPlayingInterval = setInterval(() => {
+        fetchNowPlaying(true)
+      }, 20_000)
     }
   })
 
@@ -194,7 +237,13 @@ export const useRadio = () => {
     isMinimized,
     isLoading,
     currentTrack,
+    currentArtist,
+    currentTitle,
+    currentArt,
+    listenersCount,
+    isLiveBroadcast,
     streamUrl,
+    fetchNowPlaying,
     togglePlay,
     setVolume,
     toggleMute,

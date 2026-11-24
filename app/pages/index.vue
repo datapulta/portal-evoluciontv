@@ -1,23 +1,98 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-import { useNews, type Article } from '~/composables/useNews'
+import { ref, computed } from 'vue'
+import { useNews, type Article, type PaginationMeta } from '~/composables/useNews'
 import NewsCard from '~/components/NewsCard.vue'
 
 const { getArticles } = useNews()
 
 // Server-Side Rendering (SSR) optimizado para SEO y carga inmediata
-const { data: newsResult } = await useAsyncData('home-articles', () => getArticles({ limit: 8 }))
+const { data: newsResult } = await useAsyncData('home-articles', () => getArticles({ limit: 8, page: 1 }))
+
+const extraArticles = ref<Article[]>([])
+const loadingMore = ref(false)
+const currentPage = ref(1)
+const pagination = ref<PaginationMeta | null>(newsResult.value?.pagination || null)
 
 const featuredArticle = computed<Article | null>(() => newsResult.value?.articles?.[0] || null)
 const secondaryArticles = computed<Article[]>(() => newsResult.value?.articles?.slice(1, 3) || [])
-const allArticles = computed<Article[]>(() => newsResult.value?.articles?.slice(3) || [])
+const allArticles = computed<Article[]>(() => {
+  const base = newsResult.value?.articles?.slice(3) || []
+  if (extraArticles.value.length === 0) return base
+  const seen = new Set(newsResult.value?.articles?.map(a => a.id) || [])
+  return [...base, ...extraArticles.value.filter(a => !seen.has(a.id))]
+})
+
+const hasMoreArticles = computed(() => {
+  const activeMeta = pagination.value || newsResult.value?.pagination
+  return Boolean(activeMeta?.next)
+})
+
+const loadMoreArticles = async () => {
+  if (loadingMore.value || !hasMoreArticles.value) return
+  loadingMore.value = true
+  try {
+    const nextPage = currentPage.value + 1
+    const res = await getArticles({ limit: 8, page: nextPage })
+    const existingIds = new Set([
+      ...(newsResult.value?.articles?.map(a => a.id) || []),
+      ...extraArticles.value.map(a => a.id)
+    ])
+    const uniqueNew = res.articles.filter(a => !existingIds.has(a.id))
+    extraArticles.value.push(...uniqueNew)
+    currentPage.value = nextPage
+    pagination.value = res.pagination
+  } finally {
+    loadingMore.value = false
+  }
+}
+
+const formatShortDate = (dateStr?: string) => {
+  if (!dateStr) return ''
+  return new Date(dateStr).toLocaleDateString('es-MX', {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric'
+  })
+}
+
+// Boletín de Noticias (Ghost Members API)
+const newsletterEmail = ref('')
+const newsletterStatus = ref<'idle' | 'loading' | 'success' | 'error'>('idle')
+const newsletterMessage = ref('')
+
+const submitNewsletter = async () => {
+  const email = newsletterEmail.value.trim()
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    newsletterStatus.value = 'error'
+    newsletterMessage.value = 'Ingresa un correo electrónico válido para suscribirte.'
+    return
+  }
+
+  newsletterStatus.value = 'loading'
+  newsletterMessage.value = ''
+
+  try {
+    const res = await $fetch<{ ok: boolean; status: string; message: string }>('/api/newsletter', {
+      method: 'POST',
+      body: { email }
+    })
+    newsletterStatus.value = 'success'
+    newsletterMessage.value = res.message
+    if (res.status === 'subscribed') {
+      newsletterEmail.value = ''
+    }
+  } catch (err: any) {
+    newsletterStatus.value = 'error'
+    newsletterMessage.value = err?.data?.message || err?.data?.statusMessage || 'No pudimos completar tu suscripción. Intenta de nuevo.'
+  }
+}
 </script>
 
 <template>
   <div class="transition-colors duration-200">
     <!-- Hero Editorial con Tarjetas de Ligera Curvatura -->
     <section class="max-w-7xl mx-auto px-0 pt-0 pb-6 md:px-4 md:py-8">
-      <div v-if="featuredArticle" class="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-8">
+      <div v-if="featuredArticle" class="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-8 items-stretch">
         <!-- Nota Principal en Tarjeta (full-bleed en móvil, 8 columnas en escritorio) -->
         <article class="lg:col-span-8 group flex flex-col bg-white dark:bg-neutral-900/60 border-b border-x-0 border-t-0 md:border border-neutral-200 dark:border-neutral-800 hover:border-neutral-300 dark:hover:border-neutral-700 rounded-b-2xl md:rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300">
           <!-- Imagen protagonista sin texto encimado -->
@@ -35,36 +110,49 @@ const allArticles = computed<Article[]>(() => newsResult.value?.articles?.slice(
           </NuxtLink>
 
           <!-- Bloque editorial limpio debajo de la imagen -->
-          <div class="p-4 sm:p-5 md:p-6 space-y-2.5">
-            <div class="flex items-center gap-2.5">
-              <span
-                v-if="featuredArticle.primary_tag"
-                class="text-xs font-extrabold uppercase tracking-wider text-red-600 dark:text-red-400"
-              >
-                {{ featuredArticle.primary_tag.name }}
-              </span>
-              <span v-if="featuredArticle.primary_tag" class="text-neutral-300 dark:text-neutral-700">•</span>
-              <span class="text-xs text-neutral-500 dark:text-neutral-400 font-medium">
-                Nota Principal
-              </span>
+          <div class="p-4 sm:p-5 md:p-6 space-y-2.5 flex flex-col flex-1 justify-between">
+            <div class="space-y-2.5">
+              <div class="flex items-center gap-2.5">
+                <span
+                  v-if="featuredArticle.primary_tag"
+                  class="text-xs font-extrabold uppercase tracking-wider text-red-600 dark:text-red-400"
+                >
+                  {{ featuredArticle.primary_tag.name }}
+                </span>
+                <span v-if="featuredArticle.primary_tag" class="text-neutral-300 dark:text-neutral-700">•</span>
+                <span class="text-xs text-neutral-500 dark:text-neutral-400 font-medium">
+                  Nota Principal
+                </span>
+              </div>
+
+              <h1 class="text-2xl sm:text-3xl md:text-4xl font-black text-neutral-900 dark:text-white group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors leading-tight tracking-tight">
+                <NuxtLink :to="`/noticias/${featuredArticle.slug}`">
+                  {{ featuredArticle.title }}
+                </NuxtLink>
+              </h1>
+
+              <p class="text-neutral-600 dark:text-neutral-300 text-sm md:text-base line-clamp-3 leading-relaxed max-w-3xl">
+                {{ featuredArticle.excerpt }}
+              </p>
             </div>
 
-            <h1 class="text-2xl sm:text-3xl md:text-4xl font-black text-neutral-900 dark:text-white group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors leading-tight tracking-tight">
-              <NuxtLink :to="`/noticias/${featuredArticle.slug}`">
-                {{ featuredArticle.title }}
-              </NuxtLink>
-            </h1>
-
-            <p class="text-neutral-600 dark:text-neutral-300 text-sm md:text-base line-clamp-3 leading-relaxed max-w-3xl">
-              {{ featuredArticle.excerpt }}
-            </p>
-
-            <div class="flex items-center gap-3 text-xs text-neutral-500 dark:text-neutral-400 pt-2 border-t border-neutral-100 dark:border-neutral-800/60">
-              <span class="font-bold text-neutral-800 dark:text-neutral-200">
-                {{ featuredArticle.primary_author?.name || 'Redacción Evolución TV' }}
-              </span>
-              <span>•</span>
-              <span>Lectura de {{ featuredArticle.reading_time || 4 }} min</span>
+            <div class="flex flex-wrap items-center justify-between gap-2 text-xs text-neutral-500 dark:text-neutral-400 pt-3 border-t border-neutral-100 dark:border-neutral-800/60 mt-auto">
+              <div class="flex items-center gap-2">
+                <img
+                  v-if="featuredArticle.primary_author?.profile_image"
+                  :src="featuredArticle.primary_author.profile_image"
+                  :alt="featuredArticle.primary_author.name"
+                  class="w-5 h-5 rounded-full object-cover"
+                />
+                <span class="font-bold text-neutral-800 dark:text-neutral-200">
+                  {{ featuredArticle.primary_author?.name || 'Redacción Evolución TV' }}
+                </span>
+              </div>
+              <div class="flex items-center gap-2">
+                <span v-if="featuredArticle.published_at">{{ formatShortDate(featuredArticle.published_at) }}</span>
+                <span v-if="featuredArticle.published_at">•</span>
+                <span>{{ featuredArticle.reading_time || 4 }} min de lectura</span>
+              </div>
             </div>
           </div>
         </article>
@@ -77,7 +165,7 @@ const allArticles = computed<Article[]>(() => newsResult.value?.articles?.slice(
           <article
             v-for="article in secondaryArticles"
             :key="article.id"
-            class="group bg-white dark:bg-neutral-900/60 border border-neutral-200 dark:border-neutral-800 hover:border-neutral-300 dark:hover:border-neutral-700 rounded-2xl p-3.5 sm:p-4 shadow-sm hover:shadow-md transition-all duration-300 flex gap-4 items-start"
+            class="group bg-white dark:bg-neutral-900/60 border border-neutral-200 dark:border-neutral-800 hover:border-neutral-300 dark:hover:border-neutral-700 rounded-2xl p-3.5 sm:p-4 shadow-sm hover:shadow-md transition-all duration-300 flex gap-4 items-start flex-1"
           >
             <NuxtLink
               :to="`/noticias/${article.slug}`"
@@ -92,21 +180,28 @@ const allArticles = computed<Article[]>(() => newsResult.value?.articles?.slice(
               />
             </NuxtLink>
 
-            <div class="flex-1 min-w-0 space-y-1">
-              <span
-                v-if="article.primary_tag"
-                class="block text-[11px] font-extrabold uppercase tracking-wider text-red-600 dark:text-red-400"
-              >
-                {{ article.primary_tag.name }}
-              </span>
-              <h2 class="text-sm sm:text-base font-black text-neutral-900 dark:text-white group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors leading-snug line-clamp-2">
-                <NuxtLink :to="`/noticias/${article.slug}`">
-                  {{ article.title }}
-                </NuxtLink>
-              </h2>
-              <p class="text-xs text-neutral-600 dark:text-neutral-400 line-clamp-2 leading-relaxed">
-                {{ article.excerpt }}
-              </p>
+            <div class="flex-1 min-w-0 flex flex-col justify-between h-full space-y-1.5">
+              <div class="space-y-1">
+                <span
+                  v-if="article.primary_tag"
+                  class="block text-[11px] font-extrabold uppercase tracking-wider text-red-600 dark:text-red-400"
+                >
+                  {{ article.primary_tag.name }}
+                </span>
+                <h2 class="text-sm sm:text-base font-black text-neutral-900 dark:text-white group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors leading-snug line-clamp-2">
+                  <NuxtLink :to="`/noticias/${article.slug}`">
+                    {{ article.title }}
+                  </NuxtLink>
+                </h2>
+                <p class="text-xs text-neutral-600 dark:text-neutral-400 line-clamp-2 leading-relaxed">
+                  {{ article.excerpt }}
+                </p>
+              </div>
+
+              <div class="flex items-center gap-2 text-[11px] text-neutral-500 dark:text-neutral-400 pt-1">
+                <span v-if="article.published_at">{{ formatShortDate(article.published_at) }}</span>
+                <span v-if="article.reading_time">• {{ article.reading_time }} min</span>
+              </div>
             </div>
           </article>
         </div>
@@ -135,6 +230,18 @@ const allArticles = computed<Article[]>(() => newsResult.value?.articles?.slice(
           :post="article"
         />
       </div>
+
+      <!-- Paginación Real -->
+      <div v-if="hasMoreArticles" class="mt-10 flex justify-center">
+        <button
+          type="button"
+          :disabled="loadingMore"
+          @click="loadMoreArticles"
+          class="inline-flex items-center gap-2 bg-white dark:bg-neutral-900 hover:bg-neutral-100 dark:hover:bg-neutral-800 text-neutral-900 dark:text-white font-bold text-sm px-6 py-3 rounded-xl border border-neutral-300 dark:border-neutral-700 shadow-sm transition-colors cursor-pointer disabled:opacity-60"
+        >
+          <span>{{ loadingMore ? 'Cargando noticias...' : 'Cargar más noticias' }}</span>
+        </button>
+      </div>
     </section>
 
     <!-- Sección de Suscripción / Boletín de Evolución TV -->
@@ -152,19 +259,39 @@ const allArticles = computed<Article[]>(() => newsResult.value?.articles?.slice(
           </p>
         </div>
 
-        <form @submit.prevent class="w-full lg:w-auto flex flex-col sm:flex-row gap-3">
-          <input
-            type="email"
-            placeholder="tu.correo@ejemplo.com"
-            class="bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white text-sm px-4 py-3 rounded-xl focus:outline-none focus:border-red-500 min-w-[280px] shadow-inner"
-          />
-          <button
-            type="submit"
-            class="bg-red-600 hover:bg-red-500 text-white font-bold text-sm px-6 py-3 rounded-xl transition-colors cursor-pointer shadow-lg shadow-red-900/30"
+        <div class="w-full lg:w-auto space-y-2.5">
+          <form @submit.prevent="submitNewsletter" class="flex flex-col sm:flex-row gap-3">
+            <input
+              v-model="newsletterEmail"
+              type="email"
+              required
+              :disabled="newsletterStatus === 'loading'"
+              placeholder="tu.correo@ejemplo.com"
+              aria-label="Correo electrónico para el boletín"
+              class="bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white text-sm px-4 py-3 rounded-xl focus:border-red-500 min-w-[280px] shadow-inner disabled:opacity-60"
+            />
+            <button
+              type="submit"
+              :disabled="newsletterStatus === 'loading'"
+              class="bg-red-600 hover:bg-red-500 text-white font-bold text-sm px-6 py-3 rounded-xl transition-colors cursor-pointer shadow-lg shadow-red-900/30 disabled:opacity-60 shrink-0"
+            >
+              {{ newsletterStatus === 'loading' ? 'Registrando...' : 'Suscribirme' }}
+            </button>
+          </form>
+
+          <p
+            v-if="newsletterMessage"
+            :class="[
+              'text-xs font-semibold px-1',
+              newsletterStatus === 'success'
+                ? 'text-emerald-600 dark:text-emerald-400'
+                : 'text-red-600 dark:text-red-400'
+            ]"
+            role="status"
           >
-            Suscribirme
-          </button>
-        </form>
+            {{ newsletterMessage }}
+          </p>
+        </div>
       </div>
     </section>
   </div>

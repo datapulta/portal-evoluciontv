@@ -43,6 +43,9 @@ export default defineEventHandler(async (event) => {
     `- [Evolución Radio](${SITE_URL}/radio): Estación digital 24/7 en audio de calidad HD.`,
     `- [Señal en Vivo (24/7)](${SITE_URL}/en-vivo): Transmisión digital en vivo y programación.`,
     `- [Quiénes Somos](${SITE_URL}/quienes-somos): Identidad, misión, visión y objetivos de Evolución TV.`,
+    `- [Buscador de Noticias](${SITE_URL}/buscar): Búsqueda de coberturas, investigaciones y artículos.`,
+    `- [Código de Ética Periodística](${SITE_URL}/codigo-etica): Principios editoriales e independencia periodística.`,
+    `- [Aviso de Privacidad](${SITE_URL}/privacidad): Política de privacidad y protección de datos.`,
     `- [Mapa del Sitio XML](${SITE_URL}/sitemap.xml): Índice completo de URLs.`,
     '',
     '## Categorías Editoriales'

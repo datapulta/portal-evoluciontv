@@ -8,6 +8,7 @@ const {
   isMinimized,
   isLoading,
   currentTrack,
+  currentArt,
   togglePlay,
   setVolume,
   toggleMute,
@@ -74,21 +75,27 @@ const onVolumeInput = (e: Event) => {
     >
       <!-- Fila principal: play + info + acciones -->
       <div class="flex items-center gap-3">
-        <!-- Botón circular rojo Play / Pause -->
+        <!-- Botón circular rojo Play / Pause con carátula de fondo opcional -->
         <button
           type="button"
           @click="togglePlay"
           :aria-label="isPlaying ? 'Pausar Evolución Radio' : 'Reproducir Evolución Radio'"
-          class="w-12 h-12 rounded-full bg-gradient-to-br from-red-500 to-red-700 hover:from-red-500 hover:to-red-600 text-white flex items-center justify-center shrink-0 shadow-lg shadow-red-900/30 hover:scale-105 active:scale-95 transition-all cursor-pointer ring-4 ring-red-600/15"
+          class="relative overflow-hidden w-12 h-12 rounded-full bg-gradient-to-br from-red-500 to-red-700 hover:from-red-500 hover:to-red-600 text-white flex items-center justify-center shrink-0 shadow-lg shadow-red-900/30 hover:scale-105 active:scale-95 transition-all cursor-pointer ring-4 ring-red-600/15"
         >
-          <svg v-if="isLoading" class="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24">
+          <img
+            v-if="currentArt"
+            :src="currentArt"
+            alt=""
+            class="absolute inset-0 w-full h-full object-cover opacity-30"
+          />
+          <svg v-if="isLoading" class="relative z-10 w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24">
             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z" />
           </svg>
-          <svg v-else-if="isPlaying" class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+          <svg v-else-if="isPlaying" class="relative z-10 w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
             <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
           </svg>
-          <svg v-else class="w-5 h-5 ml-0.5" viewBox="0 0 24 24" fill="currentColor">
+          <svg v-else class="relative z-10 w-5 h-5 ml-0.5" viewBox="0 0 24 24" fill="currentColor">
             <path d="M8 5v14l11-7z" />
           </svg>
         </button>
@@ -103,7 +110,10 @@ const onVolumeInput = (e: Event) => {
               radio
             </span>
           </NuxtLink>
-          <p class="text-[11px] font-medium text-neutral-600 dark:text-neutral-300 truncate flex items-center gap-1.5 mt-0.5">
+          <p
+            class="text-[11px] font-medium text-neutral-600 dark:text-neutral-300 truncate flex items-center gap-1.5 mt-0.5"
+            :title="currentTrack"
+          >
             <span
               v-if="isPlaying"
               class="w-1.5 h-1.5 rounded-full bg-red-600 animate-pulse shrink-0"
