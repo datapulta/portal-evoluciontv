@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import SocialLinks from '~/components/SocialLinks.vue'
+
 useHead({
   title: 'Quiénes Somos | Evolución TV',
   meta: [
@@ -181,6 +183,11 @@ const objetivos = [
           >
             Explorar Portada
           </NuxtLink>
+        </div>
+
+        <div class="pt-4 flex flex-col items-center gap-2">
+          <span class="text-xs font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400">Síguenos en redes</span>
+          <SocialLinks />
         </div>
       </section>
     </div>

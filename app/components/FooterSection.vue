@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import SocialLinks from '~/components/SocialLinks.vue'
+
 const currentYear = new Date().getFullYear()
 
 const footerCategories = [
@@ -29,11 +31,14 @@ const footerCategories = [
         <p class="text-xs md:text-sm text-neutral-600 dark:text-neutral-400 max-w-md leading-relaxed">
           Medio de comunicación independiente comprometido con la verdad, la libertad de prensa, el periodismo de investigación y la transmisión de noticias en directo para todo el país.
         </p>
-        <div class="flex items-center gap-2 text-xs text-neutral-500 dark:text-neutral-400">
-          <span class="inline-flex items-center gap-1.5 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 px-3 py-1 rounded-full text-neutral-700 dark:text-neutral-300 shadow-sm">
-            <span class="w-2 h-2 rounded-full bg-red-500"></span>
-            Transmisión Digital & Cobertura en Vivo
-          </span>
+        <div class="flex flex-col gap-3 pt-1">
+          <div class="flex items-center gap-2 text-xs text-neutral-500 dark:text-neutral-400">
+            <span class="inline-flex items-center gap-1.5 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 px-3 py-1 rounded-full text-neutral-700 dark:text-neutral-300 shadow-sm">
+              <span class="w-2 h-2 rounded-full bg-red-500"></span>
+              Transmisión Digital & Cobertura en Vivo
+            </span>
+          </div>
+          <SocialLinks />
         </div>
       </div>
 

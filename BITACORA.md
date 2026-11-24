@@ -310,3 +310,20 @@ Este documento constituye la memoria técnica y bitácora cronológica exhaustiv
   - Compilación de producción limpia ejecutada con `npm run build` (0 errores).
   - Verificación en `http://localhost:3005/noticias/el-retorno-de-jensen-huang-la-nueva-era-de-la-computacion-acelerada-y-las-fabricas-de-ia` (`200 OK`).
 
+---
+
+### Sesión 16 — 24 de Noviembre de 2026
+**Objetivo**: Mostrar únicamente artículos reales de Ghost CMS, ocultar la barra de desplazamiento del slider e integrar las 5 redes sociales oficiales de Evolución TV.
+- **Autorización**: Aprobación nativa formal del plan `plan_optimizacion_slider_sin_scrollbar.md` mediante botón Proceed del operador (§4.4 de AGENTS.md).
+- **Actividades Realizadas**:
+  1. **Solo Artículos Reales de Ghost CMS (`useNews.ts`, `index.vue`, `categoria/[slug].vue`)**:
+     - Se eliminó la mezcla con `BACKUP_ARTICLES` cuando Ghost CMS responde correctamente, mostrando exclusivamente las notas publicadas en Ghost.
+     - Se añadió `v-if="allArticles.length > 0"` en `index.vue` para ocultar la cuadrícula secundaria si hay 3 o menos notas reales.
+  2. **Slider sin Scrollbar Nativa (`main.css`, `noticias/[slug].vue`)**:
+     - Se creó la utilidad `.no-scrollbar` en `app/assets/css/main.css` y se aplicó al carrusel de artículos.
+     - Se añadieron estados reactivos `canScrollPrev` y `canScrollNext` para ocultar/deshabilitar flechas innecesarias.
+  3. **Redes Sociales Oficiales (`SocialLinks.vue`, `HeaderNav.vue`, `FooterSection.vue`, `quienes-somos.vue`)**:
+     - Se integraron los enlaces oficiales de Evolución TV en Facebook, YouTube, X, Instagram y TikTok.
+- **Verificación Técnica**:
+  - Compilación de producción limpia ejecutada con `npm run build` (0 errores).
+

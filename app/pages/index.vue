@@ -91,7 +91,7 @@ const allArticles = computed<Article[]>(() => newsResult.value?.articles?.slice(
     </section>
 
     <!-- Cuadrícula de Más Noticias e Investigaciones -->
-    <section class="max-w-7xl mx-auto px-4 py-8 md:py-12 border-t border-neutral-200 dark:border-neutral-900">
+    <section v-if="allArticles.length > 0" class="max-w-7xl mx-auto px-4 py-8 md:py-12 border-t border-neutral-200 dark:border-neutral-900">
       <div class="flex items-center justify-between mb-8 pb-3 border-b border-neutral-200 dark:border-neutral-800">
         <div class="flex items-center gap-2">
           <span class="w-2.5 h-6 bg-red-600 rounded-sm"></span>

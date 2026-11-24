@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import { useTheme } from '~/composables/useTheme'
+import SocialLinks from '~/components/SocialLinks.vue'
 import type { NavCategory } from '~~/server/api/categories.get'
 
 const { isDark, toggleTheme } = useTheme()
@@ -77,6 +78,8 @@ const navigationItems = computed<NavItem[]>(() => {
 
         <div class="hidden md:flex items-center gap-4 shrink-0 text-neutral-500 dark:text-neutral-400 capitalize">
           <span>{{ currentDate }}</span>
+          <span class="text-neutral-300 dark:text-neutral-700">|</span>
+          <SocialLinks compact />
         </div>
       </div>
     </div>
@@ -190,6 +193,11 @@ const navigationItems = computed<NavItem[]>(() => {
       >
         {{ cat.name }}
       </NuxtLink>
+
+      <div class="pt-3 border-t border-neutral-200 dark:border-neutral-800 flex items-center justify-between">
+        <span class="text-xs font-bold text-neutral-500 dark:text-neutral-400 uppercase tracking-wider">Síguenos</span>
+        <SocialLinks compact />
+      </div>
     </div>
   </header>
 </template>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted, watch, nextTick } from 'vue'
 import { useRoute } from 'vue-router'
 import { useNews } from '~/composables/useNews'
 import NewsCard from '~/components/NewsCard.vue'
@@ -47,6 +47,16 @@ const relatedArticles = computed(() => {
 })
 
 const sliderRef = ref<HTMLElement | null>(null)
+const canScrollPrev = ref(false)
+const canScrollNext = ref(false)
+
+const updateSliderState = () => {
+  const el = sliderRef.value
+  if (!el) return
+  canScrollPrev.value = el.scrollLeft > 4
+  canScrollNext.value = el.scrollLeft + el.clientWidth < el.scrollWidth - 4
+}
+
 const scrollSlider = (direction: 'prev' | 'next') => {
   if (!sliderRef.value) return
   const offset = Math.max(320, sliderRef.value.clientWidth * 0.75)
@@ -55,6 +65,14 @@ const scrollSlider = (direction: 'prev' | 'next') => {
     behavior: 'smooth'
   })
 }
+
+onMounted(() => {
+  nextTick(updateSliderState)
+})
+
+watch(relatedArticles, () => {
+  nextTick(updateSliderState)
+})
 
 // Metadatos SEO dinámicos
 useHead({
@@ -266,12 +284,18 @@ const formatDate = (dateStr?: string) => {
           </h2>
         </div>
 
-        <div class="flex items-center gap-2">
+        <div v-if="canScrollPrev || canScrollNext" class="flex items-center gap-2">
           <button
             type="button"
+            :disabled="!canScrollPrev"
             @click="scrollSlider('prev')"
             aria-label="Noticias anteriores"
-            class="p-2.5 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 text-neutral-700 dark:text-neutral-300 hover:text-red-600 dark:hover:text-red-400 hover:border-red-500/40 transition-colors cursor-pointer shadow-sm"
+            :class="[
+              'p-2.5 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 text-neutral-700 dark:text-neutral-300 transition-colors shadow-sm',
+              canScrollPrev
+                ? 'hover:text-red-600 dark:hover:text-red-400 hover:border-red-500/40 cursor-pointer'
+                : 'opacity-40 cursor-not-allowed'
+            ]"
           >
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
@@ -279,9 +303,15 @@ const formatDate = (dateStr?: string) => {
           </button>
           <button
             type="button"
+            :disabled="!canScrollNext"
             @click="scrollSlider('next')"
             aria-label="Siguientes noticias"
-            class="p-2.5 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 text-neutral-700 dark:text-neutral-300 hover:text-red-600 dark:hover:text-red-400 hover:border-red-500/40 transition-colors cursor-pointer shadow-sm"
+            :class="[
+              'p-2.5 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 text-neutral-700 dark:text-neutral-300 transition-colors shadow-sm',
+              canScrollNext
+                ? 'hover:text-red-600 dark:hover:text-red-400 hover:border-red-500/40 cursor-pointer'
+                : 'opacity-40 cursor-not-allowed'
+            ]"
           >
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
@@ -292,7 +322,8 @@ const formatDate = (dateStr?: string) => {
 
       <div
         ref="sliderRef"
-        class="flex gap-6 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-4 -mx-4 px-4 md:mx-0 md:px-0"
+        @scroll.passive="updateSliderState"
+        class="no-scrollbar flex gap-6 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-2 -mx-4 px-4 md:mx-0 md:px-0"
       >
         <NewsCard
           v-for="rel in relatedArticles"

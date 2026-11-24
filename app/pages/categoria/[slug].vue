@@ -27,9 +27,7 @@ const { data: categoryData, pending } = await useAsyncData(
 )
 
 const articles = computed<Article[]>(() => {
-  const list = categoryData.value?.articles || []
-  // Filtrar si el endpoint devolvió backup que no coincide con el tag solicitado
-  return list.filter(a => a.primary_tag?.slug === slug.value || list.length <= 2)
+  return categoryData.value?.articles || []
 })
 
 // Metadatos SEO dinámicos
