@@ -17,12 +17,12 @@ onMounted(() => {
 
 const categories = [
   { name: 'Portada', to: '/' },
-  { name: 'Nacional', to: '/#nacional' },
-  { name: 'Política', to: '/#politica' },
-  { name: 'Economía', to: '/#economia' },
-  { name: 'Investigación', to: '/#investigacion' },
+  { name: 'Coberturas ETV', to: '/#coberturas-etv' },
+  { name: 'Más bandas', to: '/#mas-bandas' },
+  { name: 'EvolucioNotas', to: '/#evolucionotas' },
   { name: 'Señal en Vivo', to: '/en-vivo', highlight: true },
-  { name: 'Opinión', to: '/#opinion' }
+  { name: 'Quiénes somos', to: '/#quienes-somos' },
+  { name: 'Contacto', to: '/#contacto' }
 ]
 </script>
 

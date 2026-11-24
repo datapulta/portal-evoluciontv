@@ -220,3 +220,20 @@ Este documento constituye la memoria técnica y bitácora cronológica exhaustiv
 - **Verificación Técnica**:
   - Compilación de producción limpia ejecutada con `npm run build` (13.2s, 0 errores).
   - Comprobación local: `http://localhost:3005/` libre del bloque de video y `http://localhost:3005/en-vivo` con la experiencia televisiva completa (200 OK).
+
+---
+
+### Sesión 11 — 23 de Noviembre de 2026
+**Objetivo**: Creación de las 4 categorías periodísticas oficiales en Ghost CMS y sincronización de la taxonomía en la cabecera de navegación del portal.
+- **Autorización**: Aprobación nativa formal del plan `plan_creacion_categorias_ghost_y_navegacion.md` mediante botón Proceed del operador (§4.4 de AGENTS.md).
+- **Actividades Realizadas**:
+  1. **Aprovisionamiento de Categorías en Ghost CMS**:
+     - Ejecución de `scripts/create-tags.mjs` autenticado con Ghost Admin API.
+     - Creación de las 4 etiquetas oficiales: *"Quiénes somos"* (`id: 6b04dda1c506c700013dce6d`), *"Coberturas ETV"* (`id: 6b04dda1c506c700013dce6f`), *"Más bandas"* (`id: 6b04dda1c506c700013dce71`) y *"EvolucioNotas"* (`id: 6b04dda1c506c700013dce73`).
+     - Asignación de colores identificadores y metadatos para clasificación periodística.
+  2. **Sincronización de Navegación en `app/components/HeaderNav.vue`**:
+     - Actualización del menú de categorías: *Portada*, *Coberturas ETV*, *Más bandas*, *EvolucioNotas*, *Señal en Vivo*, *Quiénes somos* y canal de *Contacto*.
+- **Verificación Técnica**:
+  - Ghost Admin API confirma las 4 etiquetas creadas y activas.
+  - Compilación de producción exitosa con `npm run build` (13.2s, 0 errores).
+  - Validación de renderizado de las 5 opciones de navegación en el HTML SSR de `http://localhost:3005/` y `https://etv.webia.studio/`.
