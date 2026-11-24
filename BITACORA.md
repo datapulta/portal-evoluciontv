@@ -779,4 +779,22 @@ La página `/radio` presentaba exceso de espacio visual en viewport desktop (≥
   - Compilación de producción limpia ejecutada con `npm run build` (0 errores).
   - Verificación visual en servidor de desarrollo local `http://localhost:3005/contacto`.
 
+---
+
+### Sesión 34 — 24 de Noviembre de 2026
+**Objetivo**: Redacción, maquetación semántica y publicación en Ghost CMS del artículo oficial: *"Evolución TV regresa a sus orígenes con portal oficial"*.
+- **Autorización**: Aprobación nativa formal del plan `plan_subir_articulo_regreso_origenes_ghost.md` mediante botón Proceed del operador (§4.4 de AGENTS.md).
+- **Actividades Realizadas**:
+  1. **Publicación Programática en Ghost Admin API**:
+     - Generación de token JWT firmado con HMAC-SHA256 (`NEWS_ADMIN_API_KEY`).
+     - Creación del post con ID `6b06218fc506c700013dceba` y slug `evolucion-tv-regresa-a-sus-origenes-con-portal-oficial`.
+     - Tags asignados: `EvolucioNotas` (principal) y `Más bandas` (secundario).
+     - Autor: `Equipo ETV` (mencionando a VicMan Gutiérrez y sus 13 años de trayectoria desde septiembre de 2013).
+     - Imagen destacada de alta definición de concierto en vivo con luces y multitud.
+     - Maquetación con subtítulos `<h2>` (Línea editorial, Música 24/7 y Apertura a bandas consolidadas / tienda oficial) y pullquote destacado.
+- **Verificación Técnica**:
+  - `HTTP 200 OK` en local: `http://localhost:3005/noticias/evolucion-tv-regresa-a-sus-origenes-con-portal-oficial`.
+  - `HTTP 200 OK` en producción: `https://etv.webia.studio/noticias/evolucion-tv-regresa-a-sus-origenes-con-portal-oficial`.
+  - Renderizado verificado en el ticker rotativo de última hora y metadatos NewsArticle Schema.org.
+
 
