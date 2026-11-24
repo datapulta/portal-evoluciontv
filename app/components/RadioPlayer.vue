@@ -106,14 +106,14 @@ const onVolumeInput = (e: Event) => {
 
       <!-- Información de la estación y controles de volumen -->
       <div class="flex-1 min-w-0 pr-4 space-y-1">
-        <div class="flex flex-col leading-none">
-          <span class="text-base font-black tracking-tight text-red-600">
+        <NuxtLink to="/radio" class="flex flex-col leading-none group w-fit" title="Ir a página de Evolución Radio">
+          <span class="text-base font-black tracking-tight text-red-600 group-hover:underline">
             EVOLUCIÓN
           </span>
           <span class="text-xs font-bold tracking-wide text-neutral-900 dark:text-white -mt-0.5">
             radio
           </span>
-        </div>
+        </NuxtLink>
 
         <p class="text-[11px] font-medium text-neutral-600 dark:text-neutral-300 truncate flex items-center gap-1.5">
           <span

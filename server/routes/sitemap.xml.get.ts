@@ -33,6 +33,7 @@ export default defineEventHandler(async (event) => {
 
   const urls: Array<{ loc: string; lastmod?: string; changefreq: string; priority: string }> = [
     { loc: `${SITE_URL}/`, changefreq: 'hourly', priority: '1.0' },
+    { loc: `${SITE_URL}/radio`, changefreq: 'daily', priority: '0.9' },
     { loc: `${SITE_URL}/en-vivo`, changefreq: 'daily', priority: '0.9' },
     { loc: `${SITE_URL}/quienes-somos`, changefreq: 'monthly', priority: '0.7' }
   ]

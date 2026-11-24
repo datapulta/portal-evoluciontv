@@ -8,6 +8,7 @@ const footerCategories = [
   { name: 'Coberturas ETV', to: '/categoria/coberturas-etv' },
   { name: 'Más bandas', to: '/categoria/mas-bandas' },
   { name: 'EvolucioNotas', to: '/categoria/evolucionotas' },
+  { name: 'Evolución Radio', to: '/radio' },
   { name: 'Señal en Vivo (24/7)', to: '/en-vivo', highlight: true },
   { name: 'Quiénes somos', to: '/quienes-somos' }
 ]

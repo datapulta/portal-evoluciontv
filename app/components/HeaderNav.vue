@@ -54,6 +54,7 @@ const navigationItems = computed<NavItem[]>(() => {
   }
 
   items.push(
+    { name: 'Evolución Radio', to: '/radio' },
     { name: 'Señal en Vivo', to: '/en-vivo', highlight: true },
     { name: 'Contacto', to: '/#contacto' }
   )

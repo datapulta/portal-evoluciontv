@@ -394,3 +394,19 @@ Este documento constituye la memoria técnica y bitácora cronológica exhaustiv
   - Compilación de producción limpia ejecutada con `npm run build` (0 errores).
   - Validación local en `/llms.txt`, `/sitemap.xml` y `/noticias/...`.
 
+---
+
+### Sesión 22 — 24 de Noviembre de 2026
+**Objetivo**: Conexión del stream oficial de **Evolución Radio** (`https://r3.webia.studio/listen/estereo_fonik/radio-320.mp3`) y creación de la página dedicada `/radio`.
+- **Autorización**: Aprobación nativa formal del plan `plan_evolucion_radio_stream_y_pagina.md` mediante botón Proceed del operador (§4.4 de AGENTS.md).
+- **Actividades Realizadas**:
+  1. **Conexión del Stream (`app/composables/useRadio.ts`)**:
+     - Se configuró `DEFAULT_RADIO_STREAM_URL` con el stream MP3 320 kbps validado (`200 OK`, `audio/mpeg`).
+  2. **Página Dedicada (`app/pages/radio.vue`)**:
+     - Reproductor protagonista con visualizador de barras, control Play/Pause, barra de volumen/silencio y redes sociales sincronizado con el reproductor flotante.
+  3. **Sincronización de Enlaces (`HeaderNav.vue`, `FooterSection.vue`, `RadioPlayer.vue`, `llms.txt.get.ts`, `sitemap.xml.get.ts`)**:
+     - Se añadió acceso directo a `/radio` en el menú, pie de página, título del reproductor flotante, `/llms.txt` y `/sitemap.xml`.
+- **Verificación Técnica**:
+  - Compilación de producción limpia ejecutada con `npm run build` (0 errores).
+  - Validación local en `http://localhost:3005/radio` (`200 OK`).
+

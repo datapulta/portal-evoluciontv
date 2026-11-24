@@ -1,7 +1,7 @@
 import { ref, onMounted } from 'vue'
 
 // URL de streaming configurable para Evolución Radio (Icecast / Shoutcast / MP3 / AAC)
-export const DEFAULT_RADIO_STREAM_URL = ''
+export const DEFAULT_RADIO_STREAM_URL = 'https://r3.webia.studio/listen/estereo_fonik/radio-320.mp3'
 
 const isPlaying = ref(false)
 const isMuted = ref(false)

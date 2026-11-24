@@ -40,6 +40,7 @@ export default defineEventHandler(async (event) => {
     '',
     '## Secciones Principales',
     `- [Portada](${SITE_URL}/): Noticias destacadas y coberturas recientes.`,
+    `- [Evolución Radio](${SITE_URL}/radio): Estación digital 24/7 en MP3 320 kbps.`,
     `- [Señal en Vivo (24/7)](${SITE_URL}/en-vivo): Transmisión digital en vivo y programación.`,
     `- [Quiénes Somos](${SITE_URL}/quienes-somos): Identidad, misión, visión y objetivos de Evolución TV.`,
     `- [Mapa del Sitio XML](${SITE_URL}/sitemap.xml): Índice completo de URLs.`,
