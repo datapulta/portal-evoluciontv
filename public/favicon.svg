@@ -1,10 +1,15 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-  <defs>
-    <linearGradient id="etvGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#01ABE8" />
-      <stop offset="100%" stop-color="#0086BD" />
-    </linearGradient>
-  </defs>
-  <rect x="4" y="4" width="92" height="92" rx="22" fill="url(#etvGrad)" stroke="#FE9903" stroke-width="6" />
-  <polygon points="38,28 74,50 38,72" fill="#FE9903" stroke="#ffffff" stroke-width="3" stroke-linejoin="round" />
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <rect x="2" y="2" width="60" height="60" rx="16" fill="#ffffff" stroke="#e5e5e5" stroke-width="2" />
+  <path
+    d="M15 11.5C15 9.8 16.9 8.7 18.4 9.6L49.5 27.6C51 28.5 51 30.6 49.5 31.5L18.4 49.5C16.9 50.4 15 49.3 15 47.6V11.5Z"
+    fill="#01ABE8"
+  />
+  <rect x="22" y="23" width="32" height="23" rx="5.5" fill="#FE9903" stroke="#ffffff" stroke-width="3" />
+  <circle cx="31.5" cy="34.5" r="3" fill="#ffffff" />
+  <path
+    d="M38 30C40.5 32.4 40.5 36.6 38 39M43 26.8C46.8 31 46.8 38 43 42.2"
+    stroke="#ffffff"
+    stroke-width="3"
+    stroke-linecap="round"
+  />
 </svg>

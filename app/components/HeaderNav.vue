@@ -4,6 +4,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { useTheme } from '~/composables/useTheme'
 import { useNews } from '~/composables/useNews'
 import SocialLinks from '~/components/SocialLinks.vue'
+import BrandMark from '~/components/BrandMark.vue'
 import type { NavCategory } from '~~/server/api/categories.get'
 
 const route = useRoute()
@@ -137,11 +138,7 @@ const isActiveRoute = (to: string) => {
     <div class="max-w-7xl mx-auto px-4 py-3.5 flex items-center justify-between gap-3">
       <!-- Logo Evolución TV -->
       <NuxtLink to="/" class="flex items-center gap-3 group shrink-0">
-        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-etv-blue-500 to-etv-blue-600 flex items-center justify-center shadow-md shadow-etv-blue-900/25 group-hover:scale-105 transition-transform ring-2 ring-etv-orange-500/80">
-          <svg class="w-6 h-6 text-etv-orange-400" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M8 5v14l11-7z" />
-          </svg>
-        </div>
+        <BrandMark />
         <div class="flex flex-col">
           <div class="flex items-center gap-2">
             <span class="text-2xl font-black tracking-tight text-neutral-900 dark:text-white group-hover:text-etv-orange-600 dark:group-hover:text-etv-orange-400 transition-colors">

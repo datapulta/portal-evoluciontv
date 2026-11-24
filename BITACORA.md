@@ -4,6 +4,24 @@ Este documento constituye la memoria técnica y bitácora cronológica exhaustiv
 
 ---
 
+## Sesión 30 — 2026-11-24 · Rediseño del Isotipo de Marca (`BrandMark.vue`)
+
+**Rama activa**: `feat/setup-nuxt4-ghost-cms` (pendiente autorización de merge a `main` y deploy)
+**Autorización**: `plan_logo_isotipo_etv.md` (Proceed button, §4.4 AGENTS.md)
+
+### Diagnóstico
+El isotipo previo invertía la jerarquía cromática del logo oficial (fondo azul con triángulo naranja y contorno grueso) y usaba un ícono genérico duplicado en cabecera y footer.
+
+### Cambios realizados
+- **`app/components/BrandMark.vue` [NEW]**: Componente reutilizable (`size: 'sm' | 'md'`) con triángulo Play Azul `#01ABE8` detrás y pantalla/señal de TV digital Naranja `#FE9903` al frente con ondas blancas nítidas sobre contenedor adaptativo claro/oscuro.
+- **`app/components/HeaderNav.vue` y `app/components/FooterSection.vue`**: Reemplazo del SVG duplicado por `<BrandMark />`.
+- **`public/favicon.svg`**: Sincronizado con el nuevo isotipo de TV + Play sin fondo negro opaco.
+
+### Verificación
+- `npm run build` y validación HTTP local en `http://localhost:3005/`.
+
+---
+
 ## Sesión 29 — 2026-11-24 · Identidad Cromática Oficial (Naranja `#FE9903` y Azul `#01ABE8`)
 
 **Rama activa**: `feat/setup-nuxt4-ghost-cms` (pendiente autorización de merge a `main` y deploy)

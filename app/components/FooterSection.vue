@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import SocialLinks from '~/components/SocialLinks.vue'
+import BrandMark from '~/components/BrandMark.vue'
 
 const currentYear = new Date().getFullYear()
 
@@ -21,11 +22,7 @@ const footerCategories = [
       <!-- Columna 1: Identidad -->
       <div class="md:col-span-2 space-y-4">
         <div class="flex items-center gap-3">
-          <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-etv-blue-500 to-etv-blue-600 flex items-center justify-center text-etv-orange-400 font-black shadow-md shadow-etv-blue-900/25 ring-2 ring-etv-orange-500/80">
-            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M8 5v14l11-7z" />
-            </svg>
-          </div>
+          <BrandMark size="sm" />
           <span class="text-xl font-black text-neutral-900 dark:text-white tracking-tight">
             EVOLUCIÓN <span class="text-etv-orange-600 dark:text-etv-orange-500">TV</span>
           </span>
