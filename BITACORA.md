@@ -280,3 +280,18 @@ Este documento constituye la memoria técnica y bitácora cronológica exhaustiv
   - Búsqueda en `app/` confirma 0 enlaces restantes a `cms-etv.webia.studio/ghost`.
   - Compilación de producción limpia ejecutada con `npm run build` (0 errores).
 
+---
+
+### Sesión 14 — 24 de Noviembre de 2026
+**Objetivo**: Creación de la página dedicada `/quienes-somos` con identidad, Misión, Visión y Objetivos de Evolución TV.
+- **Autorización**: Aprobación nativa formal del plan `plan_pagina_quienes_somos.md` mediante botón Proceed del operador (§4.4 de AGENTS.md).
+- **Actividades Realizadas**:
+  1. **Nueva Página Dedicada (`app/pages/quienes-somos.vue`)**:
+     - Se integraron los bloques institucionales: descripción general de Evolución TV, Misión, Visión, Objetivos (Corto, Mediano y Largo plazo) y llamado a la acción final.
+     - Diseño optimizado con soporte completo para Modo Claro y Modo Oscuro.
+  2. **Actualización de Enlaces (`HeaderNav.vue` y `FooterSection.vue`)**:
+     - El enlace `Quiénes somos` (tanto en el menú dinámico superior como en el pie de página) ahora apunta directamente a `/quienes-somos`.
+- **Verificación Técnica**:
+  - Compilación de producción limpia ejecutada con `npm run build` (0 errores).
+  - Verificación en `http://localhost:3005/quienes-somos` (200 OK).
+

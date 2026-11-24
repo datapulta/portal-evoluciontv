@@ -39,7 +39,7 @@ const navigationItems = computed<NavItem[]>(() => {
     for (const cat of remoteCategories.value) {
       items.push({
         name: cat.name,
-        to: `/categoria/${cat.slug}`,
+        to: cat.slug === 'quienes-somos' ? '/quienes-somos' : `/categoria/${cat.slug}`,
         color: cat.color
       })
     }
@@ -48,7 +48,7 @@ const navigationItems = computed<NavItem[]>(() => {
       { name: 'Coberturas ETV', to: '/categoria/coberturas-etv' },
       { name: 'Más bandas', to: '/categoria/mas-bandas' },
       { name: 'EvolucioNotas', to: '/categoria/evolucionotas' },
-      { name: 'Quiénes somos', to: '/categoria/quienes-somos' }
+      { name: 'Quiénes somos', to: '/quienes-somos' }
     )
   }
 

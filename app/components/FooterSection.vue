@@ -7,7 +7,7 @@ const footerCategories = [
   { name: 'Más bandas', to: '/categoria/mas-bandas' },
   { name: 'EvolucioNotas', to: '/categoria/evolucionotas' },
   { name: 'Señal en Vivo (24/7)', to: '/en-vivo', highlight: true },
-  { name: 'Quiénes somos', to: '/categoria/quienes-somos' }
+  { name: 'Quiénes somos', to: '/quienes-somos' }
 ]
 </script>
 
