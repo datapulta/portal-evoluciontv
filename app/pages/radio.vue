@@ -29,21 +29,21 @@ const {
 </script>
 
 <template>
-  <div class="min-h-[calc(100vh-8rem)] flex items-center py-8 md:py-12 transition-colors duration-200">
-    <div class="max-w-5xl w-full mx-auto px-4 space-y-6">
-      <!-- Barra superior de navegación / Retorno -->
-      <div class="flex items-center justify-between">
+  <div class="min-h-[calc(100vh-8rem)] flex items-center py-4 md:py-8 transition-colors duration-200">
+    <div class="max-w-5xl w-full mx-auto px-4 space-y-4">
+      <!-- Barra superior con botón Explorar la plataforma -->
+      <div class="flex items-center justify-between gap-3">
         <NuxtLink
           to="/"
-          class="inline-flex items-center gap-2 text-xs md:text-sm font-bold text-neutral-600 dark:text-neutral-400 hover:text-red-600 dark:hover:text-red-400 transition-colors"
+          class="inline-flex items-center gap-2 bg-neutral-900 hover:bg-neutral-800 dark:bg-white dark:hover:bg-neutral-200 text-white dark:text-neutral-950 font-bold text-xs px-4 py-2 rounded-xl shadow-sm transition-all hover:scale-[1.02] active:scale-95"
         >
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
           </svg>
-          Volver a la Portada
+          Explorar la plataforma
         </NuxtLink>
 
-        <span class="inline-flex items-center gap-2 bg-red-600/10 border border-red-500/30 text-red-600 dark:text-red-400 font-bold px-3 py-1 rounded-full text-xs">
+        <span class="inline-flex items-center gap-2 bg-red-600/10 border border-red-500/30 text-red-600 dark:text-red-400 font-bold px-3 py-1.5 rounded-full text-xs">
           <span class="w-2 h-2 rounded-full bg-red-600 animate-ping"></span>
           320 KBPS MP3 · EN VIVO
         </span>

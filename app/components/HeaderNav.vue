@@ -144,10 +144,15 @@ const navigationItems = computed<NavItem[]>(() => {
         <!-- Botón menú móvil -->
         <button
           @click="mobileMenuOpen = !mobileMenuOpen"
-          class="md:hidden p-2 rounded-lg text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-100 dark:hover:bg-neutral-900 focus:outline-none"
+          :aria-expanded="mobileMenuOpen"
+          aria-label="Abrir menú de navegación"
+          class="md:hidden p-2 rounded-lg text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-100 dark:hover:bg-neutral-900 focus:outline-none transition-colors"
         >
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg v-if="!mobileMenuOpen" class="w-6 h-6 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+          </svg>
+          <svg v-else class="w-6 h-6 transition-transform duration-200 rotate-90" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
           </svg>
         </button>
       </div>
@@ -172,33 +177,42 @@ const navigationItems = computed<NavItem[]>(() => {
       </div>
     </nav>
 
-    <!-- Menú móvil colapsable -->
-    <div v-if="mobileMenuOpen" class="md:hidden border-t border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 px-4 py-3 space-y-2 transition-colors">
-      <div class="flex items-center justify-between pb-2 border-b border-neutral-200 dark:border-neutral-800">
-        <span class="text-xs font-bold text-neutral-500 dark:text-neutral-400 uppercase tracking-wider">Apariencia</span>
-        <button
-          @click="toggleTheme"
-          class="flex items-center gap-2 text-xs font-semibold px-3 py-1.5 rounded-lg bg-neutral-100 dark:bg-neutral-800 text-neutral-800 dark:text-neutral-200"
+    <!-- Menú móvil colapsable con transición moderna -->
+    <Transition
+      enter-active-class="transition duration-200 ease-out"
+      enter-from-class="opacity-0 -translate-y-2 scale-[0.98]"
+      enter-to-class="opacity-100 translate-y-0 scale-100"
+      leave-active-class="transition duration-150 ease-in"
+      leave-from-class="opacity-100 translate-y-0 scale-100"
+      leave-to-class="opacity-0 -translate-y-2 scale-[0.98]"
+    >
+      <div v-if="mobileMenuOpen" class="md:hidden border-t border-neutral-200 dark:border-neutral-800 bg-white/95 dark:bg-neutral-900/95 backdrop-blur-md px-4 py-3 space-y-2 shadow-xl">
+        <div class="flex items-center justify-between pb-2 border-b border-neutral-200 dark:border-neutral-800">
+          <span class="text-xs font-bold text-neutral-500 dark:text-neutral-400 uppercase tracking-wider">Apariencia</span>
+          <button
+            @click="toggleTheme"
+            class="flex items-center gap-2 text-xs font-semibold px-3 py-1.5 rounded-lg bg-neutral-100 dark:bg-neutral-800 text-neutral-800 dark:text-neutral-200"
+          >
+            <span>{{ isDark ? 'Modo Oscuro Activo' : 'Modo Claro Activo' }}</span>
+            <span class="text-sm">{{ isDark ? '🌙' : '☀️' }}</span>
+          </button>
+        </div>
+
+        <NuxtLink
+          v-for="cat in navigationItems"
+          :key="cat.name"
+          :to="cat.to"
+          @click="mobileMenuOpen = false"
+          class="block py-2 text-neutral-800 dark:text-neutral-200 font-medium hover:text-red-600 dark:hover:text-red-400 transition-colors"
         >
-          <span>{{ isDark ? 'Modo Oscuro Activo' : 'Modo Claro Activo' }}</span>
-          <span class="text-sm">{{ isDark ? '🌙' : '☀️' }}</span>
-        </button>
-      </div>
+          {{ cat.name }}
+        </NuxtLink>
 
-      <NuxtLink
-        v-for="cat in navigationItems"
-        :key="cat.name"
-        :to="cat.to"
-        @click="mobileMenuOpen = false"
-        class="block py-2 text-neutral-800 dark:text-neutral-200 font-medium hover:text-red-600 dark:hover:text-red-400"
-      >
-        {{ cat.name }}
-      </NuxtLink>
-
-      <div class="pt-3 border-t border-neutral-200 dark:border-neutral-800 flex items-center justify-between">
-        <span class="text-xs font-bold text-neutral-500 dark:text-neutral-400 uppercase tracking-wider">Síguenos</span>
-        <SocialLinks compact />
+        <div class="pt-3 border-t border-neutral-200 dark:border-neutral-800 flex items-center justify-between">
+          <span class="text-xs font-bold text-neutral-500 dark:text-neutral-400 uppercase tracking-wider">Síguenos</span>
+          <SocialLinks compact />
+        </div>
       </div>
-    </div>
+    </Transition>
   </header>
 </template>
