@@ -695,4 +695,24 @@ La página `/radio` presentaba exceso de espacio visual en viewport desktop (≥
   - Verificación HTTP `200 OK` en `http://localhost:3005/contacto`.
   - Verificación de presencia de `/contacto` en `/sitemap.xml` y `/llms.txt`.
 
+---
+
+### Sesión 29 — 24 de Noviembre de 2026
+**Objetivo**: Reorientación integral de Contacto, Footer, En Vivo y Privacidad hacia la escena musical independiente en México (ska, reggae, rock, bandas y toquines), eliminando conceptos de reporte ciudadano / denuncias.
+- **Autorización**: Aprobación nativa formal del plan `plan_enfoque_musical_bandas_contacto.md` mediante botón Proceed del operador (§4.4 de AGENTS.md).
+- **Actividades Realizadas**:
+  1. **Página de Contacto (`app/pages/contacto.vue`)**:
+     - Sustitución de canales por: **Envío de Música & Bandas Independientes** (sencillos, EPK y comunicados de ska, reggae, rock), **Coberturas de Toquines & Festivales** (acreditaciones, reseñas y fotografía) y **Sesiones en Vivo & Entrevistas en Cabina**.
+     - Actualización de metadatos SEO y texto del hero al perfil de cabina musical independiente.
+     - Actualización de sección de compromiso editorial a *Compromiso Editorial y Escucha Musical* (respeto a derechos de autor y escucha en 24-48 hrs).
+  2. **Pie de Página (`app/components/FooterSection.vue`)**:
+     - Reemplazo de "Buzón de Denuncias" por **"Envío de Música y Bandas"** (`subject=Envio%20de%20Musica%20y%20Bandas`).
+  3. **Cabina En Vivo (`app/pages/en-vivo.vue`)**:
+     - Módulo de cabina actualizado a: *"¿Tienes una banda o toquín en puerta? Envía tus fechas, lanzamientos o propuestas de cobertura a nuestra cabina de redacción."*
+  4. **Aviso de Privacidad (`app/pages/privacidad.vue`)**:
+     - Cláusula de contacto actualizada para material de bandas y propuestas musicales.
+- **Verificación Técnica**:
+  - Compilación de producción limpia ejecutada con `npm run build` (0 errores).
+  - Validación local en `http://localhost:3005/contacto` y `http://localhost:3005/en-vivo` (`200 OK`).
+
 

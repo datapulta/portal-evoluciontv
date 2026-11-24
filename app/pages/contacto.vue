@@ -2,19 +2,19 @@
 import { ref } from 'vue'
 
 useHead({
-  title: 'Contacto y Redacción | Evolución TV',
+  title: 'Contacto y Bandas Independientes | Evolución TV',
   meta: [
     {
       name: 'description',
-      content: 'Canales directos de comunicación, redacción periodística, denuncias ciudadanas y redes sociales oficiales de Evolución TV. Medio digital independiente.'
+      content: 'Canales directos de comunicación para bandas independientes, promotores y seguidores de la escena de ska, reggae, rock y música alternativa en México. Evolución TV.'
     },
     {
       property: 'og:title',
-      content: 'Contacto y Redacción | Evolución TV'
+      content: 'Contacto y Bandas Independientes | Evolución TV'
     },
     {
       property: 'og:description',
-      content: 'Comunícate con el equipo editorial de Evolución TV. Buzón de denuncias, prensa y redes sociales oficiales.'
+      content: 'Envío de música, EPK de bandas, coberturas de toquines y festivales, entrevistas y redes oficiales de Evolución TV.'
     }
   ]
 })
@@ -37,37 +37,37 @@ const copyToClipboard = async (email: string) => {
 
 const contactChannels = [
   {
-    id: 'editorial',
-    title: 'Redacción General & Editorial',
-    badge: 'Mesa Editorial',
+    id: 'musica',
+    title: 'Envío de Música & Bandas Independientes',
+    badge: 'Escena Musical & Bandas',
     badgeColor: 'bg-etv-orange-500/10 text-etv-orange-600 dark:text-etv-orange-400 border-etv-orange-500/20',
     iconColor: 'text-etv-orange-500',
-    description: 'Envío de cartas a la redacción, comunicados oficiales, notas de prensa y sugerencias de cobertura temática.',
+    description: 'Envío de sencillos, EPK, comunicados o lanzamientos de bandas de ska, reggae, rock y ritmos afines para reseña, difusión y programación en Evolución Radio.',
     email: 'redaccion@evoluciontv.com',
-    subject: 'Contacto General - Evolución TV',
-    actionText: 'Escribir a Redacción'
+    subject: 'Envío de Música / Nueva Banda - Evolución TV',
+    actionText: 'Enviar Música o EPK'
   },
   {
-    id: 'denuncias',
-    title: 'Buzón de Denuncias Ciudadanas',
-    badge: 'Confidencialidad Editorial',
+    id: 'coberturas',
+    title: 'Coberturas de Toquines & Festivales',
+    badge: 'En Vivo & Festivales',
     badgeColor: 'bg-etv-blue-500/10 text-etv-blue-600 dark:text-etv-blue-400 border-etv-blue-500/20',
     iconColor: 'text-etv-blue-500',
-    description: 'Reportes de hechos de interés público, quejas ciudadanas y testimonios con estricta reserva de identidad periodística.',
+    description: 'Acreditaciones de prensa, crónicas de conciertos, cobertura fotográfica de toquines y difusión de carteles y eventos de la escena mexicana.',
     email: 'redaccion@evoluciontv.com',
-    subject: 'Reporte Ciudadano - Evolución TV',
-    actionText: 'Enviar Reporte Ciudadano'
+    subject: 'Cobertura de Toquín / Festival - Evolución TV',
+    actionText: 'Solicitar Cobertura de Toquín'
   },
   {
-    id: 'alianzas',
-    title: 'Alianzas, Prensa & Producción',
-    badge: 'Colaboraciones & Medios',
+    id: 'sesiones',
+    title: 'Sesiones en Vivo & Entrevistas',
+    badge: 'Cabina & Sesiones ETV',
     badgeColor: 'bg-purple-500/10 text-purple-600 dark:text-purple-400 border-purple-500/20',
     iconColor: 'text-purple-500',
-    description: 'Coordinación de entrevistas con bandas musicales, realizadores audiovisuales, convenios culturales y solicitudes institucionales.',
+    description: 'Coordinación de entrevistas presenciales o remotas, sesiones acústicas en cabina, cápsulas y alianzas con promotores culturales y sellos independientes.',
     email: 'redaccion@evoluciontv.com',
-    subject: 'Alianzas y Prensa - Evolución TV',
-    actionText: 'Contactar Producción'
+    subject: 'Sesiones en Vivo y Entrevistas - Evolución TV',
+    actionText: 'Agendar Entrevista o Sesión'
   }
 ]
 
@@ -127,20 +127,20 @@ const socialChannels = [
           Inicio
         </NuxtLink>
         <span class="text-neutral-300 dark:text-neutral-700">/</span>
-        <span class="text-neutral-800 dark:text-neutral-200 font-semibold">Contacto y Redacción</span>
+        <span class="text-neutral-800 dark:text-neutral-200 font-semibold">Contacto y Bandas</span>
       </nav>
 
       <!-- Encabezado Principal / Hero -->
       <section class="text-center max-w-3xl mx-auto space-y-4">
         <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-etv-orange-500/10 text-etv-orange-600 dark:text-etv-orange-400 border border-etv-orange-500/20 uppercase tracking-widest">
           <span class="w-2 h-2 rounded-full bg-etv-orange-500 animate-pulse"></span>
-          Canal Directo de Comunicación
+          Escena Musical Independiente
         </div>
         <h1 class="text-3xl md:text-5xl font-black text-neutral-900 dark:text-white tracking-tight">
-          Hablemos con la <span class="text-etv-orange-500">Redacción</span> de Evolución TV
+          Hablemos con la <span class="text-etv-orange-500">Cabina</span> de Evolución TV
         </h1>
         <p class="text-base md:text-lg text-neutral-600 dark:text-neutral-400 leading-relaxed">
-          Somos un medio digital independiente abierto a la comunidad. Sin intermediarios ni formularios complicados: comunícate directamente con nuestro equipo editorial y periodístico.
+          Somos un medio de comunicación independiente dedicado a impulsar la escena musical en México: ska, reggae, rock y cultura alternativa. Sin intermediarios ni formularios: conecta directamente con nuestro equipo de redacción y programación.
         </p>
       </section>
 
@@ -149,10 +149,10 @@ const socialChannels = [
         <div class="flex items-center justify-between border-b border-neutral-200 dark:border-neutral-800 pb-3">
           <h2 class="text-xl md:text-2xl font-black text-neutral-900 dark:text-white tracking-tight flex items-center gap-2">
             <span class="w-2.5 h-6 bg-etv-orange-500 rounded-full inline-block"></span>
-            Canales de Correo Directo
+            Canales de Enlace Directo
           </h2>
           <span class="text-xs text-neutral-500 dark:text-neutral-400 hidden sm:inline">
-            Atención periodística de lunes a viernes
+            Para bandas, músicos, promotores y eventos
           </span>
         </div>
 
@@ -228,7 +228,7 @@ const socialChannels = [
         </div>
 
         <p class="text-sm text-neutral-600 dark:text-neutral-400">
-          Sigue nuestras transmisiones, transmisiones de radio en vivo y contenidos audiovisuales exclusivos en nuestras plataformas verificadas:
+          Sigue nuestras coberturas de conciertos, transmisiones de radio en vivo y contenidos audiovisuales exclusivos en nuestras plataformas verificadas:
         </p>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -289,18 +289,18 @@ const socialChannels = [
         </div>
       </section>
 
-      <!-- Transparencia Editorial, Derecho de Réplica y Tiempos de Respuesta -->
+      <!-- Compromiso Editorial, Escucha de Material y Transparencia -->
       <section class="bg-gradient-to-br from-neutral-50 to-white dark:from-neutral-900 dark:to-neutral-950 p-6 md:p-8 rounded-3xl border border-neutral-200 dark:border-neutral-800 space-y-6">
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div class="space-y-1">
             <h3 class="text-lg md:text-xl font-bold text-neutral-900 dark:text-white flex items-center gap-2">
               <svg class="w-5 h-5 text-etv-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
               </svg>
-              Transparencia y Derecho de Réplica
+              Compromiso Editorial y Escucha Musical
             </h3>
             <p class="text-xs md:text-sm text-neutral-600 dark:text-neutral-400">
-              En Evolución TV garantizamos el ejercicio oportuno del derecho de réplica y la rectificación informativa.
+              En Evolución TV fomentamos un espacio libre y abierto para la música sin ataduras ni compromisos corporativos.
             </p>
           </div>
           <div class="flex items-center gap-2 shrink-0">
@@ -322,11 +322,11 @@ const socialChannels = [
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-neutral-200/60 dark:border-neutral-800/60 text-xs md:text-sm text-neutral-600 dark:text-neutral-400">
           <div class="flex items-start gap-2.5">
             <span class="w-1.5 h-1.5 rounded-full bg-etv-orange-500 mt-2 shrink-0"></span>
-            <p><strong>Tiempos de respuesta:</strong> Toda solicitud editorial, réplica o comunicado se procesa en un plazo habitual de 24 a 48 horas hábiles por nuestro equipo de guardia.</p>
+            <p><strong>Tiempos de escucha:</strong> Nuestro equipo de redacción y programación musical escucha y revisa el material recibido en un plazo habitual de 24 a 48 horas hábiles.</p>
           </div>
           <div class="flex items-start gap-2.5">
             <span class="w-1.5 h-1.5 rounded-full bg-etv-blue-500 mt-2 shrink-0"></span>
-            <p><strong>Protección de datos:</strong> La información recibida a través de nuestros buzones se rige bajo estricta reserva conforme a la legislación aplicable y nuestro aviso de privacidad.</p>
+            <p><strong>Protección de datos y autoría:</strong> El material sonoro, gráfico y comunicados enviados se manejan con estricto respeto a los derechos de autor y a nuestro aviso de privacidad.</p>
           </div>
         </div>
       </section>

@@ -45,7 +45,7 @@ useHead({
           <section class="space-y-2">
             <h2 class="text-lg font-black text-neutral-900 dark:text-white">1. Datos que recopilamos</h2>
             <p>
-              La navegación general por Evolución TV es libre y no requiere registro. Únicamente recabamos tu correo electrónico cuando decides suscribirte voluntariamente a nuestro boletín informativo o nos envías un reporte ciudadano a nuestra mesa de redacción.
+              La navegación general por Evolución TV es libre y no requiere registro. Únicamente recabamos tu correo electrónico cuando decides suscribirte voluntariamente a nuestro boletín informativo o cuando nos envías material de tu banda, propuesta musical o mensaje directo a nuestra mesa de redacción.
             </p>
           </section>
 
