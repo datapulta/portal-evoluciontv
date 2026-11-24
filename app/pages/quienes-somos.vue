@@ -73,7 +73,7 @@ const objetivos = [
           </div>
 
           <h1 class="text-3xl md:text-5xl font-black text-neutral-900 dark:text-white tracking-tight leading-tight">
-            Televisión en internet, <span class="text-red-600">sin límites</span> y en constante evolución.
+            Medio digital independiente, <span class="text-red-600">sin límites</span> y en constante evolución.
           </h1>
 
           <div class="space-y-4 text-base md:text-lg text-neutral-700 dark:text-neutral-300 leading-relaxed">

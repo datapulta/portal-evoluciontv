@@ -33,6 +33,8 @@ useHead({
     <FooterSection />
 
     <!-- Reproductor Flotante Persistente Evolución Radio -->
-    <RadioPlayer />
+    <ClientOnly>
+      <RadioPlayer />
+    </ClientOnly>
   </div>
 </template>

@@ -15,15 +15,15 @@ const allArticles = computed<Article[]>(() => newsResult.value?.articles?.slice(
 
 <template>
   <div class="transition-colors duration-200">
-    <!-- Hero Editorial Limpio y Prioritario -->
-    <section class="max-w-7xl mx-auto px-4 pb-8 pt-0 md:pt-6">
+    <!-- Hero Editorial con Tarjetas de Ligera Curvatura -->
+    <section class="max-w-7xl mx-auto px-4 py-6 md:py-8">
       <div v-if="featuredArticle" class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8">
-        <!-- Nota Principal (8 columnas en escritorio, full-bleed limpio en móvil) -->
-        <article class="lg:col-span-8 group flex flex-col">
+        <!-- Nota Principal en Tarjeta (8 columnas en escritorio) -->
+        <article class="lg:col-span-8 group flex flex-col bg-white dark:bg-neutral-900/60 border border-neutral-200 dark:border-neutral-800 hover:border-neutral-300 dark:hover:border-neutral-700 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300">
           <!-- Imagen protagonista sin texto encimado -->
           <NuxtLink
             :to="`/noticias/${featuredArticle.slug}`"
-            class="block -mx-4 md:mx-0 md:rounded-2xl overflow-hidden bg-neutral-100 dark:bg-neutral-900 aspect-[16/10] md:aspect-[16/9] shadow-sm"
+            class="block overflow-hidden bg-neutral-100 dark:bg-neutral-900 aspect-[16/10] md:aspect-[16/9]"
             :aria-label="featuredArticle.title"
           >
             <img
@@ -35,7 +35,7 @@ const allArticles = computed<Article[]>(() => newsResult.value?.articles?.slice(
           </NuxtLink>
 
           <!-- Bloque editorial limpio debajo de la imagen -->
-          <div class="pt-4 md:pt-5 space-y-2.5">
+          <div class="p-5 md:p-7 space-y-2.5">
             <div class="flex items-center gap-2.5">
               <span
                 v-if="featuredArticle.primary_tag"
@@ -59,7 +59,7 @@ const allArticles = computed<Article[]>(() => newsResult.value?.articles?.slice(
               {{ featuredArticle.excerpt }}
             </p>
 
-            <div class="flex items-center gap-3 text-xs text-neutral-500 dark:text-neutral-400 pt-1">
+            <div class="flex items-center gap-3 text-xs text-neutral-500 dark:text-neutral-400 pt-2 border-t border-neutral-100 dark:border-neutral-800/60">
               <span class="font-bold text-neutral-800 dark:text-neutral-200">
                 {{ featuredArticle.primary_author?.name || 'Redacción Evolución TV' }}
               </span>
@@ -69,15 +69,15 @@ const allArticles = computed<Article[]>(() => newsResult.value?.articles?.slice(
           </div>
         </article>
 
-        <!-- Notas Secundarias (formato editorial compacto en móvil, columna derecha en escritorio) -->
+        <!-- Notas Secundarias (tarjetas individuales con ligera curvatura) -->
         <div
           v-if="secondaryArticles.length > 0"
-          class="lg:col-span-4 flex flex-col divide-y divide-neutral-200 dark:divide-neutral-800 border-t lg:border-t-0 border-neutral-200 dark:border-neutral-800 pt-4 lg:pt-0"
+          class="lg:col-span-4 flex flex-col gap-4"
         >
           <article
             v-for="article in secondaryArticles"
             :key="article.id"
-            class="group py-4 first:pt-0 last:pb-0 flex gap-4 items-start"
+            class="group bg-white dark:bg-neutral-900/60 border border-neutral-200 dark:border-neutral-800 hover:border-neutral-300 dark:hover:border-neutral-700 rounded-2xl p-3.5 sm:p-4 shadow-sm hover:shadow-md transition-all duration-300 flex gap-4 items-start"
           >
             <NuxtLink
               :to="`/noticias/${article.slug}`"

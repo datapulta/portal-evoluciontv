@@ -342,3 +342,18 @@ Este documento constituye la memoria técnica y bitácora cronológica exhaustiv
 - **Verificación Técnica**:
   - Compilación de producción limpia ejecutada con `npm run build` (0 errores).
 
+---
+
+### Sesión 18 — 24 de Noviembre de 2026
+**Objetivo**: Tarjetas con ligera curvatura en portada (`index.vue`), ajuste del titular en `quienes-somos.vue` y adaptación del reproductor flotante persistente **Evolución Radio** para navegación continua sin cortes.
+- **Autorización**: Aprobación nativa formal del plan `plan_ajustes_tarjetas_portada_y_quienes_somos.md` mediante botón Proceed del operador (§4.4 de AGENTS.md).
+- **Actividades Realizadas**:
+  1. **Tarjetas con Curvatura en Portada (`app/pages/index.vue`)**:
+     - Se dotó de contenedor tipo tarjeta (`rounded-2xl`, borde sutil y sombra) tanto a la Nota Principal como a cada Nota Secundaria.
+  2. **Ajuste de Titular (`app/pages/quienes-somos.vue`)**:
+     - Se cambió el `<h1>` a *"Medio digital independiente, sin límites y en constante evolución."*
+  3. **Reproductor Persistente Sin Cortes (`useRadio.ts`, `RadioPlayer.vue`, `app.vue`)**:
+     - Instancia única en `globalThis`, reconexión automática (`stalled`/`error`), persistencia en `localStorage`, Media Session API, `<ClientOnly>` en `app.vue` y modo mini-dock con Play/Pause directo.
+- **Verificación Técnica**:
+  - Compilación de producción limpia ejecutada con `npm run build` (0 errores).
+

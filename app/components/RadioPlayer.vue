@@ -25,24 +25,47 @@ const onVolumeInput = (e: Event) => {
     aria-label="Reproductor Evolución Radio"
     class="fixed bottom-4 left-4 z-50 max-w-[calc(100vw-2rem)]"
   >
-    <!-- Vista minimizada (píldora compacta) -->
-    <button
+    <!-- Modo Mini-Dock compacto (con Play/Pause directo y expandir) -->
+    <div
       v-if="isMinimized"
-      type="button"
-      @click="toggleMinimize"
-      class="flex items-center gap-2.5 bg-white/95 dark:bg-neutral-950/95 backdrop-blur-md border-2 border-red-600/80 text-neutral-900 dark:text-white px-4 py-2.5 rounded-full shadow-2xl hover:scale-105 transition-transform cursor-pointer"
+      class="flex items-center gap-2.5 bg-white/95 dark:bg-neutral-950/95 backdrop-blur-md border-2 border-red-600/80 text-neutral-900 dark:text-white pl-2 pr-3 py-1.5 rounded-full shadow-2xl transition-all"
     >
-      <span class="relative flex h-2.5 w-2.5">
-        <span
-          v-if="isPlaying"
-          class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"
-        ></span>
-        <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-600"></span>
-      </span>
-      <span class="text-xs font-black tracking-tight">
-        EVOLUCIÓN <span class="text-red-600 font-bold">radio</span>
-      </span>
-    </button>
+      <button
+        type="button"
+        @click="togglePlay"
+        :aria-label="isPlaying ? 'Pausar Evolución Radio' : 'Reproducir Evolución Radio'"
+        class="w-8 h-8 rounded-full bg-red-600 hover:bg-red-500 text-white flex items-center justify-center shrink-0 shadow-sm cursor-pointer transition-transform active:scale-95"
+      >
+        <svg v-if="isLoading" class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z" />
+        </svg>
+        <svg v-else-if="isPlaying" class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
+        </svg>
+        <svg v-else class="w-4 h-4 ml-0.5" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M8 5v14l11-7z" />
+        </svg>
+      </button>
+
+      <button
+        type="button"
+        @click="toggleMinimize"
+        class="flex items-center gap-2 text-left cursor-pointer group"
+        title="Expandir reproductor"
+      >
+        <span class="relative flex h-2 w-2 shrink-0" v-if="isPlaying">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+          <span class="relative inline-flex rounded-full h-2 w-2 bg-red-600"></span>
+        </span>
+        <span class="text-xs font-black tracking-tight group-hover:text-red-600 transition-colors">
+          EVOLUCIÓN <span class="text-red-600 font-bold">radio</span>
+        </span>
+        <svg class="w-3.5 h-3.5 text-neutral-400 group-hover:text-red-600 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" />
+        </svg>
+      </button>
+    </div>
 
     <!-- Vista expandida estilo reproductor flotante -->
     <div
@@ -69,16 +92,13 @@ const onVolumeInput = (e: Event) => {
         :aria-label="isPlaying ? 'Pausar Evolución Radio' : 'Reproducir Evolución Radio'"
         class="w-14 h-14 rounded-full bg-gradient-to-br from-red-500 to-red-700 hover:from-red-500 hover:to-red-600 text-white flex items-center justify-center shrink-0 shadow-lg shadow-red-900/30 hover:scale-105 active:scale-95 transition-all cursor-pointer ring-4 ring-red-600/15"
       >
-        <!-- Spinner de carga -->
         <svg v-if="isLoading" class="w-6 h-6 animate-spin" fill="none" viewBox="0 0 24 24">
           <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
           <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z" />
         </svg>
-        <!-- Ícono Pausa -->
         <svg v-else-if="isPlaying" class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
           <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
         </svg>
-        <!-- Ícono Play -->
         <svg v-else class="w-6 h-6 ml-0.5" viewBox="0 0 24 24" fill="currentColor">
           <path d="M8 5v14l11-7z" />
         </svg>
