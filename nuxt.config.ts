@@ -15,8 +15,8 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     public: {
-      ghostApiUrl: process.env.NUXT_PUBLIC_GHOST_API_URL || 'https://cms-etv.webia.studio',
-      ghostContentKey: process.env.NUXT_PUBLIC_GHOST_CONTENT_KEY || ''
+      newsApiUrl: process.env.NUXT_PUBLIC_NEWS_API_URL || 'https://cms-etv.webia.studio',
+      newsApiKey: process.env.NUXT_PUBLIC_NEWS_API_KEY || ''
     }
   },
   app: {

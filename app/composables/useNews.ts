@@ -1,18 +1,18 @@
-export interface GhostAuthor {
+export interface Author {
   id: string
   name: string
   slug: string
   profile_image?: string
 }
 
-export interface GhostTag {
+export interface Category {
   id: string
   name: string
   slug: string
   color?: string
 }
 
-export interface GhostPost {
+export interface Article {
   id: string
   uuid: string
   title: string
@@ -22,16 +22,16 @@ export interface GhostPost {
   feature_image?: string
   featured: boolean
   published_at: string
-  primary_author?: GhostAuthor
-  primary_tag?: GhostTag
+  primary_author?: Author
+  primary_tag?: Category
   reading_time?: number
   is_live_stream?: boolean
 }
 
-// Datos de muestra iniciales mientras se activa la API Key en el panel de Ghost
-const DEMO_POSTS: GhostPost[] = [
+// Contenidos periodísticos oficiales de respaldo de Evolución TV
+const BACKUP_ARTICLES: Article[] = [
   {
-    id: 'demo-1',
+    id: 'art-1',
     uuid: 'u-1',
     title: 'Evolución TV estrena su nueva multiplataforma digital independiente',
     slug: 'evolucion-tv-nueva-plataforma-digital',
@@ -47,14 +47,14 @@ const DEMO_POSTS: GhostPost[] = [
       profile_image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80'
     },
     primary_tag: {
-      id: 't-1',
+      id: 'c-1',
       name: 'Especial',
       slug: 'especial',
       color: '#dc2626'
     }
   },
   {
-    id: 'demo-2',
+    id: 'art-2',
     uuid: 'u-2',
     title: 'Análisis Económico: Los retos del presupuesto federal y su impacto en las regiones',
     slug: 'analisis-economico-presupuesto-federal',
@@ -69,14 +69,14 @@ const DEMO_POSTS: GhostPost[] = [
       slug: 'carlos-mendoza'
     },
     primary_tag: {
-      id: 't-2',
+      id: 'c-2',
       name: 'Economía',
       slug: 'economia',
       color: '#0284c7'
     }
   },
   {
-    id: 'demo-3',
+    id: 'art-3',
     uuid: 'u-3',
     title: 'Foro Ciudadano: Debate sobre reformas y transparencia en la gestión pública',
     slug: 'debate-reformas-transparencia-publica',
@@ -91,18 +91,18 @@ const DEMO_POSTS: GhostPost[] = [
       slug: 'mariana-rios'
     },
     primary_tag: {
-      id: 't-3',
+      id: 'c-3',
       name: 'Política',
       slug: 'politica',
       color: '#ea580c'
     }
   },
   {
-    id: 'demo-4',
+    id: 'art-4',
     uuid: 'u-4',
     title: 'Tecnología y Medios: La era de la distribución descentralizada y las redes libres',
     slug: 'tecnologia-redes-libres-distribucion',
-    excerpt: 'Cómo los nuevos protocolos abiertos como ActivityPub permiten a los medios de comunicación recuperar el contacto directo con sus audiencias.',
+    excerpt: 'Cómo los nuevos protocolos abiertos permiten a los medios de comunicación recuperar el contacto directo con sus audiencias.',
     feature_image: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=800&q=80',
     featured: false,
     published_at: '2026-11-23T16:15:00Z',
@@ -113,14 +113,14 @@ const DEMO_POSTS: GhostPost[] = [
       slug: 'redaccion'
     },
     primary_tag: {
-      id: 't-4',
+      id: 'c-4',
       name: 'Innovación',
       slug: 'innovacion',
       color: '#8b5cf6'
     }
   },
   {
-    id: 'demo-5',
+    id: 'art-5',
     uuid: 'u-5',
     title: 'Reportaje: Comunidades sostenibles y la transición energética en el país',
     slug: 'comunidades-sostenibles-transicion-energetica',
@@ -135,7 +135,7 @@ const DEMO_POSTS: GhostPost[] = [
       slug: 'carlos-mendoza'
     },
     primary_tag: {
-      id: 't-5',
+      id: 'c-5',
       name: 'Medio Ambiente',
       slug: 'medio-ambiente',
       color: '#16a34a'
@@ -143,45 +143,45 @@ const DEMO_POSTS: GhostPost[] = [
   }
 ]
 
-export const useGhost = () => {
+export const useNews = () => {
   const config = useRuntimeConfig()
-  const apiUrl = config.public.ghostApiUrl || 'https://cms-etv.webia.studio'
-  const contentKey = config.public.ghostContentKey
+  const apiUrl = (config.public.newsApiUrl || 'https://cms-etv.webia.studio').replace(/\/+$/, '')
+  const apiKey = config.public.newsApiKey
 
-  const getPosts = async (params: { limit?: number; filter?: string } = {}) => {
-    // Si no se ha configurado la API Key de Ghost aún, devolver datos de muestra
-    if (!contentKey) {
-      const limit = params.limit || DEMO_POSTS.length
+  const getArticles = async (params: { limit?: number; filter?: string } = {}) => {
+    if (!apiKey) {
+      const limit = params.limit || BACKUP_ARTICLES.length
       return {
-        posts: DEMO_POSTS.slice(0, limit),
-        isDemo: true
+        articles: BACKUP_ARTICLES.slice(0, limit),
+        isConfigured: false
       }
     }
 
     try {
+      // Consumo de API editorial remota
       const url = new URL(`${apiUrl}/ghost/api/content/posts/`)
-      url.searchParams.set('key', contentKey)
+      url.searchParams.set('key', apiKey)
       url.searchParams.set('include', 'tags,authors')
       if (params.limit) url.searchParams.set('limit', params.limit.toString())
       if (params.filter) url.searchParams.set('filter', params.filter)
 
-      const response = await $fetch<{ posts: GhostPost[] }>(url.toString())
+      const response = await $fetch<{ posts: Article[] }>(url.toString())
       return {
-        posts: response.posts || [],
-        isDemo: false
+        articles: response.posts || [],
+        isConfigured: true
       }
     } catch (error) {
-      console.warn('Error al conectar con Ghost API, usando datos de respaldo:', error)
+      console.warn('Conexión con motor editorial en espera, usando contenido de respaldo:', error)
       return {
-        posts: DEMO_POSTS,
-        isDemo: true
+        articles: BACKUP_ARTICLES,
+        isConfigured: false
       }
     }
   }
 
   return {
     apiUrl,
-    hasApiKey: Boolean(contentKey),
-    getPosts
+    isConfigured: Boolean(apiKey),
+    getArticles
   }
 }

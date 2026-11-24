@@ -55,3 +55,24 @@ Este documento constituye la memoria técnica y bitácora cronológica exhaustiv
 - **Verificación Técnica**:
   - Compilación de producción exitosa (`npm run build` completado en 13.2s).
   - Servidor de desarrollo respondiendo exitosamente en `http://localhost:3005/` (HTTP 200 OK).
+
+---
+
+### Sesión 3 — 23 de Noviembre de 2026
+**Objetivo**: Purificación de marca blanca y eliminación total de referencias visuales y técnicas de Ghost CMS en el proyecto Nuxt.
+- **Autorización**: Aprobación nativa formal del plan `plan_limpieza_marcas_cms.md` mediante botón de plan / Proceed del operador (§4.4 de AGENTS.md).
+- **Actividades Realizadas**:
+  1. **Purificación de Interfaz Visual**:
+     - Eliminación total del banner de depuración amarillo en `app/app.vue` que contenía menciones directas a Ghost CMS.
+     - Actualización de badges y pie en `app/components/FooterSection.vue` a "Transmisión Digital & Cobertura en Vivo" y derechos reservados de Evolución TV.
+  2. **Refactorización de Capa de Datos a Modelo Neutral**:
+     - Creación de `app/composables/useNews.ts` con interfaces de dominio `Article`, `Author`, `Category` y función `useNews()`.
+     - Migración de `app/components/NewsCard.vue` para consumir el tipo `Article`.
+     - Eliminación del composable previo `app/composables/useGhost.ts`.
+  3. **Ajuste de Zona Intocable (Autorizado)**:
+     - En `nuxt.config.ts`: sustitución de `ghostApiUrl` / `ghostContentKey` por `newsApiUrl` / `newsApiKey`.
+     - En `.env` y `.env.example`: migración a `NUXT_PUBLIC_NEWS_API_URL` y `NUXT_PUBLIC_NEWS_API_KEY`.
+- **Verificación Técnica**:
+  - Auditoría de cero coincidencias de etiquetas en plantillas visuales.
+  - Compilación de producción limpia ejecutada con éxito (`npm run build` completado en 18.5s).
+  - Servidor de desarrollo verificado en `http://localhost:3005/` libre de cualquier franja de aviso.

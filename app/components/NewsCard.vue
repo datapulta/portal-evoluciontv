@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { GhostPost } from '~/composables/useGhost'
+import type { Article } from '~/composables/useNews'
 
 defineProps<{
-  post: GhostPost
+  post: Article
   horizontal?: boolean
 }>()
 

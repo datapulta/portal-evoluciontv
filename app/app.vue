@@ -1,30 +1,28 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { useGhost, type GhostPost } from '~/composables/useGhost'
+import { useNews, type Article } from '~/composables/useNews'
 import HeaderNav from '~/components/HeaderNav.vue'
 import LiveStreamSection from '~/components/LiveStreamSection.vue'
 import NewsCard from '~/components/NewsCard.vue'
 import FooterSection from '~/components/FooterSection.vue'
 
-const { getPosts, hasApiKey, apiUrl } = useGhost()
+const { getArticles } = useNews()
 
-const featuredPost = ref<GhostPost | null>(null)
-const secondaryPosts = ref<GhostPost[]>([])
-const allPosts = ref<GhostPost[]>([])
-const isDemoMode = ref(true)
+const featuredArticle = ref<Article | null>(null)
+const secondaryArticles = ref<Article[]>([])
+const allArticles = ref<Article[]>([])
 const loading = ref(true)
 
 onMounted(async () => {
   try {
-    const result = await getPosts({ limit: 8 })
-    isDemoMode.value = result.isDemo
-    if (result.posts.length > 0) {
-      featuredPost.value = result.posts[0]
-      secondaryPosts.value = result.posts.slice(1, 3)
-      allPosts.value = result.posts.slice(3)
+    const result = await getArticles({ limit: 8 })
+    if (result.articles.length > 0) {
+      featuredArticle.value = result.articles[0]
+      secondaryArticles.value = result.articles.slice(1, 3)
+      allArticles.value = result.articles.slice(3)
     }
   } catch (error) {
-    console.error('Error cargando noticias:', error)
+    console.error('Error al cargar artículos:', error)
   } finally {
     loading.value = false
   }
@@ -35,25 +33,6 @@ onMounted(async () => {
   <div class="min-h-screen bg-neutral-950 text-neutral-100 flex flex-col font-sans">
     <!-- Navegación y Cabecera -->
     <HeaderNav />
-
-    <!-- Notificación de estado de CMS para el equipo -->
-    <div v-if="isDemoMode" class="bg-amber-950/40 border-b border-amber-800/40 text-amber-300 py-2.5 px-4 text-xs">
-      <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
-        <div class="flex items-center gap-2">
-          <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
-          <span>
-            <strong>Ghost CMS Conectado:</strong> Mostrando contenido preliminar de Evolución TV.
-          </span>
-        </div>
-        <a
-          href="https://cms-etv.webia.studio/ghost"
-          target="_blank"
-          class="font-semibold underline hover:text-white flex items-center gap-1"
-        >
-          Iniciar sesión en Ghost CMS para comenzar a publicar noticias →
-        </a>
-      </div>
-    </div>
 
     <!-- Contenido Principal -->
     <main class="flex-1">
@@ -69,13 +48,13 @@ onMounted(async () => {
           <span class="text-xs text-neutral-400">Edición en Tiempo Real</span>
         </div>
 
-        <div v-if="featuredPost" class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <div v-if="featuredArticle" class="grid grid-cols-1 lg:grid-cols-12 gap-6">
           <!-- Nota Principal (8 columnas) -->
           <article class="lg:col-span-8 group relative bg-neutral-900 border border-neutral-800 rounded-3xl overflow-hidden shadow-2xl flex flex-col justify-end min-h-[420px] md:min-h-[500px]">
             <img
-              v-if="featuredPost.feature_image"
-              :src="featuredPost.feature_image"
-              :alt="featuredPost.title"
+              v-if="featuredArticle.feature_image"
+              :src="featuredArticle.feature_image"
+              :alt="featuredArticle.title"
               class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
             />
             <div class="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/60 to-transparent"></div>
@@ -86,29 +65,29 @@ onMounted(async () => {
                   Nota Principal
                 </span>
                 <span
-                  v-if="featuredPost.primary_tag"
+                  v-if="featuredArticle.primary_tag"
                   class="bg-neutral-800/80 backdrop-blur-md text-neutral-200 text-xs font-semibold px-2.5 py-1 rounded-md"
                 >
-                  {{ featuredPost.primary_tag.name }}
+                  {{ featuredArticle.primary_tag.name }}
                 </span>
               </div>
 
               <h2 class="text-2xl md:text-4xl font-black text-white group-hover:text-red-400 transition-colors leading-tight">
-                <a :href="`#${featuredPost.slug}`">
-                  {{ featuredPost.title }}
+                <a :href="`#${featuredArticle.slug}`">
+                  {{ featuredArticle.title }}
                 </a>
               </h2>
 
               <p class="text-neutral-300 text-sm md:text-base line-clamp-2 max-w-3xl leading-relaxed">
-                {{ featuredPost.excerpt }}
+                {{ featuredArticle.excerpt }}
               </p>
 
               <div class="flex items-center gap-4 text-xs text-neutral-400 pt-2">
                 <span class="font-bold text-neutral-200">
-                  {{ featuredPost.primary_author?.name || 'Redacción Evolución TV' }}
+                  {{ featuredArticle.primary_author?.name || 'Redacción Evolución TV' }}
                 </span>
                 <span>•</span>
-                <span>Lectura de {{ featuredPost.reading_time || 4 }} min</span>
+                <span>Lectura de {{ featuredArticle.reading_time || 4 }} min</span>
               </div>
             </div>
           </article>
@@ -116,9 +95,9 @@ onMounted(async () => {
           <!-- Dos Noticias Secundarias (4 columnas) -->
           <div class="lg:col-span-4 flex flex-col gap-6">
             <NewsCard
-              v-for="post in secondaryPosts"
-              :key="post.id"
-              :post="post"
+              v-for="article in secondaryArticles"
+              :key="article.id"
+              :post="article"
               class="flex-1"
             />
           </div>
@@ -145,9 +124,9 @@ onMounted(async () => {
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <NewsCard
-            v-for="post in allPosts"
-            :key="post.id"
-            :post="post"
+            v-for="article in allArticles"
+            :key="article.id"
+            :post="article"
           />
         </div>
       </section>

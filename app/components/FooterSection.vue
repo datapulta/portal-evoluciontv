@@ -22,8 +22,8 @@ const currentYear = new Date().getFullYear()
         </p>
         <div class="flex items-center gap-2 text-xs text-neutral-400">
           <span class="inline-flex items-center gap-1.5 bg-neutral-900 border border-neutral-800 px-3 py-1 rounded-full text-neutral-300">
-            <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-            Ghost 6.0 CMS + Fediverse Ready
+            <span class="w-2 h-2 rounded-full bg-red-500"></span>
+            Transmisión Digital & Cobertura en Vivo
           </span>
         </div>
       </div>
@@ -48,7 +48,7 @@ const currentYear = new Date().getFullYear()
             <a
               href="https://cms-etv.webia.studio/ghost"
               target="_blank"
-              class="inline-flex items-center gap-1.5 text-emerald-400 hover:text-emerald-300 font-semibold"
+              class="inline-flex items-center gap-1.5 text-neutral-300 hover:text-white font-semibold"
             >
               Panel de Redacción
               <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -65,7 +65,7 @@ const currentYear = new Date().getFullYear()
 
     <div class="max-w-7xl mx-auto pt-8 border-t border-neutral-900 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-neutral-400">
       <p>© {{ currentYear }} Evolución TV. Todos los derechos reservados. Medio de comunicación independiente.</p>
-      <p>Desarrollado con Nuxt 4 & Ghost CMS</p>
+      <p>Plataforma Oficial de Noticias y Televisión</p>
     </div>
   </footer>
 </template>
