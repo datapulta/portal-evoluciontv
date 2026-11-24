@@ -127,7 +127,7 @@ const navigationItems = computed<NavItem[]>(() => {
   items.push(
     { name: 'Evolución Radio', to: '/radio' },
     { name: 'Señal en Vivo', to: '/en-vivo', highlight: true },
-    { name: 'Contacto', to: '/#contacto' }
+    { name: 'Contacto', to: '/contacto' }
   )
 
   return items
@@ -135,7 +135,6 @@ const navigationItems = computed<NavItem[]>(() => {
 
 const isActiveRoute = (to: string) => {
   if (to === '/') return route.path === '/' && !route.hash
-  if (to === '/#contacto') return route.path === '/' && route.hash === '#contacto'
   return route.path === to || route.path.startsWith(`${to}/`)
 }
 </script>

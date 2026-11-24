@@ -661,3 +661,38 @@ La página `/radio` presentaba exceso de espacio visual en viewport desktop (≥
   - Compilación de producción limpia ejecutada con `npm run build` (0 errores).
   - Validación local en `http://localhost:3005/radio` (`200 OK`).
 
+---
+
+### Sesión 27 — 24 de Noviembre de 2026
+**Objetivo**: Ajustes de maquetación en artículos, optimizaciones responsive móvil y actualización de texto institucional en `/quienes-somos`.
+- **Autorización**: Aprobación nativa formal de planes `plan_orden_imagen_y_titulo_articulo.md`, `plan_ajuste_responsive_movil.md` y `plan_actualizacion_texto_quienes_somos.md` mediante botón Proceed del operador (§4.4 de AGENTS.md).
+- **Actividades Realizadas**:
+  1. **Orden en Artículo (`app/pages/noticias/[slug].vue`)**: Imagen principal destacada colocada primero arriba del título y metadatos con aspect ratio `16/10` en móvil y `16/9` en desktop.
+  2. **Responsive Móvil (`app/components/HeaderNav.vue`)**: Ajustes de padding, tipografía y desbordamiento horizontal en pantallas pequeñas de hasta 360px.
+  3. **Texto Quiénes Somos (`app/pages/quienes-somos.vue`)**: Incorporación del texto institucional oficial de Evolución TV ("medio de comunicación independiente, sin límites, con contenidos propios y creativos...").
+- **Verificación Técnica**:
+  - Compilación de producción limpia ejecutada con `npm run build` (0 errores).
+  - Verificación visual en servidor de desarrollo.
+
+---
+
+### Sesión 28 — 24 de Noviembre de 2026
+**Objetivo**: Creación de la página dedicada de Contacto (`/contacto`) sin formularios, con canales de correo directos y redes sociales.
+- **Autorización**: Aprobación nativa formal del plan `plan_pagina_contacto.md` mediante botón Proceed del operador (§4.4 de AGENTS.md).
+- **Actividades Realizadas**:
+  1. **Página Dedicada (`app/pages/contacto.vue`)**:
+     - Canales directos de correo con tarjetas (`Redacción General`, `Buzón de Denuncias`, `Alianzas y Prensa`), botones directos `mailto:` con asuntos prellenados y botón interactivo para copiar dirección al portapapeles con feedback visual.
+     - Grilla completa de redes sociales oficiales (`Facebook`, `YouTube`, `X`, `Instagram`, `TikTok`) con badges de identidad y enlaces seguros.
+     - Bloque de transparencia informativa, plazos de atención editorial (24-48 hrs) y enlaces al Código de Ética y Aviso de Privacidad.
+     - Cero formularios engorrosos ni campos captcha.
+  2. **Navegación e Integración (`HeaderNav.vue`, `FooterSection.vue`)**:
+     - Actualización del enlace `Contacto` en menú principal de `/#contacto` a `/contacto` con detección de ruta activa.
+     - Enlace incorporado en el pie de página hacia la nueva página.
+  3. **Indexación y Manifiesto (`sitemap.xml.get.ts`, `llms.txt.get.ts`)**:
+     - Inclusión de `/contacto` en el mapa XML de URLs y en el índice textual para agentes de IA.
+- **Verificación Técnica**:
+  - Compilación de producción limpia ejecutada con `npm run build` (0 errores, 213 módulos).
+  - Verificación HTTP `200 OK` en `http://localhost:3005/contacto`.
+  - Verificación de presencia de `/contacto` en `/sitemap.xml` y `/llms.txt`.
+
+

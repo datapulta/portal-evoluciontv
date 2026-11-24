@@ -65,6 +65,7 @@ const footerCategories = [
       <div id="contacto" class="scroll-mt-32">
         <h4 class="text-sm font-bold text-neutral-900 dark:text-white uppercase tracking-wider mb-3">Redacción y Contacto</h4>
         <ul class="space-y-2 text-xs md:text-sm">
+          <li><NuxtLink to="/contacto" class="hover:text-etv-orange-600 dark:hover:text-etv-orange-400 font-semibold transition-colors flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-etv-orange-500"></span>Contacto y Redes Sociales</NuxtLink></li>
           <li><a href="mailto:redaccion@evoluciontv.com" class="hover:text-neutral-900 dark:hover:text-white transition-colors">redaccion@evoluciontv.com</a></li>
           <li><a href="mailto:redaccion@evoluciontv.com?subject=Reporte%20Ciudadano" class="hover:text-neutral-900 dark:hover:text-white transition-colors">Buzón de Denuncias</a></li>
           <li><NuxtLink to="/codigo-etica" class="hover:text-etv-orange-600 dark:hover:text-etv-orange-400 transition-colors">Código de Ética Periodística</NuxtLink></li>
