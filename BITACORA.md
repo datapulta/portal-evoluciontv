@@ -4,6 +4,23 @@ Este documento constituye la memoria técnica y bitácora cronológica exhaustiv
 
 ---
 
+## Sesión 33 — 2026-11-24 · Imagen Destacada al Inicio y Encabezado Inferior en Artículos
+
+**Rama activa**: `feat/setup-nuxt4-ghost-cms` (pendiente autorización de merge a `main` y deploy)
+**Autorización**: `plan_orden_imagen_y_titulo_articulo.md` (Proceed button, §4.4 AGENTS.md)
+
+### Cambios realizados
+- **`app/composables/useNews.ts`**: Añadido `feature_image_alt?: string` en `interface Article`.
+- **`app/pages/noticias/[slug].vue`**:
+  - Movida la imagen destacada al inicio del artículo y colocados título `<h1>`, categoría, fecha, extracto y firma del autor debajo.
+  - Ajustada la proporción de imagen de `md:aspect-[21/9]` a `aspect-[16/10] md:aspect-[16/9]` evitando recortes agresivos.
+  - Añadidos botones rápidos de compartir (`Copiar`, `WhatsApp`, `X`) junto al autor y sincronizado el skeleton de carga con el nuevo orden visual.
+
+### Verificación
+- `npm run build` y comprobación SSR local en `http://localhost:3005/noticias/...`.
+
+---
+
 ## Sesión 32 — 2026-11-24 · Corrección de Cajas del Hero y Ticker Rotativo "Última Hora"
 
 **Rama activa**: `feat/setup-nuxt4-ghost-cms` (pendiente autorización de merge a `main` y deploy)
