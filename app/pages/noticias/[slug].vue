@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useNews } from '~/composables/useNews'
 import NewsCard from '~/components/NewsCard.vue'
@@ -16,11 +16,45 @@ const { data: article, pending } = await useAsyncData(
   { watch: [slug] }
 )
 
-// Carga de notas relacionadas para el pie de página
-const { data: relatedData } = await useAsyncData('related-news', () => getArticles({ limit: 4 }))
-const relatedArticles = computed(() => {
-  return (relatedData.value?.articles || []).filter(a => a.slug !== slug.value).slice(0, 3)
+// Carga de notas para navegación secuencial y carrusel inferior
+const { data: relatedData } = await useAsyncData('related-news', () => getArticles({ limit: 8 }))
+
+const allFeedArticles = computed(() => relatedData.value?.articles || [])
+
+const currentIndex = computed(() =>
+  allFeedArticles.value.findIndex(a => a.slug === slug.value)
+)
+
+const prevArticle = computed(() => {
+  if (currentIndex.value > 0) {
+    return allFeedArticles.value[currentIndex.value - 1]
+  }
+  return null
 })
+
+const nextArticle = computed(() => {
+  if (currentIndex.value >= 0 && currentIndex.value < allFeedArticles.value.length - 1) {
+    return allFeedArticles.value[currentIndex.value + 1]
+  }
+  if (currentIndex.value === -1 && allFeedArticles.value.length > 0) {
+    return allFeedArticles.value[0]
+  }
+  return null
+})
+
+const relatedArticles = computed(() => {
+  return allFeedArticles.value.filter(a => a.slug !== slug.value)
+})
+
+const sliderRef = ref<HTMLElement | null>(null)
+const scrollSlider = (direction: 'prev' | 'next') => {
+  if (!sliderRef.value) return
+  const offset = Math.max(320, sliderRef.value.clientWidth * 0.75)
+  sliderRef.value.scrollBy({
+    left: direction === 'next' ? offset : -offset,
+    behavior: 'smooth'
+  })
+}
 
 // Metadatos SEO dinámicos
 useHead({
@@ -161,6 +195,46 @@ const formatDate = (dateStr?: string) => {
           Publicado por la Redacción de Evolución TV
         </div>
       </div>
+
+      <!-- Navegación secuencial entre artículos -->
+      <nav
+        v-if="prevArticle || nextArticle"
+        aria-label="Navegación entre artículos"
+        class="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-4"
+      >
+        <NuxtLink
+          v-if="prevArticle"
+          :to="`/noticias/${prevArticle.slug}`"
+          class="group p-5 rounded-2xl bg-white dark:bg-neutral-900/60 border border-neutral-200 dark:border-neutral-800 hover:border-red-500/50 dark:hover:border-red-500/50 transition-all shadow-sm flex flex-col gap-1.5"
+        >
+          <span class="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400 group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+            </svg>
+            Nota anterior
+          </span>
+          <span class="text-sm md:text-base font-bold text-neutral-900 dark:text-white group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors line-clamp-2">
+            {{ prevArticle.title }}
+          </span>
+        </NuxtLink>
+        <div v-else class="hidden sm:block"></div>
+
+        <NuxtLink
+          v-if="nextArticle"
+          :to="`/noticias/${nextArticle.slug}`"
+          class="group p-5 rounded-2xl bg-white dark:bg-neutral-900/60 border border-neutral-200 dark:border-neutral-800 hover:border-red-500/50 dark:hover:border-red-500/50 transition-all shadow-sm flex flex-col items-end text-right gap-1.5"
+        >
+          <span class="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400 group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors">
+            Nota siguiente
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+          </span>
+          <span class="text-sm md:text-base font-bold text-neutral-900 dark:text-white group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors line-clamp-2">
+            {{ nextArticle.title }}
+          </span>
+        </NuxtLink>
+      </nav>
     </article>
 
     <!-- Estado si no existe el artículo -->
@@ -182,20 +256,49 @@ const formatDate = (dateStr?: string) => {
       </NuxtLink>
     </div>
 
-    <!-- Artículos Relacionados -->
+    <!-- Artículos Relacionados (Slider Horizontal) -->
     <section v-if="relatedArticles.length > 0" class="max-w-7xl mx-auto px-4 py-16 border-t border-neutral-200 dark:border-neutral-800/80">
-      <div class="flex items-center gap-2 mb-8">
-        <span class="w-2.5 h-6 bg-red-600 rounded-sm"></span>
-        <h2 class="text-xl md:text-2xl font-black text-neutral-900 dark:text-white uppercase tracking-tight">
-          Más Investigaciones y Coberturas
-        </h2>
+      <div class="flex items-center justify-between gap-4 mb-8">
+        <div class="flex items-center gap-2">
+          <span class="w-2.5 h-6 bg-red-600 rounded-sm"></span>
+          <h2 class="text-xl md:text-2xl font-black text-neutral-900 dark:text-white uppercase tracking-tight">
+            Más Noticias y Coberturas
+          </h2>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <button
+            type="button"
+            @click="scrollSlider('prev')"
+            aria-label="Noticias anteriores"
+            class="p-2.5 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 text-neutral-700 dark:text-neutral-300 hover:text-red-600 dark:hover:text-red-400 hover:border-red-500/40 transition-colors cursor-pointer shadow-sm"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+          <button
+            type="button"
+            @click="scrollSlider('next')"
+            aria-label="Siguientes noticias"
+            class="p-2.5 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 text-neutral-700 dark:text-neutral-300 hover:text-red-600 dark:hover:text-red-400 hover:border-red-500/40 transition-colors cursor-pointer shadow-sm"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+        </div>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div
+        ref="sliderRef"
+        class="flex gap-6 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-4 -mx-4 px-4 md:mx-0 md:px-0"
+      >
         <NewsCard
           v-for="rel in relatedArticles"
           :key="rel.id"
           :post="rel"
+          class="w-[82vw] sm:w-[320px] lg:w-[calc(33.333%-1rem)] shrink-0 snap-start"
         />
       </div>
     </section>

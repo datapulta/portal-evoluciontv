@@ -295,3 +295,18 @@ Este documento constituye la memoria técnica y bitácora cronológica exhaustiv
   - Compilación de producción limpia ejecutada con `npm run build` (0 errores).
   - Verificación en `http://localhost:3005/quienes-somos` (200 OK).
 
+---
+
+### Sesión 15 — 24 de Noviembre de 2026
+**Objetivo**: Optimización de experiencia de lectura (UX) en `app/pages/noticias/[slug].vue`: cambio a "Más Noticias y Coberturas", navegación secuencial y carrusel horizontal.
+- **Autorización**: Aprobación nativa formal del plan `plan_navegacion_y_slider_articulos.md` mediante botón Proceed del operador (§4.4 de AGENTS.md).
+- **Actividades Realizadas**:
+  1. **Navegación Secuencial (`← Nota anterior / Nota siguiente →`)**:
+     - Se amplió la consulta de notas a `limit: 8` y se implementaron tarjetas interactivas al pie del artículo para navegar directamente entre notas.
+  2. **Carrusel / Slider Horizontal ("Más Noticias y Coberturas")**:
+     - Se actualizó el título de "Más Investigaciones y Coberturas" a "Más Noticias y Coberturas".
+     - Se reemplazó la cuadrícula fija por un slider nativo con CSS Scroll Snap (`snap-x snap-mandatory`), deslizamiento táctil en móvil y controles `‹` / `›` en escritorio.
+- **Verificación Técnica**:
+  - Compilación de producción limpia ejecutada con `npm run build` (0 errores).
+  - Verificación en `http://localhost:3005/noticias/el-retorno-de-jensen-huang-la-nueva-era-de-la-computacion-acelerada-y-las-fabricas-de-ia` (`200 OK`).
+
