@@ -189,18 +189,20 @@ export const useNews = () => {
   const apiUrl = (config.public.newsApiUrl || 'https://cms-etv.webia.studio').replace(/\/+$/, '')
   const apiKey = config.public.newsApiKey
 
-  const getArticles = async (params: { limit?: number; filter?: string; page?: number } = {}) => {
+  const getArticles = async (params: { limit?: number; filter?: string; page?: number; order?: string } = {}) => {
     const targetLimit = params.limit || 8
     const targetPage = params.page || 1
+    const targetOrder = params.order || 'featured desc,published_at desc'
 
     if (!apiKey) {
+      const sortedBackup = [...BACKUP_ARTICLES].sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0))
       return {
-        articles: BACKUP_ARTICLES.slice(0, targetLimit),
+        articles: sortedBackup.slice(0, targetLimit),
         pagination: {
           page: 1,
           limit: targetLimit,
           pages: 1,
-          total: BACKUP_ARTICLES.length,
+          total: sortedBackup.length,
           next: null,
           prev: null
         } as PaginationMeta,
@@ -214,6 +216,7 @@ export const useNews = () => {
       url.searchParams.set('include', 'tags,authors')
       url.searchParams.set('limit', String(targetLimit))
       url.searchParams.set('page', String(targetPage))
+      url.searchParams.set('order', targetOrder)
       if (params.filter) url.searchParams.set('filter', params.filter)
 
       const response = await $fetch<{ posts: Article[]; meta?: { pagination?: PaginationMeta } }>(url.toString())

@@ -4,6 +4,33 @@ Este documento constituye la memoria técnica y bitácora cronológica exhaustiv
 
 ---
 
+## Sesión 38 — 2026-11-24 · Soporte de Artículos Destacados ("Feature this post") de Ghost CMS en Portada
+
+**Rama activa**: `feat/articulos-destacados-ghost`
+**Autorización**: `plan_articulos_destacados_ghost_cms.md` (Proceed button, §4.4 AGENTS.md)
+
+### Diagnóstico y Causa Raíz
+La asignación de la nota principal en el Hero del Home se realizaba de manera estrictamente posicional por fecha de publicación (`articles[0]`), ignorando el interruptor editorial *"Feature this post"* (`featured: true`) de Ghost CMS. Además, las notas secundarias se obtenían con `slice(1)`, lo que generaba riesgo de duplicidad si una nota destacada no era la más reciente.
+
+### Cambios realizados
+- **`app/composables/useNews.ts`**:
+  - Parámetro `order?: string` añadido a `getArticles()`, fijando por defecto `featured desc,published_at desc` en las consultas a la Content API de Ghost.
+  - Ordenamiento prioritario equivalente en artículos de respaldo (`BACKUP_ARTICLES`).
+- **`app/pages/index.vue`**:
+  - `featuredArticle`: selección reactiva de la primera nota con `featured === true` (o la más reciente como fallback).
+  - `remainingArticles`: filtrado dinámico de artículos excluyendo el ID del artículo destacado para garantizar cero notas duplicadas en la portada.
+  - `secondaryArticles`: extracción de las notas secundarias del subconjunto restante.
+  - `allArticles` & `loadMoreArticles`: deduplicación estricta incluyendo el ID del artículo principal.
+  - Distintivo visual en el Hero: etiqueta dinámica `Destacado` cuando `featured === true` o `Nota Principal` cuando es cronológica.
+- **`app/components/HeaderNav.vue`**:
+  - Ticker de *Última Hora* fijado con `order: 'published_at desc'` para reflejar siempre eventos estrictamente cronológicos.
+
+### Verificación
+- `npm run build`: compilación limpia en 14.3s con Nitro y Vue 3.5.46.
+- Comprobación en `http://localhost:3005/`: artículo *"Evolución TV regresa a sus orígenes con portal oficial"* posicionado en el Hero con distintivo `Destacado`, sin duplicarse en las tarjetas secundarias ni en la cuadrícula inferior.
+
+---
+
 ## Sesión 37 — 2026-11-24 · Restauración de Texto Original Íntegro en Ghost CMS
 
 **Rama activa**: `feat/setup-nuxt4-ghost-cms`
