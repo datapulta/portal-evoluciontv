@@ -4,6 +4,27 @@ Este documento constituye la memoria técnica y bitácora cronológica exhaustiv
 
 ---
 
+## Sesión 34 — 2026-11-24 · Ajuste Responsive Móvil y Barra de Navegación Visible
+
+**Rama activa**: `feat/setup-nuxt4-ghost-cms` (pendiente autorización de merge a `main` y deploy)
+**Autorización**: `plan_ajuste_responsive_movil.md` (Proceed button, §4.4 AGENTS.md)
+
+### Diagnóstico
+En pantallas móviles de `360px`, la fila principal de `HeaderNav.vue` y el input `min-w-[280px]` del boletín en `index.vue` desbordaban hacia la derecha recortando el botón `☰`, mientras la barra `<nav>` permanecía oculta (`hidden md:block`).
+
+### Cambios realizados
+- **`app/components/BrandMark.vue` y `app/components/HeaderNav.vue`**:
+  - Logo, tipografía (`text-lg sm:text-2xl`), padding y botones compactados en móvil para encajar con holgura desde `320px`.
+  - Barra `<nav>` visible también en móvil con desplazamiento horizontal táctil (`overflow-x-auto no-scrollbar`) y centrada en desktop (`md:justify-center`).
+- **`app/pages/index.vue` y `app/app.vue`**:
+  - Input del boletín ajustado a `w-full sm:w-auto sm:min-w-[280px]` y contenedor `p-5 sm:p-8 md:p-12`.
+  - Añadido `overflow-x-clip` al wrapper raíz en `app.vue`.
+
+### Verificación
+- `npm run build` y comprobación SSR local en `http://localhost:3005/`.
+
+---
+
 ## Sesión 33 — 2026-11-24 · Imagen Destacada al Inicio y Encabezado Inferior en Artículos
 
 **Rama activa**: `feat/setup-nuxt4-ghost-cms` (pendiente autorización de merge a `main` y deploy)
