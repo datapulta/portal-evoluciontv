@@ -444,3 +444,14 @@ Este documento constituye la memoria técnica y bitácora cronológica exhaustiv
 - **Verificación Técnica**:
   - Compilación de producción limpia ejecutada con `npm run build` (0 errores).
 
+---
+
+### Sesión 26 — 24 de Noviembre de 2026
+**Objetivo**: Reemplazo de etiquetas técnicas de bitrate en `/radio` y `/llms.txt`.
+- **Autorización**: Aprobación nativa formal del plan `plan_reemplazo_etiquetas_bitrate_radio.md` mediante botón Proceed del operador (§4.4 de AGENTS.md).
+- **Actividades Realizadas**:
+  - Se reemplazó `320 KBPS MP3 · EN VIVO` por `RADIO EN VIVO · 24/7` y `MP3 320k` por `AUDIO HD` en `app/pages/radio.vue` y sus metadatos en `llms.txt.get.ts`.
+- **Verificación Técnica**:
+  - Compilación de producción limpia ejecutada con `npm run build` (0 errores).
+  - Validación local en `http://localhost:3005/radio` (`200 OK`).
+

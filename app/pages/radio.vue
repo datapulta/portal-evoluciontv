@@ -7,7 +7,7 @@ useHead({
   meta: [
     {
       name: 'description',
-      content: 'Escucha Evolución Radio en vivo las 24 horas en calidad HD (320 kbps). Música, cultura alternativa y señal digital independiente.'
+      content: 'Escucha Evolución Radio en vivo las 24 horas en audio de calidad HD. Música, cultura alternativa y señal digital independiente.'
     },
     {
       property: 'og:title',
@@ -15,7 +15,7 @@ useHead({
     },
     {
       property: 'og:description',
-      content: 'Transmisión continua de Evolución Radio en MP3 320 kbps.'
+      content: 'Transmisión continua de Evolución Radio en audio de calidad HD.'
     }
   ]
 })
@@ -45,7 +45,7 @@ const {
 
         <span class="inline-flex items-center gap-2 bg-red-600/10 border border-red-500/30 text-red-600 dark:text-red-400 font-bold px-3 py-1.5 rounded-full text-xs">
           <span class="w-2 h-2 rounded-full bg-red-600 animate-ping"></span>
-          320 KBPS MP3 · EN VIVO
+          RADIO EN VIVO · 24/7
         </span>
       </div>
 
@@ -128,7 +128,7 @@ const {
                 </p>
               </div>
               <span class="text-xs font-mono font-bold px-2.5 py-1 rounded-lg bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 text-neutral-700 dark:text-neutral-300 shrink-0">
-                MP3 320k
+                AUDIO HD
               </span>
             </div>
 
