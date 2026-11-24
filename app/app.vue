@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import HeaderNav from '~/components/HeaderNav.vue'
 import FooterSection from '~/components/FooterSection.vue'
+import RadioPlayer from '~/components/RadioPlayer.vue'
 import { useTheme } from '~/composables/useTheme'
 
 const { isDark } = useTheme()
@@ -30,5 +31,8 @@ useHead({
 
     <!-- Pie de Página -->
     <FooterSection />
+
+    <!-- Reproductor Flotante Persistente Evolución Radio -->
+    <RadioPlayer />
   </div>
 </template>

@@ -327,3 +327,18 @@ Este documento constituye la memoria técnica y bitácora cronológica exhaustiv
 - **Verificación Técnica**:
   - Compilación de producción limpia ejecutada con `npm run build` (0 errores).
 
+---
+
+### Sesión 17 — 24 de Noviembre de 2026
+**Objetivo**: Rediseño editorial limpio en `app/pages/index.vue` e integración del reproductor flotante persistente **Evolución Radio** (`useRadio.ts`, `RadioPlayer.vue`), conservando intacto el diseño de `HeaderNav.vue`.
+- **Autorización**: Aprobación nativa formal del plan `plan_rediseno_portada_y_evolucion_radio.md` mediante botón Proceed del operador (§4.4 de AGENTS.md).
+- **Actividades Realizadas**:
+  1. **Reproductor Flotante Persistente (`useRadio.ts`, `RadioPlayer.vue`, `app.vue`)**:
+     - Se implementó el reproductor flotante de **Evolución Radio** en esquina inferior izquierda con Play/Pause circular rojo, barra de volumen, silencio y opción de minimizar/expandir en píldora.
+  2. **Portada Editorial Limpia (`app/pages/index.vue`)**:
+     - Nota principal en móvil *full-bleed* sin texto encimado y titular + extracto limpios debajo de la fotografía.
+     - Notas secundarias en formato compacto horizontal con divisores sutiles.
+     - Se mantuvo intacto `HeaderNav.vue`.
+- **Verificación Técnica**:
+  - Compilación de producción limpia ejecutada con `npm run build` (0 errores).
+
