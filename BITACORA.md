@@ -125,3 +125,17 @@ Este documento constituye la memoria técnica y bitácora cronológica exhaustiv
   - Compilación de producción exitosa con `npm run build` (0 errores en cliente, servidor y Nitro).
   - Verificación HTTP 200 OK en portada (`/`), artículo en vivo de Ghost (`/noticias/coming-soon`) y notas de respaldo (`/noticias/evolucion-tv-nueva-plataforma-digital`).
   - Validación de renderizado de contenido de Ghost (`This is Evolucion TV`) en el HTML SSR de la página de lectura.
+
+---
+
+### Sesión 6 — 23 de Noviembre de 2026
+**Objetivo**: Enlace interactivo y directo en la imagen destacada de la Nota Principal (Hero) hacia la ruta del artículo.
+- **Autorización**: Aprobación nativa formal del plan `plan_enlace_imagen_nota_principal.md` mediante botón Proceed del operador (§4.4 de AGENTS.md).
+- **Actividades Realizadas**:
+  1. **Navegabilidad Completa en Hero Card (`app/pages/index.vue`)**:
+     - Envoltura de la imagen panorámica y gradiente protector dentro de un enlace nativo `<NuxtLink :to="'/noticias/' + featuredArticle.slug">`.
+     - Inclusión de clase `cursor-pointer`, `aria-label` para accesibilidad y mantenimiento de transiciones de escala `group-hover:scale-105`.
+     - Ajuste de capas de eventos para que los clics sobre cualquier sector de la imagen trasladen directamente a la vista del artículo.
+- **Verificación Técnica**:
+  - Compilación de producción limpia ejecutada con `npm run build` (13.4s, 0 errores).
+  - Verificación de renderizado de `href="/noticias/coming-soon"` envolviendo la imagen destacada en `http://localhost:3005/`.

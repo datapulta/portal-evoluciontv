@@ -31,16 +31,23 @@ const allArticles = computed<Article[]>(() => newsResult.value?.articles?.slice(
       <div v-if="featuredArticle" class="grid grid-cols-1 lg:grid-cols-12 gap-6">
         <!-- Nota Principal (8 columnas) -->
         <article class="lg:col-span-8 group relative bg-neutral-900 border border-neutral-800 rounded-3xl overflow-hidden shadow-2xl flex flex-col justify-end min-h-[420px] md:min-h-[500px]">
-          <img
-            v-if="featuredArticle.feature_image"
-            :src="featuredArticle.feature_image"
-            :alt="featuredArticle.title"
-            class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-          />
-          <div class="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/60 to-transparent"></div>
+          <!-- Enlace clickeable sobre la imagen y fondo -->
+          <NuxtLink
+            :to="`/noticias/${featuredArticle.slug}`"
+            class="absolute inset-0 z-0 block cursor-pointer"
+            :aria-label="featuredArticle.title"
+          >
+            <img
+              v-if="featuredArticle.feature_image"
+              :src="featuredArticle.feature_image"
+              :alt="featuredArticle.title"
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/60 to-transparent"></div>
+          </NuxtLink>
 
-          <div class="relative z-10 p-6 md:p-8 space-y-3">
-            <div class="flex items-center gap-2">
+          <div class="relative z-10 p-6 md:p-8 space-y-3 pointer-events-none">
+            <div class="flex items-center gap-2 pointer-events-auto">
               <span class="bg-red-600 text-white font-black text-[11px] uppercase tracking-wider px-3 py-1 rounded-md shadow-md">
                 Nota Principal
               </span>
@@ -52,7 +59,7 @@ const allArticles = computed<Article[]>(() => newsResult.value?.articles?.slice(
               </span>
             </div>
 
-            <h2 class="text-2xl md:text-4xl font-black text-white group-hover:text-red-400 transition-colors leading-tight">
+            <h2 class="text-2xl md:text-4xl font-black text-white group-hover:text-red-400 transition-colors leading-tight pointer-events-auto">
               <NuxtLink :to="`/noticias/${featuredArticle.slug}`">
                 {{ featuredArticle.title }}
               </NuxtLink>
