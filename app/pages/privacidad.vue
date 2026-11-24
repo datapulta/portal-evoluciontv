@@ -59,7 +59,7 @@ useHead({
           <section class="space-y-2">
             <h2 class="text-lg font-black text-neutral-900 dark:text-white">3. Derechos y contacto</h2>
             <p>
-              Puedes solicitar en cualquier momento la baja de nuestro boletín o la eliminación de tu dirección de correo electrónico escribiendo a <a href="mailto:redaccion@evoluciontv.com" class="text-etv-blue-600 dark:text-etv-blue-400 font-semibold underline hover:text-etv-orange-600 dark:hover:text-etv-orange-400 transition-colors">redaccion@evoluciontv.com</a>.
+              Puedes solicitar en cualquier momento la baja de nuestro boletín o la eliminación de tu dirección de correo electrónico escribiendo a <ProtectedEmail text-class="text-etv-blue-600 dark:text-etv-blue-400 font-semibold underline hover:text-etv-orange-600 dark:hover:text-etv-orange-400 transition-colors cursor-pointer" />.
             </p>
           </section>
         </div>

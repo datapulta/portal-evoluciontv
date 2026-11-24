@@ -141,9 +141,7 @@ const currentShow = {
 
           <div class="mt-4 pt-4 border-t border-neutral-800 flex items-center justify-between text-xs">
             <span class="text-neutral-400">¿Quieres participar en vivo?</span>
-            <a href="mailto:redaccion@evoluciontv.com" class="text-etv-orange-400 hover:text-etv-orange-300 font-semibold underline">
-              Envía tu reporte
-            </a>
+            <ProtectedEmail label="Contactar a cabina" subject="Participación en Vivo ETV" text-class="text-etv-orange-400 hover:text-etv-orange-300 font-semibold underline cursor-pointer" />
           </div>
         </div>
       </div>

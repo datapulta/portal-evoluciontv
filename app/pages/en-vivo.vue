@@ -179,12 +179,12 @@ const recentNews = computed(() => newsData.value?.articles || [])
                 <p class="text-xs text-neutral-600 dark:text-neutral-400">Envía tus fechas, lanzamientos o propuestas de cobertura a nuestra cabina de redacción.</p>
               </div>
             </div>
-            <a
-              href="mailto:redaccion@evoluciontv.com?subject=Propuesta%20de%20Banda%20o%20Toquin%20ETV"
-              class="bg-neutral-900 hover:bg-neutral-800 dark:bg-neutral-800 dark:hover:bg-neutral-700 text-white font-bold text-xs px-4 py-2.5 rounded-xl border border-neutral-700 transition-colors shrink-0 shadow-sm"
-            >
-              Contactar a Cabina
-            </a>
+            <ProtectedEmail
+              as-button
+              label="Contactar a Cabina"
+              subject="Propuesta de Banda o Toquin ETV"
+              button-class="bg-neutral-900 hover:bg-neutral-800 dark:bg-neutral-800 dark:hover:bg-neutral-700 text-white font-bold text-xs px-4 py-2.5 rounded-xl border border-neutral-700 transition-colors shrink-0 shadow-sm cursor-pointer inline-flex items-center gap-2"
+            />
           </div>
         </div>
 

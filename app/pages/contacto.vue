@@ -19,6 +19,8 @@ useHead({
   ]
 })
 
+const OFFICIAL_EMAIL = 'redaccion@evoluciontv.mx'
+
 const copiedEmail = ref<string | null>(null)
 let copyTimer: ReturnType<typeof setTimeout> | null = null
 
@@ -35,6 +37,11 @@ const copyToClipboard = async (email: string) => {
   }
 }
 
+const openMailClient = (subject: string) => {
+  if (typeof window === 'undefined') return
+  window.location.href = `mailto:${OFFICIAL_EMAIL}?subject=${encodeURIComponent(subject)}`
+}
+
 const contactChannels = [
   {
     id: 'musica',
@@ -43,7 +50,7 @@ const contactChannels = [
     badgeColor: 'bg-etv-orange-500/10 text-etv-orange-600 dark:text-etv-orange-400 border-etv-orange-500/20',
     iconColor: 'text-etv-orange-500',
     description: 'Envío de sencillos, EPK, comunicados o lanzamientos de bandas de ska, reggae, rock y ritmos afines para reseña, difusión y programación en Evolución Radio.',
-    email: 'redaccion@evoluciontv.com',
+    email: OFFICIAL_EMAIL,
     subject: 'Envío de Música / Nueva Banda - Evolución TV',
     actionText: 'Enviar Música o EPK'
   },
@@ -54,7 +61,7 @@ const contactChannels = [
     badgeColor: 'bg-etv-blue-500/10 text-etv-blue-600 dark:text-etv-blue-400 border-etv-blue-500/20',
     iconColor: 'text-etv-blue-500',
     description: 'Acreditaciones de prensa, crónicas de conciertos, cobertura fotográfica de toquines y difusión de carteles y eventos de la escena mexicana.',
-    email: 'redaccion@evoluciontv.com',
+    email: OFFICIAL_EMAIL,
     subject: 'Cobertura de Toquín / Festival - Evolución TV',
     actionText: 'Solicitar Cobertura de Toquín'
   },
@@ -65,7 +72,7 @@ const contactChannels = [
     badgeColor: 'bg-purple-500/10 text-purple-600 dark:text-purple-400 border-purple-500/20',
     iconColor: 'text-purple-500',
     description: 'Coordinación de entrevistas presenciales o remotas, sesiones acústicas en cabina, cápsulas y alianzas con promotores culturales y sellos independientes.',
-    email: 'redaccion@evoluciontv.com',
+    email: OFFICIAL_EMAIL,
     subject: 'Sesiones en Vivo y Entrevistas - Evolución TV',
     actionText: 'Agendar Entrevista o Sesión'
   }
@@ -178,38 +185,39 @@ const socialChannels = [
                 {{ channel.description }}
               </p>
 
-              <!-- Dirección de correo visible y opción de copia -->
+              <!-- Dirección de correo visible con protección anti-scraping y opción de copia -->
               <div class="p-3 bg-neutral-50 dark:bg-neutral-950/70 rounded-xl border border-neutral-200/70 dark:border-neutral-800/80 flex items-center justify-between gap-2">
                 <span class="text-xs sm:text-sm font-mono text-neutral-800 dark:text-neutral-200 truncate select-all">
-                  {{ channel.email }}
+                  redaccion<span class="hidden select-none" aria-hidden="true">[anti-spam-trap]</span>@evoluciontv.mx
                 </span>
                 <button
                   type="button"
-                  @click="copyToClipboard(channel.email)"
-                  :title="`Copiar ${channel.email}`"
-                  class="shrink-0 p-1.5 text-neutral-500 hover:text-neutral-800 dark:text-neutral-400 dark:hover:text-white rounded-lg hover:bg-neutral-200/60 dark:hover:bg-neutral-800 transition-colors text-xs font-semibold flex items-center gap-1"
+                  @click="copyToClipboard(OFFICIAL_EMAIL)"
+                  :title="`Copiar ${OFFICIAL_EMAIL}`"
+                  class="shrink-0 p-1.5 text-neutral-500 hover:text-neutral-800 dark:text-neutral-400 dark:hover:text-white rounded-lg hover:bg-neutral-200/60 dark:hover:bg-neutral-800 transition-colors text-xs font-semibold flex items-center gap-1 cursor-pointer"
                 >
-                  <svg v-if="copiedEmail === channel.email" class="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg v-if="copiedEmail === OFFICIAL_EMAIL" class="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
                   </svg>
                   <svg v-else class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
                   </svg>
-                  <span>{{ copiedEmail === channel.email ? '¡Copiado!' : 'Copiar' }}</span>
+                  <span>{{ copiedEmail === OFFICIAL_EMAIL ? '¡Copiado!' : 'Copiar' }}</span>
                 </button>
               </div>
             </div>
 
             <div class="pt-6 mt-6 border-t border-neutral-100 dark:border-neutral-800">
-              <a
-                :href="`mailto:${channel.email}?subject=${encodeURIComponent(channel.subject)}`"
-                class="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-neutral-900 hover:bg-etv-orange-500 text-white dark:bg-white dark:text-neutral-900 dark:hover:bg-etv-orange-500 dark:hover:text-white font-bold text-xs sm:text-sm transition-all duration-200 shadow-sm"
+              <button
+                type="button"
+                @click="openMailClient(channel.subject)"
+                class="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-neutral-900 hover:bg-etv-orange-500 text-white dark:bg-white dark:text-neutral-900 dark:hover:bg-etv-orange-500 dark:hover:text-white font-bold text-xs sm:text-sm transition-all duration-200 shadow-sm cursor-pointer"
               >
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
                 {{ channel.actionText }}
-              </a>
+              </button>
             </div>
           </article>
         </div>

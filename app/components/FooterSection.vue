@@ -66,8 +66,8 @@ const footerCategories = [
         <h4 class="text-sm font-bold text-neutral-900 dark:text-white uppercase tracking-wider mb-3">Redacción y Contacto</h4>
         <ul class="space-y-2 text-xs md:text-sm">
           <li><NuxtLink to="/contacto" class="hover:text-etv-orange-600 dark:hover:text-etv-orange-400 font-semibold transition-colors flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-etv-orange-500"></span>Contacto y Redes Sociales</NuxtLink></li>
-          <li><a href="mailto:redaccion@evoluciontv.com" class="hover:text-neutral-900 dark:hover:text-white transition-colors">redaccion@evoluciontv.com</a></li>
-          <li><a href="mailto:redaccion@evoluciontv.com?subject=Envio%20de%20Musica%20y%20Bandas" class="hover:text-neutral-900 dark:hover:text-white transition-colors">Envío de Música y Bandas</a></li>
+          <li><ProtectedEmail text-class="hover:text-neutral-900 dark:hover:text-white transition-colors cursor-pointer text-xs md:text-sm" /></li>
+          <li><ProtectedEmail label="Envío de Música y Bandas" subject="Envio de Musica y Bandas" text-class="hover:text-neutral-900 dark:hover:text-white transition-colors cursor-pointer text-xs md:text-sm" /></li>
           <li><NuxtLink to="/codigo-etica" class="hover:text-etv-orange-600 dark:hover:text-etv-orange-400 transition-colors">Código de Ética Periodística</NuxtLink></li>
           <li><NuxtLink to="/privacidad" class="hover:text-etv-orange-600 dark:hover:text-etv-orange-400 transition-colors">Aviso de Privacidad</NuxtLink></li>
         </ul>

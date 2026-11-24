@@ -715,4 +715,25 @@ La página `/radio` presentaba exceso de espacio visual en viewport desktop (≥
   - Compilación de producción limpia ejecutada con `npm run build` (0 errores).
   - Validación local en `http://localhost:3005/contacto` y `http://localhost:3005/en-vivo` (`200 OK`).
 
+---
+
+### Sesión 30 — 24 de Noviembre de 2026
+**Objetivo**: Migración del dominio oficial de correo a **`evoluciontv.mx`** e implementación de protección integral anti-spam / anti-scraping de correos.
+- **Autorización**: Aprobación nativa formal del plan `plan_dominio_mx_y_proteccion_antispam_emails.md` mediante botón Proceed del operador (§4.4 de AGENTS.md).
+- **Actividades Realizadas**:
+  1. **Componente Reutilizable (`app/components/ProtectedEmail.vue`)**:
+     - Ensamblaje dinámico de correos en cliente (`user`, `domain`, `tld`), suprimiendo enlaces estáticos `mailto:` en el HTML plano para evitar recolección por robots (email harvesting).
+     - Trampa invisible señuelo (*honeypot decoy* `<span class="hidden select-none" aria-hidden="true">[anti-spam-trap]</span>`) que invalida expresiones regulares de bots.
+     - Apertura segura mediante evento `@click` que dispara el gestor de correo predeterminado del sistema operativo solo ante interacción humana.
+     - Botón de copiado en 1 clic al portapapeles con feedback visual (*"¡Copiado!"*).
+  2. **Página de Contacto (`app/pages/contacto.vue`)**:
+     - Actualizado correo oficial a `redaccion@evoluciontv.mx`.
+     - Reemplazados enlaces directos por botones interactivos seguros y ofuscación en la vista.
+  3. **Plataforma Completa (`FooterSection.vue`, `LiveStreamSection.vue`, `en-vivo.vue`, `codigo-etica.vue`, `privacidad.vue`)**:
+     - Reemplazo del dominio antiguo `@evoluciontv.com` por el dominio oficial **`@evoluciontv.mx`** con `ProtectedEmail`.
+- **Verificación Técnica**:
+  - Compilación de producción limpia ejecutada con `npm run build` (0 errores, 215 módulos).
+  - Verificación anti-bot: `curl.exe` al HTML crudo demostró que no existen cadenas estáticas `mailto:` en los elementos DOM.
+  - Verificación local en `http://localhost:3005/contacto` (`200 OK`).
+
 
