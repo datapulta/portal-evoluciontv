@@ -329,9 +329,9 @@ const isActiveRoute = (to: string) => {
       </div>
     </Transition>
 
-    <!-- Navegación de categorías dinámicas visible en móvil (deslizable) y centrada en Desktop -->
-    <nav class="border-t border-neutral-200/80 dark:border-neutral-800/60 bg-neutral-50/50 dark:bg-neutral-900/30 transition-colors">
-      <div class="max-w-7xl mx-auto px-3 sm:px-4 flex items-center md:flex-wrap md:justify-center gap-x-5 lg:gap-x-7 text-xs sm:text-sm overflow-x-auto no-scrollbar">
+    <!-- Navegación de categorías dinámicas exclusiva para escritorio (centrada) -->
+    <nav class="hidden md:block border-t border-neutral-200/80 dark:border-neutral-800/60 bg-neutral-50/50 dark:bg-neutral-900/30 transition-colors">
+      <div class="max-w-7xl mx-auto px-4 flex items-center justify-center gap-x-5 lg:gap-x-7 text-xs sm:text-sm">
         <NuxtLink
           v-for="cat in navigationItems"
           :key="cat.name"

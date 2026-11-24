@@ -736,4 +736,17 @@ La página `/radio` presentaba exceso de espacio visual en viewport desktop (≥
   - Verificación anti-bot: `curl.exe` al HTML crudo demostró que no existen cadenas estáticas `mailto:` en los elementos DOM.
   - Verificación local en `http://localhost:3005/contacto` (`200 OK`).
 
+---
+
+### Sesión 31 — 24 de Noviembre de 2026
+**Objetivo**: Ocultar la barra horizontal de navegación en celulares (`hidden md:block`) para evitar saturación de pantalla y mantener el menú hamburguesa limpio.
+- **Autorización**: Aprobación nativa formal del plan `plan_ocultar_menu_horizontal_en_movil.md` mediante botón Proceed del operador (§4.4 de AGENTS.md).
+- **Actividades Realizadas**:
+  1. Se restauró la clase `hidden md:block` en el contenedor `<nav>` de `app/components/HeaderNav.vue`.
+  2. En celulares (`< 768px`), la barra horizontal ya no se muestra debajo del encabezado, eliminando la duplicación con el botón hamburguesa (`☰`).
+  3. En computadoras de escritorio (`>= 768px`), la barra de navegación se mantiene completa, centrada y con acceso directo a todas las secciones editoriales y a `/contacto`.
+- **Verificación Técnica**:
+  - Compilación de producción limpia ejecutada con `npm run build` (0 errores).
+  - Verificación visual en servidor de desarrollo local `http://localhost:3005/`.
+
 
