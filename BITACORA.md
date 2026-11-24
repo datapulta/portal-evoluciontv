@@ -378,3 +378,19 @@ Este documento constituye la memoria técnica y bitácora cronológica exhaustiv
   - `https://cms-etv.webia.studio/` responde `301` con `Location: https://etv.webia.studio/`.
   - `https://cms-etv.webia.studio/ghost/` (`200 OK`), Content API (`200 OK`, 2 artículos) y `https://etv.webia.studio/` (`200 OK`) operativos sin interrupciones.
 
+---
+
+### Sesión 21 — 24 de Noviembre de 2026
+**Objetivo**: Optimización de artículos y portal para plataformas y chats de IA (GEO / AIO + SEO).
+- **Autorización**: Aprobación nativa formal del plan `plan_optimizacion_ia_geo_seo.md` mediante botón Proceed del operador (§4.4 de AGENTS.md).
+- **Actividades Realizadas**:
+  1. **Endpoints Dinámicos para IA y Buscadores**:
+     - `server/routes/llms.txt.get.ts`: Índice `/llms.txt` en Markdown limpio con secciones, categorías y notas reales de Ghost CMS.
+     - `server/routes/sitemap.xml.get.ts`: Mapa del sitio XML dinámico `/sitemap.xml` con fechas de actualización.
+     - `public/robots.txt`: Configuración `Allow: /` y enlace a `Sitemap: https://etv.webia.studio/sitemap.xml`.
+  2. **JSON-LD `NewsArticle` y Metadatos Completos (`app/pages/noticias/[slug].vue`)**:
+     - Se agregaron `<link rel="canonical">`, `og:type: 'article'`, `twitter:card: 'summary_large_image'`, `<script type="application/ld+json">` (`NewsArticle`) y botones de consulta rápida (Copiar enlace, Resumir en ChatGPT, Consultar en Perplexity).
+- **Verificación Técnica**:
+  - Compilación de producción limpia ejecutada con `npm run build` (0 errores).
+  - Validación local en `/llms.txt`, `/sitemap.xml` y `/noticias/...`.
+

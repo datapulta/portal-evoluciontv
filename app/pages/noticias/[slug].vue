@@ -74,13 +74,87 @@ watch(relatedArticles, () => {
   nextTick(updateSliderState)
 })
 
-// Metadatos SEO dinámicos
+const SITE_URL = 'https://etv.webia.studio'
+const canonicalUrl = computed(() => `${SITE_URL}/noticias/${slug.value}`)
+const copiedLink = ref(false)
+
+const copyArticleLink = async () => {
+  if (typeof navigator === 'undefined' || !navigator.clipboard) return
+  try {
+    await navigator.clipboard.writeText(canonicalUrl.value)
+    copiedLink.value = true
+    setTimeout(() => {
+      copiedLink.value = false
+    }, 2000)
+  } catch {}
+}
+
+const chatGptUrl = computed(() => {
+  const prompt = `Resume y analiza los puntos clave de este artículo de Evolución TV: ${canonicalUrl.value}`
+  return `https://chatgpt.com/?q=${encodeURIComponent(prompt)}`
+})
+
+const perplexityUrl = computed(() => {
+  const prompt = `Analiza y resume este artículo de Evolución TV: ${canonicalUrl.value}`
+  return `https://www.perplexity.ai/search?q=${encodeURIComponent(prompt)}`
+})
+
+const newsArticleSchema = computed(() => {
+  if (!article.value) return null
+  return JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'NewsArticle',
+    headline: article.value.title,
+    description: article.value.excerpt || 'Cobertura informativa de Evolución TV',
+    image: article.value.feature_image ? [article.value.feature_image] : undefined,
+    datePublished: article.value.published_at,
+    inLanguage: 'es-MX',
+    articleSection: article.value.primary_tag?.name || 'Noticias',
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': canonicalUrl.value
+    },
+    author: {
+      '@type': 'Person',
+      name: article.value.primary_author?.name || 'Equipo Editorial ETV'
+    },
+    publisher: {
+      '@type': 'NewsMediaOrganization',
+      name: 'Evolución TV',
+      url: SITE_URL,
+      logo: {
+        '@type': 'ImageObject',
+        url: `${SITE_URL}/favicon.svg`
+      }
+    }
+  })
+})
+
+// Metadatos SEO, Open Graph y JSON-LD dinámicos para buscadores y chats de IA
 useHead({
   title: computed(() => article.value ? `${article.value.title} | Evolución TV` : 'Noticia | Evolución TV'),
+  link: [
+    {
+      rel: 'canonical',
+      href: canonicalUrl
+    }
+  ],
   meta: [
     {
       name: 'description',
       content: computed(() => article.value?.excerpt || 'Cobertura informativa de Evolución TV')
+    },
+    {
+      property: 'og:type',
+      content: 'article'
+    },
+    {
+      property: 'og:site_name',
+      content: 'Evolución TV'
+    },
+    {
+      property: 'og:url',
+      content: canonicalUrl
     },
     {
       property: 'og:title',
@@ -93,8 +167,37 @@ useHead({
     {
       property: 'og:image',
       content: computed(() => article.value?.feature_image || '')
+    },
+    {
+      property: 'article:published_time',
+      content: computed(() => article.value?.published_at || '')
+    },
+    {
+      property: 'article:section',
+      content: computed(() => article.value?.primary_tag?.name || 'Noticias')
+    },
+    {
+      name: 'twitter:card',
+      content: 'summary_large_image'
+    },
+    {
+      name: 'twitter:title',
+      content: computed(() => article.value?.title || 'Evolución TV')
+    },
+    {
+      name: 'twitter:description',
+      content: computed(() => article.value?.excerpt || '')
+    },
+    {
+      name: 'twitter:image',
+      content: computed(() => article.value?.feature_image || '')
     }
-  ]
+  ],
+  script: computed(() =>
+    newsArticleSchema.value
+      ? [{ type: 'application/ld+json', innerHTML: newsArticleSchema.value }]
+      : []
+  )
 })
 
 const formatDate = (dateStr?: string) => {
@@ -208,9 +311,30 @@ const formatDate = (dateStr?: string) => {
           Volver a la Portada
         </NuxtLink>
 
-        <div class="flex items-center gap-2 text-xs text-neutral-500 dark:text-neutral-400 font-medium">
-          <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-          Publicado por la Redacción de Evolución TV
+        <div class="flex flex-wrap items-center gap-2 text-xs text-neutral-500 dark:text-neutral-400 font-medium">
+          <button
+            type="button"
+            @click="copyArticleLink"
+            class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-900 dark:hover:bg-neutral-800 border border-neutral-200 dark:border-neutral-800 text-neutral-700 dark:text-neutral-300 transition-colors cursor-pointer"
+          >
+            {{ copiedLink ? '¡Enlace copiado!' : 'Copiar enlace' }}
+          </button>
+          <a
+            :href="chatGptUrl"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-900 dark:hover:bg-neutral-800 border border-neutral-200 dark:border-neutral-800 text-neutral-700 dark:text-neutral-300 hover:text-red-600 dark:hover:text-red-400 transition-colors"
+          >
+            Resumir en ChatGPT
+          </a>
+          <a
+            :href="perplexityUrl"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-900 dark:hover:bg-neutral-800 border border-neutral-200 dark:border-neutral-800 text-neutral-700 dark:text-neutral-300 hover:text-red-600 dark:hover:text-red-400 transition-colors"
+          >
+            Consultar en Perplexity
+          </a>
         </div>
       </div>
 
