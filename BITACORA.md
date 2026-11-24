@@ -749,4 +749,22 @@ La página `/radio` presentaba exceso de espacio visual en viewport desktop (≥
   - Compilación de producción limpia ejecutada con `npm run build` (0 errores).
   - Verificación visual en servidor de desarrollo local `http://localhost:3005/`.
 
+---
+
+### Sesión 32 — 24 de Noviembre de 2026
+**Objetivo**: Merge de la rama `feat/setup-nuxt4-ghost-cms` hacia `main`, publicación del tag oficial de release **`v1.0.10`** y despliegue a producción en Dokploy VPS.
+- **Autorización**: Aprobación nativa formal del plan `plan_merge_y_release_v1_0_10.md` mediante botón Proceed del operador (§4.4 de AGENTS.md).
+- **Actividades Realizadas**:
+  1. **Merge no fast-forward (`--no-ff`) hacia `main`**:
+     - Commit merge `e622520` integrando 7 conjuntos de mejoras: maquetación de artículos 16:9 arriba, ajustes responsive móvil, textos de quiénes somos, página dedicada `/contacto` sin formularios, enfoque en escena musical independiente (ska, reggae, rock), migración a `@evoluciontv.mx` con protección anti-spam (`ProtectedEmail.vue`) y limpieza de cabecera móvil (`hidden md:block`).
+  2. **Etiquetado Semántico**:
+     - Creación y publicación del tag anotado oficial **`v1.0.10`**.
+  3. **Despliegue y Preservación**:
+     - Despliegue automático en Dokploy VPS (`OD0duHt9W9jees8yl_TEa`) completado con éxito (`status: done`, contenedor activo).
+     - Retorno a la rama de desarrollo `feat/setup-nuxt4-ghost-cms` preservándola intacta conforme a `AGENTS.md` §5.
+- **Verificación Técnica en Producción (`https://etv.webia.studio/`)**:
+  - `HTTP 200 OK` verificado en `https://etv.webia.studio/contacto` con título `<title>Contacto y Bandas Independientes | Evolución TV</title>`.
+  - Verificada la presencia de la ruta en `https://etv.webia.studio/sitemap.xml` y `https://etv.webia.studio/llms.txt`.
+  - `HTTP 200 OK` en `https://etv.webia.studio/quienes-somos` y artículos.
+
 
