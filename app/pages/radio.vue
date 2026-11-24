@@ -110,7 +110,7 @@ const {
                 Estación Digital 24/7
               </span>
               <h1 class="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-neutral-900 dark:text-white">
-                EVOLUCIÓN <span class="text-red-600">radio</span>
+                Evolución <span class="text-red-600">Radio</span>
               </h1>
               <p class="text-sm md:text-base text-neutral-600 dark:text-neutral-300 leading-relaxed">
                 Música independiente, cultura alternativa y programación continua. La señal se mantiene activa aunque sigas navegando por nuestras noticias.
