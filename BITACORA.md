@@ -4,6 +4,27 @@ Este documento constituye la memoria técnica y bitácora cronológica exhaustiv
 
 ---
 
+## Sesión 32 — 2026-11-24 · Corrección de Cajas del Hero y Ticker Rotativo "Última Hora"
+
+**Rama activa**: `feat/setup-nuxt4-ghost-cms` (pendiente autorización de merge a `main` y deploy)
+**Autorización**: `plan_correccion_cajas_portada_y_ticker.md` (Proceed button, §4.4 AGENTS.md)
+
+### Diagnóstico
+1. En `app/pages/index.vue`, `items-stretch` + `flex-1` + `justify-between h-full` obligaba a las 2 tarjetas secundarias del Hero a estirarse verticalmente (~335 px) generando huecos vacíos entre el extracto y la fecha.
+2. En `app/components/HeaderNav.vue`, la barra *Última Hora* consultaba solo 1 noticia estática sin rotación ni adaptación móvil/desktop.
+
+### Cambios realizados
+- **`app/pages/index.vue`**:
+  - Reemplazado `items-stretch` por `items-start`, eliminado `flex-1` y `justify-between h-full` de las tarjetas secundarias (altura natural compacta y sin huecos vacíos).
+  - Equilibrada la columna lateral `lg:col-span-4` con un bloque compacto **"Señal Digital 24/7"** (control directo de Evolución Radio con pista en vivo, enlace a Cabina TV y chips de secciones).
+- **`app/components/HeaderNav.vue`**:
+  - Ticker rotativo de hasta 5 noticias recientes cada `4.5s` con `<Transition mode="out-in">` vertical suave, pausa en `:hover`/`:focus-in` y controles `‹` `1/N` `›` responsivos en móvil y desktop.
+
+### Verificación
+- `npm run build` y comprobación SSR local en `http://localhost:3005/`.
+
+---
+
 ## Sesión 31 — 2026-11-24 · Emblema Oficial Extraído (`logo-etv.png` y `BrandMark.vue`)
 
 **Rama activa**: `feat/setup-nuxt4-ghost-cms` (pendiente autorización de merge a `main` y deploy)

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, nextTick } from 'vue'
+import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useTheme } from '~/composables/useTheme'
 import { useNews } from '~/composables/useNews'
@@ -52,12 +52,48 @@ const { data: remoteCategories } = await useAsyncData<NavCategory[]>(
   () => $fetch('/api/categories')
 )
 
-// Nota más reciente para la barra de Última Hora
+// Últimas noticias para el ticker rotativo de Última Hora
 const { data: breakingData } = await useAsyncData(
   'header-breaking-news',
-  () => getArticles({ limit: 1 })
+  () => getArticles({ limit: 5 })
 )
-const breakingNews = computed(() => breakingData.value?.articles?.[0] || null)
+const breakingItems = computed(() => breakingData.value?.articles || [])
+const breakingIndex = ref(0)
+const isTickerPaused = ref(false)
+let tickerTimer: ReturnType<typeof setInterval> | null = null
+
+const currentBreaking = computed(() => {
+  if (breakingItems.value.length === 0) return null
+  return breakingItems.value[breakingIndex.value % breakingItems.value.length] || breakingItems.value[0]
+})
+
+const nextBreaking = () => {
+  if (breakingItems.value.length <= 1) return
+  breakingIndex.value = (breakingIndex.value + 1) % breakingItems.value.length
+}
+
+const prevBreaking = () => {
+  const len = breakingItems.value.length
+  if (len <= 1) return
+  breakingIndex.value = (breakingIndex.value - 1 + len) % len
+}
+
+onMounted(() => {
+  if (!tickerTimer) {
+    tickerTimer = setInterval(() => {
+      if (!isTickerPaused.value && breakingItems.value.length > 1) {
+        nextBreaking()
+      }
+    }, 4500)
+  }
+})
+
+onUnmounted(() => {
+  if (tickerTimer) {
+    clearInterval(tickerTimer)
+    tickerTimer = null
+  }
+})
 
 interface NavItem {
   name: string
@@ -106,24 +142,67 @@ const isActiveRoute = (to: string) => {
 
 <template>
   <header class="border-b border-neutral-200 dark:border-neutral-800 bg-white/95 dark:bg-neutral-950/95 sticky top-0 z-50 backdrop-blur-md transition-colors duration-200">
-    <!-- Barra superior de última hora y fecha -->
-    <div class="border-b border-neutral-200/80 dark:border-neutral-800/60 bg-neutral-100/80 dark:bg-neutral-900/60 text-xs py-1.5 px-4 transition-colors">
-      <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
-        <div class="flex items-center gap-3 overflow-hidden">
+    <!-- Barra superior de última hora rotativa y fecha -->
+    <div class="border-b border-neutral-200/80 dark:border-neutral-800/60 bg-neutral-100/80 dark:bg-neutral-900/60 text-xs py-1.5 px-3 sm:px-4 transition-colors">
+      <div class="max-w-7xl mx-auto flex items-center justify-between gap-2 sm:gap-4">
+        <div
+          class="flex items-center gap-2 sm:gap-3 flex-1 min-w-0"
+          @mouseenter="isTickerPaused = true"
+          @mouseleave="isTickerPaused = false"
+          @focusin="isTickerPaused = true"
+          @focusout="isTickerPaused = false"
+        >
           <span class="bg-etv-orange-500 text-neutral-950 font-black px-2 py-0.5 rounded text-[10px] tracking-wider uppercase shrink-0 animate-pulse">
             Última Hora
           </span>
-          <NuxtLink
-            v-if="breakingNews"
-            :to="`/noticias/${breakingNews.slug}`"
-            class="text-neutral-700 dark:text-neutral-300 hover:text-etv-blue-600 dark:hover:text-etv-blue-400 truncate font-medium transition-colors"
-            :title="breakingNews.title"
-          >
-            {{ breakingNews.title }}
-          </NuxtLink>
-          <p v-else class="text-neutral-700 dark:text-neutral-300 truncate font-medium">
-            Evolución TV transmite cobertura especial y mesas de debate ciudadano en vivo.
-          </p>
+
+          <div class="flex-1 min-w-0 overflow-hidden">
+            <Transition
+              mode="out-in"
+              enter-active-class="transition-all duration-300 ease-out"
+              enter-from-class="opacity-0 translate-y-1.5"
+              enter-to-class="opacity-100 translate-y-0"
+              leave-active-class="transition-all duration-200 ease-in"
+              leave-from-class="opacity-100 translate-y-0"
+              leave-to-class="opacity-0 -translate-y-1.5"
+            >
+              <NuxtLink
+                v-if="currentBreaking"
+                :key="currentBreaking.id"
+                :to="`/noticias/${currentBreaking.slug}`"
+                class="block text-neutral-700 dark:text-neutral-300 hover:text-etv-blue-600 dark:hover:text-etv-blue-400 truncate font-medium transition-colors"
+                :title="currentBreaking.title"
+              >
+                {{ currentBreaking.title }}
+              </NuxtLink>
+              <p v-else key="fallback" class="text-neutral-700 dark:text-neutral-300 truncate font-medium">
+                Evolución TV transmite cobertura especial y mesas de debate ciudadano en vivo.
+              </p>
+            </Transition>
+          </div>
+
+          <!-- Controles compactos de rotación (adaptables móvil / desktop) -->
+          <div v-if="breakingItems.length > 1" class="flex items-center gap-1 shrink-0 text-neutral-500 dark:text-neutral-400">
+            <button
+              type="button"
+              @click="prevBreaking"
+              aria-label="Noticia anterior"
+              class="hidden sm:inline-flex w-5 h-5 items-center justify-center rounded hover:bg-neutral-200/80 dark:hover:bg-neutral-800 hover:text-etv-blue-600 dark:hover:text-etv-blue-400 transition-colors cursor-pointer"
+            >
+              ‹
+            </button>
+            <span class="hidden sm:inline text-[10px] font-mono tabular-nums px-0.5">
+              {{ (breakingIndex % breakingItems.length) + 1 }}/{{ breakingItems.length }}
+            </span>
+            <button
+              type="button"
+              @click="nextBreaking"
+              aria-label="Siguiente noticia"
+              class="inline-flex w-5 h-5 items-center justify-center rounded bg-neutral-200/60 sm:bg-transparent dark:bg-neutral-800/70 sm:dark:bg-transparent hover:bg-neutral-200 dark:hover:bg-neutral-800 hover:text-etv-blue-600 dark:hover:text-etv-blue-400 transition-colors cursor-pointer"
+            >
+              ›
+            </button>
+          </div>
         </div>
 
         <div class="hidden md:flex items-center gap-4 shrink-0 text-neutral-500 dark:text-neutral-400 capitalize">
