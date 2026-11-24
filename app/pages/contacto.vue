@@ -144,10 +144,10 @@ const socialChannels = [
           Escena Musical Independiente
         </div>
         <h1 class="text-3xl md:text-5xl font-black text-neutral-900 dark:text-white tracking-tight">
-          Hablemos con la <span class="text-etv-orange-500">Cabina</span> de Evolución TV
+          Contacto y Enlace con <span class="text-etv-orange-500">Evolución TV</span>
         </h1>
         <p class="text-base md:text-lg text-neutral-600 dark:text-neutral-400 leading-relaxed">
-          Somos un medio de comunicación independiente dedicado a impulsar la escena musical en México: ska, reggae, rock y cultura alternativa. Sin intermediarios ni formularios: conecta directamente con nuestro equipo de redacción y programación.
+          Somos un medio de comunicación independiente dedicado a impulsar la escena musical en México: ska, reggae, rock y cultura alternativa. Sin intermediarios ni formularios: escríbenos directamente para difundir tu música, toquines o colaboraciones.
         </p>
       </section>
 
