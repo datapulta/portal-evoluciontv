@@ -72,18 +72,31 @@ const onVolumeInput = (e: Event) => {
       v-else
       class="relative w-[320px] sm:w-[340px] bg-white/95 dark:bg-neutral-950/95 backdrop-blur-md border-2 border-red-600/80 rounded-2xl p-3.5 shadow-2xl flex items-center gap-3.5 transition-colors"
     >
-      <!-- Botón minimizar en esquina superior derecha -->
-      <button
-        type="button"
-        @click="toggleMinimize"
-        aria-label="Minimizar reproductor de radio"
-        title="Minimizar"
-        class="absolute top-2 right-2 p-1 rounded-lg text-red-600/80 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/40 transition-colors cursor-pointer"
-      >
-        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 14h6v6M20 10h-6V4M14 10l7-7M3 21l7-7" />
-        </svg>
-      </button>
+      <!-- Botones superiores derechos: Ir a Radio y Minimizar -->
+      <div class="absolute top-2 right-2 flex items-center gap-1.5">
+        <NuxtLink
+          to="/radio"
+          title="Abrir página dedicada de Evolución Radio"
+          class="inline-flex items-center gap-1 bg-red-600/10 hover:bg-red-600/20 text-red-600 dark:text-red-400 border border-red-500/30 px-2 py-0.5 rounded-lg text-[10px] font-bold transition-colors"
+        >
+          Ir a Radio
+          <svg class="w-2.5 h-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+          </svg>
+        </NuxtLink>
+
+        <button
+          type="button"
+          @click="toggleMinimize"
+          aria-label="Minimizar reproductor de radio"
+          title="Minimizar"
+          class="p-1 rounded-lg text-red-600/80 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/40 transition-colors cursor-pointer"
+        >
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 14h6v6M20 10h-6V4M14 10l7-7M3 21l7-7" />
+          </svg>
+        </button>
+      </div>
 
       <!-- Botón circular rojo Play / Pause -->
       <button

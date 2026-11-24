@@ -434,3 +434,13 @@ Este documento constituye la memoria técnica y bitácora cronológica exhaustiv
   - Compilación de producción limpia ejecutada con `npm run build` (0 errores).
   - Validación local en `http://localhost:3005/radio` (`200 OK`).
 
+---
+
+### Sesión 25 — 24 de Noviembre de 2026
+**Objetivo**: Agregar botón visible "Ir a Radio" en el reproductor flotante (`RadioPlayer.vue`).
+- **Autorización**: Aprobación nativa formal del plan `plan_boton_ir_a_radio_en_reproductor.md` mediante botón Proceed del operador (§4.4 de AGENTS.md).
+- **Actividades Realizadas**:
+  - Se incorporó el botón `<NuxtLink to="/radio">` ("Ir a Radio ↗") en la esquina superior derecha del reproductor flotante junto al botón minimizar.
+- **Verificación Técnica**:
+  - Compilación de producción limpia ejecutada con `npm run build` (0 errores).
+
