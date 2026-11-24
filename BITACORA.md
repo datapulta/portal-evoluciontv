@@ -367,3 +367,14 @@ Este documento constituye la memoria técnica y bitácora cronológica exhaustiv
 - **Verificación Técnica**:
   - Compilación de producción limpia ejecutada con `npm run build` (0 errores).
 
+---
+
+### Sesión 20 — 24 de Noviembre de 2026
+**Objetivo**: Configuración de Ghost CMS (`https://cms-etv.webia.studio`) en modo Headless mediante `redirects.yaml`.
+- **Autorización**: Confirmación explícita del operador sobre `plan_desactivar_home_ghost_headless.md` (§4 de AGENTS.md).
+- **Actividades Realizadas**:
+  - Se cargaron las reglas `redirects.yaml` en Ghost CMS (`Settings → Labs → Redirects`), redirigiendo `^/$`, `^/tag/...`, `^/author/...` y `^/page/...` con `301` hacia `https://etv.webia.studio/`.
+- **Verificación Técnica**:
+  - `https://cms-etv.webia.studio/` responde `301` con `Location: https://etv.webia.studio/`.
+  - `https://cms-etv.webia.studio/ghost/` (`200 OK`), Content API (`200 OK`, 2 artículos) y `https://etv.webia.studio/` (`200 OK`) operativos sin interrupciones.
+
