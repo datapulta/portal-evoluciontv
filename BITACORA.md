@@ -4,6 +4,38 @@ Este documento constituye la memoria técnica y bitácora cronológica exhaustiv
 
 ---
 
+## Sesión 27 — 2026-11-24 · v1.0.8: Optimización UX Desktop Página /radio
+
+**Rama activa**: `feat/setup-nuxt4-ghost-cms` → merge a `main`
+**Commit**: `3e9341e` (feature) · `092ccfc` (merge main)
+**Tag**: `v1.0.8`
+**Autorización**: `plan_optimizacion_ux_desktop_radio.md` (Proceed button)
+
+### Diagnóstico
+La página `/radio` presentaba exceso de espacio visual en viewport desktop (≥768px) debido a paddings generosos heredados del diseño mobile-first y botones del dock flotante en posición `absolute` que generaban espacio muerto superior.
+
+### Cambios realizados
+
+**`app/pages/radio.vue`** (6 ajustes de clases Tailwind):
+- Padding wrapper desktop: `md:py-8` → `md:py-6`
+- Padding sección cabina: `md:p-12` → `md:p-10`
+- Gap grid columnas: `gap-8` → `gap-6`
+- Col. izquierda (botón play): `py-6 gap-5` → `py-2 gap-4`
+- Col. derecha (info): `space-y-6` → `space-y-4`
+- Sección social links: `pt-4 gap-4` → `pt-3 gap-3`
+
+**`app/components/RadioPlayer.vue`** — Refactor dock expandido:
+- Eliminado layout `relative` con botones en `absolute top-2 right-2`
+- Nuevo layout de **2 filas**: fila 1 (play + título + acciones inline) · fila 2 (volumen ancho completo)
+- Botón play reducido: `w-14 h-14` → `w-12 h-12` para proporcionar mejor con el nuevo layout
+- Eliminado `pr-4` en área de texto (ya no necesario sin botones absolutos)
+
+### Verificación
+- `npm run build` → ✅ 0 errores, 201 módulos transformados
+- Desplegado a producción Dokploy (`OD0duHt9W9jees8yl_TEa`)
+
+---
+
 ## 1. Identificación y Autoría del Sistema
 
 - **Proyecto**: Panel Evolución TV (`panel-evoluciontv`)
