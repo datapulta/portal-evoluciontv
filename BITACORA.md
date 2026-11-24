@@ -174,3 +174,29 @@ Este documento constituye la memoria técnica y bitácora cronológica exhaustiv
      - Ghost Content API incrementa el total de artículos publicados a 3.
      - Portada de `http://localhost:3005/` actualizada en tiempo real: la nota de Jensen Huang asume la posición de Nota Principal (Hero).
      - Ruta de lectura individual `http://localhost:3005/noticias/el-retorno-de-jensen-huang-la-nueva-era-de-la-computacion-acelerada-y-las-fabricas-de-ia` responde 200 OK y renderiza el contenido íntegro con autor, tiempo de lectura y enlaces de regreso.
+
+---
+
+### Sesión 9 — 23 de Noviembre de 2026
+**Objetivo**: Despliegue completo a producción de la plataforma Evolución TV en el subdominio `etv.webia.studio` mediante Dokploy VPS y Cloudflare DNS.
+- **Autorización**: Aprobación nativa formal del plan `plan_despliegue_produccion_etv.md` mediante botón Proceed del operador (§4.4 de AGENTS.md).
+- **Actividades Realizadas**:
+  1. **Configuración DNS en Cloudflare**:
+     - Creación de registro `A` para `etv.webia.studio` (`id: e8b83a2ecaf198e71c60ae24068b07e8`) apuntando a la IP `159.195.13.43` con `proxied: false` (DNS Only) en la zona `webia.studio`.
+  2. **Inicialización y Publicación del Repositorio Remoto en GitHub**:
+     - Creación del repositorio `datapulta/panel-evoluciontv` en GitHub.
+     - Vinculación como remoto `origin` y publicación de ramas `main` y `feat/setup-nuxt4-ghost-cms` (preservando el historial completo conforme a §5 de AGENTS.md).
+  3. **Aprovisionamiento y Despliegue en Dokploy VPS (`lania.webia.studio`)**:
+     - Creación del servicio de aplicación `panel-evoluciontv` (`applicationId: OD0duHt9W9jees8yl_TEa`, nombre interno: `app-synthesize-neural-panel-svqkpk`) dentro del proyecto `Evolución TV` (`WKovOg3IGCeA3WTJ296t7`) y entorno `production`.
+     - Vinculación con repositorio GitHub `datapulta/panel-evoluciontv.git` en rama `main` y Build Type `dockerfile`.
+     - Configuración de variables de entorno de producción (`PORT=3000`, `HOST=0.0.0.0`, `NUXT_PUBLIC_NEWS_API_URL`, `NUXT_PUBLIC_NEWS_API_KEY`, `NEWS_ADMIN_API_KEY`).
+     - Asignación de dominio `etv.webia.studio` en puerto `3000` con certificado SSL automático `letsencrypt`.
+     - Despliegue completado con éxito (`deploymentId: 59ZphmAzTa2aybQheXZi9`, status `done`).
+  4. **Emisión de Certificado SSL Let's Encrypt**:
+     - Recarga del proxy Traefik mediante `/api/settings.reloadTraefik`.
+     - Emisión exitosa de certificado SSL oficial por Let's Encrypt para `etv.webia.studio` (válido hasta febrero 2027).
+- **Verificación Técnica**:
+  - `Resolve-DnsName etv.webia.studio` resuelve directamente a `159.195.13.43`.
+  - Petición HTTPS a `https://etv.webia.studio/` responde HTTP 200 OK con SSR íntegro (título oficial, señal en vivo y noticias publicadas en Ghost).
+  - Petición a nota individual `https://etv.webia.studio/noticias/el-retorno-de-jensen-huang-la-nueva-era-de-la-computacion-acelerada-y-las-fabricas-de-ia` responde HTTP 200 OK.
+  - Validación TLS confirma certificado emitido por Let's Encrypt.
