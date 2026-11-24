@@ -306,12 +306,12 @@ const formatDate = (dateStr?: string) => {
       </div>
     </div>
 
-    <!-- Skeleton de carga -->
-    <div v-if="pending && !article" class="max-w-4xl mx-auto px-4 py-8 md:py-12 space-y-6 animate-pulse">
+    <!-- Skeleton de carga sincronizado (imagen arriba + título abajo) -->
+    <div v-if="pending && !article" class="max-w-4xl mx-auto px-4 pt-5 pb-12 md:py-10 space-y-6 animate-pulse">
+      <div class="aspect-[16/10] md:aspect-[16/9] w-full bg-neutral-200 dark:bg-neutral-800 rounded-2xl md:rounded-3xl"></div>
       <div class="h-4 w-48 bg-neutral-200 dark:bg-neutral-800 rounded"></div>
-      <div class="h-12 w-full bg-neutral-200 dark:bg-neutral-800 rounded-xl"></div>
+      <div class="h-11 w-full bg-neutral-200 dark:bg-neutral-800 rounded-xl"></div>
       <div class="h-6 w-3/4 bg-neutral-200 dark:bg-neutral-800 rounded"></div>
-      <div class="aspect-video md:aspect-[21/9] w-full bg-neutral-200 dark:bg-neutral-800 rounded-3xl"></div>
       <div class="space-y-3 pt-4">
         <div class="h-4 w-full bg-neutral-200 dark:bg-neutral-800 rounded"></div>
         <div class="h-4 w-11/12 bg-neutral-200 dark:bg-neutral-800 rounded"></div>
@@ -320,16 +320,33 @@ const formatDate = (dateStr?: string) => {
     </div>
 
     <!-- Contenido del Artículo -->
-    <article v-else-if="article" class="max-w-4xl mx-auto px-4 py-8 md:py-12">
-      <!-- Encabezado Editorial -->
-      <header class="space-y-4 mb-8">
-        <div class="flex items-center gap-3 text-xs md:text-sm text-neutral-500 dark:text-neutral-400">
+    <article v-else-if="article" class="max-w-4xl mx-auto px-4 pt-5 pb-10 md:py-10">
+      <!-- Imagen Destacada al Inicio (proporción 16:9 completa sin recorte 21:9) -->
+      <div v-if="article.feature_image" class="relative rounded-2xl md:rounded-3xl overflow-hidden mb-7 md:mb-8 border border-neutral-200 dark:border-neutral-800 shadow-xl aspect-[16/10] md:aspect-[16/9] bg-neutral-100 dark:bg-neutral-900">
+        <img
+          :src="article.feature_image"
+          :alt="article.feature_image_alt || article.title"
+          class="w-full h-full object-cover"
+        />
+      </div>
+
+      <!-- Encabezado Editorial Debajo de la Imagen -->
+      <header class="space-y-4 mb-8 pb-6 border-b border-neutral-200 dark:border-neutral-800/80">
+        <div class="flex flex-wrap items-center gap-2.5 text-xs md:text-sm text-neutral-500 dark:text-neutral-400">
+          <NuxtLink
+            v-if="article.primary_tag"
+            :to="`/categoria/${article.primary_tag.slug}`"
+            class="text-[11px] font-extrabold uppercase tracking-wider px-2.5 py-0.5 rounded-full text-white shadow-sm"
+            :style="{ backgroundColor: article.primary_tag.color || '#01abe8' }"
+          >
+            {{ article.primary_tag.name }}
+          </NuxtLink>
           <span class="capitalize">{{ formatDate(article.published_at) }}</span>
           <span>•</span>
           <span>{{ article.reading_time || 4 }} min de lectura</span>
         </div>
 
-        <h1 class="text-3xl md:text-5xl font-black text-neutral-900 dark:text-white tracking-tight leading-tight md:leading-tight">
+        <h1 class="text-3xl sm:text-4xl md:text-5xl font-black text-neutral-900 dark:text-white tracking-tight leading-tight">
           {{ article.title }}
         </h1>
 
@@ -337,8 +354,8 @@ const formatDate = (dateStr?: string) => {
           {{ article.excerpt }}
         </p>
 
-        <!-- Barra de Autor y Redacción -->
-        <div class="flex items-center justify-between pt-4 border-t border-neutral-200 dark:border-neutral-800/80">
+        <!-- Barra de Autor + Compartir Rápido -->
+        <div class="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-neutral-100 dark:border-neutral-800/60">
           <div class="flex items-center gap-3">
             <img
               v-if="article.primary_author?.profile_image"
@@ -358,17 +375,37 @@ const formatDate = (dateStr?: string) => {
               </p>
             </div>
           </div>
+
+          <!-- Acciones rápidas de compartir desde la cabecera -->
+          <div class="flex items-center gap-1.5 text-xs font-semibold">
+            <button
+              type="button"
+              @click="copyArticleLink"
+              class="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-900 dark:hover:bg-neutral-800 border border-neutral-200 dark:border-neutral-800 text-neutral-700 dark:text-neutral-300 transition-colors cursor-pointer"
+            >
+              {{ copiedLink ? '¡Copiado!' : 'Copiar' }}
+            </button>
+            <a
+              :href="whatsappShareUrl"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Compartir en WhatsApp"
+              class="inline-flex items-center px-2.5 py-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 dark:bg-emerald-950/40 dark:hover:bg-emerald-900/50 border border-emerald-200 dark:border-emerald-800/60 text-emerald-700 dark:text-emerald-300 transition-colors"
+            >
+              WhatsApp
+            </a>
+            <a
+              :href="xShareUrl"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Compartir en X"
+              class="inline-flex items-center px-2.5 py-1.5 rounded-lg bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-900 dark:hover:bg-neutral-800 border border-neutral-200 dark:border-neutral-800 text-neutral-800 dark:text-neutral-200 transition-colors"
+            >
+              X
+            </a>
+          </div>
         </div>
       </header>
-
-      <!-- Imagen Destacada -->
-      <div v-if="article.feature_image" class="relative rounded-3xl overflow-hidden mb-10 border border-neutral-200 dark:border-neutral-800 shadow-xl aspect-video md:aspect-[21/9]">
-        <img
-          :src="article.feature_image"
-          :alt="article.title"
-          class="w-full h-full object-cover"
-        />
-      </div>
 
       <!-- Cuerpo del Artículo con Tipografía Editorial Serif (Newsreader) -->
       <div

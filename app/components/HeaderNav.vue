@@ -127,7 +127,7 @@ const navigationItems = computed<NavItem[]>(() => {
   items.push(
     { name: 'Evolución Radio', to: '/radio' },
     { name: 'Señal en Vivo', to: '/en-vivo', highlight: true },
-    { name: 'Contacto', to: '/#contacto' }
+    { name: 'Contacto', to: '/contacto' }
   )
 
   return items
@@ -135,7 +135,6 @@ const navigationItems = computed<NavItem[]>(() => {
 
 const isActiveRoute = (to: string) => {
   if (to === '/') return route.path === '/' && !route.hash
-  if (to === '/#contacto') return route.path === '/' && route.hash === '#contacto'
   return route.path === to || route.path.startsWith(`${to}/`)
 }
 </script>
@@ -214,27 +213,27 @@ const isActiveRoute = (to: string) => {
     </div>
 
     <!-- Barra principal con Logo, Transmisión, Buscador y Selector de Tema -->
-    <div class="max-w-7xl mx-auto px-4 py-3.5 flex items-center justify-between gap-3">
+    <div class="max-w-7xl mx-auto px-3 sm:px-4 py-2.5 sm:py-3.5 flex items-center justify-between gap-2">
       <!-- Logo Evolución TV -->
-      <NuxtLink to="/" class="flex items-center gap-3 group shrink-0">
+      <NuxtLink to="/" class="flex items-center gap-2 sm:gap-3 group min-w-0">
         <BrandMark />
-        <div class="flex flex-col">
-          <div class="flex items-center gap-2">
-            <span class="text-2xl font-black tracking-tight text-neutral-900 dark:text-white group-hover:text-etv-orange-600 dark:group-hover:text-etv-orange-400 transition-colors">
+        <div class="flex flex-col min-w-0">
+          <div class="flex items-center gap-1.5 sm:gap-2">
+            <span class="text-lg sm:text-2xl font-black tracking-tight text-neutral-900 dark:text-white group-hover:text-etv-orange-600 dark:group-hover:text-etv-orange-400 transition-colors truncate">
               EVOLUCIÓN
             </span>
-            <span class="bg-etv-orange-500 text-neutral-950 text-xs font-black px-1.5 py-0.5 rounded">
+            <span class="bg-etv-orange-500 text-neutral-950 text-[10px] sm:text-xs font-black px-1 sm:px-1.5 py-0.5 rounded shrink-0">
               TV
             </span>
           </div>
-          <span class="text-[10px] tracking-widest text-neutral-500 dark:text-neutral-400 uppercase font-semibold">
+          <span class="text-[8.5px] sm:text-[10px] tracking-wider sm:tracking-widest text-neutral-500 dark:text-neutral-400 uppercase font-semibold truncate">
             Medio Digital Independiente
           </span>
         </div>
       </NuxtLink>
 
       <!-- Acciones de Cabecera: Buscador + Modo Claro/Oscuro + Botón En Vivo + Móvil -->
-      <div class="flex items-center gap-2.5 sm:gap-3">
+      <div class="flex items-center gap-1.5 sm:gap-3 shrink-0">
         <!-- Botón Buscador -->
         <button
           @click="toggleSearch"
@@ -242,7 +241,7 @@ const isActiveRoute = (to: string) => {
           title="Buscar noticias"
           aria-label="Buscar noticias"
           :aria-expanded="searchOpen"
-          class="p-2 rounded-xl text-neutral-600 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-white bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-900 dark:hover:bg-neutral-800 border border-neutral-200 dark:border-neutral-800 transition-all cursor-pointer shadow-sm"
+          class="p-1.5 sm:p-2 rounded-xl text-neutral-600 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-white bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-900 dark:hover:bg-neutral-800 border border-neutral-200 dark:border-neutral-800 transition-all cursor-pointer shadow-sm"
         >
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -255,7 +254,7 @@ const isActiveRoute = (to: string) => {
           type="button"
           :title="isDark ? 'Cambiar a Modo Claro' : 'Cambiar a Modo Oscuro'"
           :aria-label="isDark ? 'Cambiar a Modo Claro' : 'Cambiar a Modo Oscuro'"
-          class="p-2 rounded-xl text-neutral-600 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-white bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-900 dark:hover:bg-neutral-800 border border-neutral-200 dark:border-neutral-800 transition-all cursor-pointer shadow-sm"
+          class="p-1.5 sm:p-2 rounded-xl text-neutral-600 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-white bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-900 dark:hover:bg-neutral-800 border border-neutral-200 dark:border-neutral-800 transition-all cursor-pointer shadow-sm"
         >
           <svg v-if="isDark" class="w-4 h-4 text-etv-orange-400 transition-transform rotate-0 hover:rotate-45" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
@@ -330,15 +329,15 @@ const isActiveRoute = (to: string) => {
       </div>
     </Transition>
 
-    <!-- Navegación de categorías dinámicas centrada en Desktop -->
+    <!-- Navegación de categorías dinámicas exclusiva para escritorio (centrada) -->
     <nav class="hidden md:block border-t border-neutral-200/80 dark:border-neutral-800/60 bg-neutral-50/50 dark:bg-neutral-900/30 transition-colors">
-      <div class="max-w-7xl mx-auto px-4 flex flex-wrap items-center justify-center gap-x-6 lg:gap-x-7 text-sm">
+      <div class="max-w-7xl mx-auto px-4 flex items-center justify-center gap-x-5 lg:gap-x-7 text-xs sm:text-sm">
         <NuxtLink
           v-for="cat in navigationItems"
           :key="cat.name"
           :to="cat.to"
           :class="[
-            'py-3 font-semibold transition-colors border-b-2 whitespace-nowrap flex items-center gap-1.5',
+            'py-2.5 sm:py-3 font-semibold transition-colors border-b-2 whitespace-nowrap flex items-center gap-1.5 shrink-0',
             isActiveRoute(cat.to)
               ? 'text-etv-orange-600 dark:text-etv-orange-400 border-etv-orange-500 font-bold'
               : cat.highlight

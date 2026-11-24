@@ -32,7 +32,7 @@ useHead({
 </script>
 
 <template>
-  <div class="min-h-screen bg-neutral-50 dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100 flex flex-col font-sans transition-colors duration-200">
+  <div class="min-h-screen overflow-x-clip bg-neutral-50 dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100 flex flex-col font-sans transition-colors duration-200">
     <!-- Navegación y Cabecera -->
     <HeaderNav />
 

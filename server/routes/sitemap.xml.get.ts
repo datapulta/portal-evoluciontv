@@ -36,6 +36,7 @@ export default defineEventHandler(async (event) => {
     { loc: `${SITE_URL}/radio`, changefreq: 'daily', priority: '0.9' },
     { loc: `${SITE_URL}/en-vivo`, changefreq: 'daily', priority: '0.9' },
     { loc: `${SITE_URL}/quienes-somos`, changefreq: 'monthly', priority: '0.7' },
+    { loc: `${SITE_URL}/contacto`, changefreq: 'monthly', priority: '0.7' },
     { loc: `${SITE_URL}/buscar`, changefreq: 'weekly', priority: '0.6' },
     { loc: `${SITE_URL}/codigo-etica`, changefreq: 'yearly', priority: '0.4' },
     { loc: `${SITE_URL}/privacidad`, changefreq: 'yearly', priority: '0.4' }

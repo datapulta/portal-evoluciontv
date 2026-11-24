@@ -4,6 +4,58 @@ Este documento constituye la memoria técnica y bitácora cronológica exhaustiv
 
 ---
 
+## Sesión 35 — 2026-11-24 · Actualización de Texto Institucional en "Quiénes Somos"
+
+**Rama activa**: `feat/setup-nuxt4-ghost-cms` (pendiente autorización de merge a `main` y deploy)
+**Autorización**: `plan_actualizacion_texto_quienes_somos.md` (Proceed button, §4.4 AGENTS.md)
+
+### Cambios realizados
+- **`app/pages/quienes-somos.vue`**:
+  - Actualizada la descripción principal y meta `description` sustituyendo *"proyecto de televisión en internet"* por **"medio de comunicación independiente"** y *"programas en vivo"* por **"sesiones en vivo"**.
+
+### Verificación
+- `npm run build` y validación HTTP local en `http://localhost:3005/quienes-somos`.
+
+---
+
+## Sesión 34 — 2026-11-24 · Ajuste Responsive Móvil y Barra de Navegación Visible
+
+**Rama activa**: `feat/setup-nuxt4-ghost-cms` (pendiente autorización de merge a `main` y deploy)
+**Autorización**: `plan_ajuste_responsive_movil.md` (Proceed button, §4.4 AGENTS.md)
+
+### Diagnóstico
+En pantallas móviles de `360px`, la fila principal de `HeaderNav.vue` y el input `min-w-[280px]` del boletín en `index.vue` desbordaban hacia la derecha recortando el botón `☰`, mientras la barra `<nav>` permanecía oculta (`hidden md:block`).
+
+### Cambios realizados
+- **`app/components/BrandMark.vue` y `app/components/HeaderNav.vue`**:
+  - Logo, tipografía (`text-lg sm:text-2xl`), padding y botones compactados en móvil para encajar con holgura desde `320px`.
+  - Barra `<nav>` visible también en móvil con desplazamiento horizontal táctil (`overflow-x-auto no-scrollbar`) y centrada en desktop (`md:justify-center`).
+- **`app/pages/index.vue` y `app/app.vue`**:
+  - Input del boletín ajustado a `w-full sm:w-auto sm:min-w-[280px]` y contenedor `p-5 sm:p-8 md:p-12`.
+  - Añadido `overflow-x-clip` al wrapper raíz en `app.vue`.
+
+### Verificación
+- `npm run build` y comprobación SSR local en `http://localhost:3005/`.
+
+---
+
+## Sesión 33 — 2026-11-24 · Imagen Destacada al Inicio y Encabezado Inferior en Artículos
+
+**Rama activa**: `feat/setup-nuxt4-ghost-cms` (pendiente autorización de merge a `main` y deploy)
+**Autorización**: `plan_orden_imagen_y_titulo_articulo.md` (Proceed button, §4.4 AGENTS.md)
+
+### Cambios realizados
+- **`app/composables/useNews.ts`**: Añadido `feature_image_alt?: string` en `interface Article`.
+- **`app/pages/noticias/[slug].vue`**:
+  - Movida la imagen destacada al inicio del artículo y colocados título `<h1>`, categoría, fecha, extracto y firma del autor debajo.
+  - Ajustada la proporción de imagen de `md:aspect-[21/9]` a `aspect-[16/10] md:aspect-[16/9]` evitando recortes agresivos.
+  - Añadidos botones rápidos de compartir (`Copiar`, `WhatsApp`, `X`) junto al autor y sincronizado el skeleton de carga con el nuevo orden visual.
+
+### Verificación
+- `npm run build` y comprobación SSR local en `http://localhost:3005/noticias/...`.
+
+---
+
 ## Sesión 32 — 2026-11-24 · Corrección de Cajas del Hero y Ticker Rotativo "Última Hora"
 
 **Rama activa**: `feat/setup-nuxt4-ghost-cms` (pendiente autorización de merge a `main` y deploy)
@@ -608,4 +660,93 @@ La página `/radio` presentaba exceso de espacio visual en viewport desktop (≥
 - **Verificación Técnica**:
   - Compilación de producción limpia ejecutada con `npm run build` (0 errores).
   - Validación local en `http://localhost:3005/radio` (`200 OK`).
+
+---
+
+### Sesión 27 — 24 de Noviembre de 2026
+**Objetivo**: Ajustes de maquetación en artículos, optimizaciones responsive móvil y actualización de texto institucional en `/quienes-somos`.
+- **Autorización**: Aprobación nativa formal de planes `plan_orden_imagen_y_titulo_articulo.md`, `plan_ajuste_responsive_movil.md` y `plan_actualizacion_texto_quienes_somos.md` mediante botón Proceed del operador (§4.4 de AGENTS.md).
+- **Actividades Realizadas**:
+  1. **Orden en Artículo (`app/pages/noticias/[slug].vue`)**: Imagen principal destacada colocada primero arriba del título y metadatos con aspect ratio `16/10` en móvil y `16/9` en desktop.
+  2. **Responsive Móvil (`app/components/HeaderNav.vue`)**: Ajustes de padding, tipografía y desbordamiento horizontal en pantallas pequeñas de hasta 360px.
+  3. **Texto Quiénes Somos (`app/pages/quienes-somos.vue`)**: Incorporación del texto institucional oficial de Evolución TV ("medio de comunicación independiente, sin límites, con contenidos propios y creativos...").
+- **Verificación Técnica**:
+  - Compilación de producción limpia ejecutada con `npm run build` (0 errores).
+  - Verificación visual en servidor de desarrollo.
+
+---
+
+### Sesión 28 — 24 de Noviembre de 2026
+**Objetivo**: Creación de la página dedicada de Contacto (`/contacto`) sin formularios, con canales de correo directos y redes sociales.
+- **Autorización**: Aprobación nativa formal del plan `plan_pagina_contacto.md` mediante botón Proceed del operador (§4.4 de AGENTS.md).
+- **Actividades Realizadas**:
+  1. **Página Dedicada (`app/pages/contacto.vue`)**:
+     - Canales directos de correo con tarjetas (`Redacción General`, `Buzón de Denuncias`, `Alianzas y Prensa`), botones directos `mailto:` con asuntos prellenados y botón interactivo para copiar dirección al portapapeles con feedback visual.
+     - Grilla completa de redes sociales oficiales (`Facebook`, `YouTube`, `X`, `Instagram`, `TikTok`) con badges de identidad y enlaces seguros.
+     - Bloque de transparencia informativa, plazos de atención editorial (24-48 hrs) y enlaces al Código de Ética y Aviso de Privacidad.
+     - Cero formularios engorrosos ni campos captcha.
+  2. **Navegación e Integración (`HeaderNav.vue`, `FooterSection.vue`)**:
+     - Actualización del enlace `Contacto` en menú principal de `/#contacto` a `/contacto` con detección de ruta activa.
+     - Enlace incorporado en el pie de página hacia la nueva página.
+  3. **Indexación y Manifiesto (`sitemap.xml.get.ts`, `llms.txt.get.ts`)**:
+     - Inclusión de `/contacto` en el mapa XML de URLs y en el índice textual para agentes de IA.
+- **Verificación Técnica**:
+  - Compilación de producción limpia ejecutada con `npm run build` (0 errores, 213 módulos).
+  - Verificación HTTP `200 OK` en `http://localhost:3005/contacto`.
+  - Verificación de presencia de `/contacto` en `/sitemap.xml` y `/llms.txt`.
+
+---
+
+### Sesión 29 — 24 de Noviembre de 2026
+**Objetivo**: Reorientación integral de Contacto, Footer, En Vivo y Privacidad hacia la escena musical independiente en México (ska, reggae, rock, bandas y toquines), eliminando conceptos de reporte ciudadano / denuncias.
+- **Autorización**: Aprobación nativa formal del plan `plan_enfoque_musical_bandas_contacto.md` mediante botón Proceed del operador (§4.4 de AGENTS.md).
+- **Actividades Realizadas**:
+  1. **Página de Contacto (`app/pages/contacto.vue`)**:
+     - Sustitución de canales por: **Envío de Música & Bandas Independientes** (sencillos, EPK y comunicados de ska, reggae, rock), **Coberturas de Toquines & Festivales** (acreditaciones, reseñas y fotografía) y **Sesiones en Vivo & Entrevistas en Cabina**.
+     - Actualización de metadatos SEO y texto del hero al perfil de cabina musical independiente.
+     - Actualización de sección de compromiso editorial a *Compromiso Editorial y Escucha Musical* (respeto a derechos de autor y escucha en 24-48 hrs).
+  2. **Pie de Página (`app/components/FooterSection.vue`)**:
+     - Reemplazo de "Buzón de Denuncias" por **"Envío de Música y Bandas"** (`subject=Envio%20de%20Musica%20y%20Bandas`).
+  3. **Cabina En Vivo (`app/pages/en-vivo.vue`)**:
+     - Módulo de cabina actualizado a: *"¿Tienes una banda o toquín en puerta? Envía tus fechas, lanzamientos o propuestas de cobertura a nuestra cabina de redacción."*
+  4. **Aviso de Privacidad (`app/pages/privacidad.vue`)**:
+     - Cláusula de contacto actualizada para material de bandas y propuestas musicales.
+- **Verificación Técnica**:
+  - Compilación de producción limpia ejecutada con `npm run build` (0 errores).
+  - Validación local en `http://localhost:3005/contacto` y `http://localhost:3005/en-vivo` (`200 OK`).
+
+---
+
+### Sesión 30 — 24 de Noviembre de 2026
+**Objetivo**: Migración del dominio oficial de correo a **`evoluciontv.mx`** e implementación de protección integral anti-spam / anti-scraping de correos.
+- **Autorización**: Aprobación nativa formal del plan `plan_dominio_mx_y_proteccion_antispam_emails.md` mediante botón Proceed del operador (§4.4 de AGENTS.md).
+- **Actividades Realizadas**:
+  1. **Componente Reutilizable (`app/components/ProtectedEmail.vue`)**:
+     - Ensamblaje dinámico de correos en cliente (`user`, `domain`, `tld`), suprimiendo enlaces estáticos `mailto:` en el HTML plano para evitar recolección por robots (email harvesting).
+     - Trampa invisible señuelo (*honeypot decoy* `<span class="hidden select-none" aria-hidden="true">[anti-spam-trap]</span>`) que invalida expresiones regulares de bots.
+     - Apertura segura mediante evento `@click` que dispara el gestor de correo predeterminado del sistema operativo solo ante interacción humana.
+     - Botón de copiado en 1 clic al portapapeles con feedback visual (*"¡Copiado!"*).
+  2. **Página de Contacto (`app/pages/contacto.vue`)**:
+     - Actualizado correo oficial a `redaccion@evoluciontv.mx`.
+     - Reemplazados enlaces directos por botones interactivos seguros y ofuscación en la vista.
+  3. **Plataforma Completa (`FooterSection.vue`, `LiveStreamSection.vue`, `en-vivo.vue`, `codigo-etica.vue`, `privacidad.vue`)**:
+     - Reemplazo del dominio antiguo `@evoluciontv.com` por el dominio oficial **`@evoluciontv.mx`** con `ProtectedEmail`.
+- **Verificación Técnica**:
+  - Compilación de producción limpia ejecutada con `npm run build` (0 errores, 215 módulos).
+  - Verificación anti-bot: `curl.exe` al HTML crudo demostró que no existen cadenas estáticas `mailto:` en los elementos DOM.
+  - Verificación local en `http://localhost:3005/contacto` (`200 OK`).
+
+---
+
+### Sesión 31 — 24 de Noviembre de 2026
+**Objetivo**: Ocultar la barra horizontal de navegación en celulares (`hidden md:block`) para evitar saturación de pantalla y mantener el menú hamburguesa limpio.
+- **Autorización**: Aprobación nativa formal del plan `plan_ocultar_menu_horizontal_en_movil.md` mediante botón Proceed del operador (§4.4 de AGENTS.md).
+- **Actividades Realizadas**:
+  1. Se restauró la clase `hidden md:block` en el contenedor `<nav>` de `app/components/HeaderNav.vue`.
+  2. En celulares (`< 768px`), la barra horizontal ya no se muestra debajo del encabezado, eliminando la duplicación con el botón hamburguesa (`☰`).
+  3. En computadoras de escritorio (`>= 768px`), la barra de navegación se mantiene completa, centrada y con acceso directo a todas las secciones editoriales y a `/contacto`.
+- **Verificación Técnica**:
+  - Compilación de producción limpia ejecutada con `npm run build` (0 errores).
+  - Verificación visual en servidor de desarrollo local `http://localhost:3005/`.
+
 

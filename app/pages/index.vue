@@ -323,7 +323,7 @@ const submitNewsletter = async () => {
 
     <!-- Sección de Suscripción / Boletín de Evolución TV -->
     <section class="max-w-7xl mx-auto px-4 pb-24 md:pb-16">
-      <div class="bg-gradient-to-r from-etv-orange-50 via-white to-etv-blue-50 dark:from-etv-orange-950/30 dark:via-neutral-900 dark:to-etv-blue-950/30 border border-etv-orange-200 dark:border-etv-blue-900/40 rounded-3xl p-8 md:p-12 flex flex-col lg:flex-row items-center justify-between gap-8 shadow-sm dark:shadow-2xl">
+      <div class="bg-gradient-to-r from-etv-orange-50 via-white to-etv-blue-50 dark:from-etv-orange-950/30 dark:via-neutral-900 dark:to-etv-blue-950/30 border border-etv-orange-200 dark:border-etv-blue-900/40 rounded-3xl p-5 sm:p-8 md:p-12 flex flex-col lg:flex-row items-center justify-between gap-6 sm:gap-8 shadow-sm dark:shadow-2xl">
         <div class="space-y-3 max-w-xl">
           <span class="text-etv-blue-600 dark:text-etv-blue-400 font-bold text-xs uppercase tracking-widest">
             Comunidad Independiente
@@ -345,7 +345,7 @@ const submitNewsletter = async () => {
               :disabled="newsletterStatus === 'loading'"
               placeholder="tu.correo@ejemplo.com"
               aria-label="Correo electrónico para el boletín"
-              class="bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white text-sm px-4 py-3 rounded-xl focus:border-etv-blue-500 min-w-[280px] shadow-inner disabled:opacity-60"
+              class="w-full sm:w-auto sm:min-w-[280px] bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white text-sm px-4 py-3 rounded-xl focus:border-etv-blue-500 shadow-inner disabled:opacity-60"
             />
             <button
               type="submit"

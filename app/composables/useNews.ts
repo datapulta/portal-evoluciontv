@@ -20,6 +20,7 @@ export interface Article {
   html?: string
   excerpt: string
   feature_image?: string
+  feature_image_alt?: string
   featured: boolean
   published_at: string
   primary_author?: Author

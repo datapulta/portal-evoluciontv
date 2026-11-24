@@ -81,12 +81,12 @@ const principles = [
         <p class="text-xs md:text-sm text-neutral-700 dark:text-neutral-300">
           ¿Deseas solicitar una aclaración editorial o ejercer tu derecho de réplica?
         </p>
-        <a
-          href="mailto:redaccion@evoluciontv.com?subject=Aclaraci%C3%B3n%20Editorial"
-          class="bg-etv-orange-500 hover:bg-etv-orange-400 text-neutral-950 font-black text-xs px-4 py-2.5 rounded-xl transition-colors shrink-0"
-        >
-          Escribir a Redacción
-        </a>
+        <ProtectedEmail
+          as-button
+          label="Escribir a Redacción"
+          subject="Aclaración Editorial"
+          button-class="bg-etv-orange-500 hover:bg-etv-orange-400 text-neutral-950 font-black text-xs px-4 py-2.5 rounded-xl transition-colors shrink-0 cursor-pointer inline-flex items-center gap-2"
+        />
       </div>
     </div>
   </div>
