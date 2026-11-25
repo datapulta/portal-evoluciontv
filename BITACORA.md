@@ -4,6 +4,23 @@ Este documento constituye la memoria técnica y bitácora cronológica exhaustiv
 
 ---
 
+## Sesión 43 — 2026-11-24 · Estándar de Ramas por Función y Merge `--no-ff` para Trabajo en Equipo
+
+**Rama activa**: `docs/estandar-ramas-equipo`
+**Autorización**: `plan_estandar_ramas_git_ecosistema_etv.md` (Proceed button, §4.4 AGENTS.md)
+
+### Diagnóstico y Requerimiento
+Reforzar las reglas operativas de Git en `AGENTS.md` para que cada funcionalidad se trabaje en su propia rama dedicada, se fusione con `--no-ff` preservando el historial visual y se publiquen todas las ramas en GitHub para facilitar la lectura a cualquier equipo de programadores.
+
+### Cambios realizados
+- **`AGENTS.md`**:
+  - Agregadas las reglas 5, 6 y 7 en §5 (1 rama por función, `git merge --no-ff` obligatorio y publicación de ramas al remoto `origin`).
+
+### Verificación
+- Rama `docs/estandar-ramas-equipo` publicada en GitHub y fusionada con `git merge --no-ff` a `main`.
+
+---
+
 ## Sesión 42 — 2026-11-24 · Renombramiento de Repositorio a 'portal-evoluciontv' y Preparación del Nuevo Panel
 
 **Rama activa**: `docs/renombramiento-portal-evoluciontv`
