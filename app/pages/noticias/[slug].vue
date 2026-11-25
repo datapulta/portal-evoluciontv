@@ -327,12 +327,13 @@ const formatDate = (dateStr?: string) => {
       </div>
     </div>
 
-    <!-- Skeleton de carga sincronizado (imagen arriba + título abajo) -->
+    <!-- Skeleton de carga sincronizado (título arriba + imagen en medio + cuerpo abajo) -->
     <div v-if="pending && !article" class="max-w-4xl mx-auto px-4 pt-5 pb-12 md:py-10 space-y-6 animate-pulse">
-      <div class="aspect-[16/10] md:aspect-[16/9] w-full bg-neutral-200 dark:bg-neutral-800 rounded-2xl md:rounded-3xl"></div>
       <div class="h-4 w-48 bg-neutral-200 dark:bg-neutral-800 rounded"></div>
       <div class="h-11 w-full bg-neutral-200 dark:bg-neutral-800 rounded-xl"></div>
       <div class="h-6 w-3/4 bg-neutral-200 dark:bg-neutral-800 rounded"></div>
+      <div class="h-12 w-full bg-neutral-200 dark:bg-neutral-800 rounded"></div>
+      <div class="aspect-[16/10] md:aspect-[16/9] w-full bg-neutral-200 dark:bg-neutral-800 rounded-2xl md:rounded-3xl"></div>
       <div class="space-y-3 pt-4">
         <div class="h-4 w-full bg-neutral-200 dark:bg-neutral-800 rounded"></div>
         <div class="h-4 w-11/12 bg-neutral-200 dark:bg-neutral-800 rounded"></div>
@@ -342,17 +343,8 @@ const formatDate = (dateStr?: string) => {
 
     <!-- Contenido del Artículo -->
     <article v-else-if="article" class="max-w-4xl mx-auto px-4 pt-5 pb-10 md:py-10">
-      <!-- Imagen Destacada al Inicio (proporción 16:9 completa sin recorte 21:9) -->
-      <div v-if="article.feature_image" class="relative rounded-2xl md:rounded-3xl overflow-hidden mb-7 md:mb-8 border border-neutral-200 dark:border-neutral-800 shadow-xl aspect-[16/10] md:aspect-[16/9] bg-neutral-100 dark:bg-neutral-900">
-        <img
-          :src="article.feature_image"
-          :alt="article.feature_image_alt || article.title"
-          class="w-full h-full object-cover"
-        />
-      </div>
-
-      <!-- Encabezado Editorial Debajo de la Imagen -->
-      <header class="space-y-4 mb-8 pb-6 border-b border-neutral-200 dark:border-neutral-800/80">
+      <!-- 1. Encabezado Editorial (Título Arriba + Primer Párrafo + Barra de Autor) -->
+      <header class="space-y-4 mb-7 md:mb-8 pb-6 border-b border-neutral-200 dark:border-neutral-800/80">
         <div class="flex flex-wrap items-center gap-2.5 text-xs md:text-sm text-neutral-500 dark:text-neutral-400">
           <NuxtLink
             v-if="article.primary_tag"
@@ -427,6 +419,17 @@ const formatDate = (dateStr?: string) => {
           </div>
         </div>
       </header>
+
+      <!-- 2. FOTO en medio (proporción 16:9 completa sin recortes agresivos) -->
+      <div v-if="article.feature_image" class="relative rounded-2xl md:rounded-3xl overflow-hidden mb-8 md:mb-10 border border-neutral-200 dark:border-neutral-800 shadow-xl aspect-[16/10] md:aspect-[16/9] bg-neutral-100 dark:bg-neutral-900">
+        <img
+          :src="article.feature_image"
+          :alt="article.feature_image_alt || article.title"
+          class="w-full h-full object-cover"
+        />
+      </div>
+
+      <!-- 3. Segundo párrafo y párrafos restantes del cuerpo -->
 
       <!-- Cuerpo del Artículo con Tipografía Editorial Serif (Newsreader) -->
       <div

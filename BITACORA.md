@@ -4,6 +4,63 @@ Este documento constituye la memoria técnica y bitácora cronológica exhaustiv
 
 ---
 
+## Sesión 40 — 2026-11-24 · Reordenamiento Editorial en Página de Lectura de Artículos
+
+**Rama activa**: `feat/layout-editorial-articulo`
+**Autorización**: `plan_reordenamiento_editorial_articulo.md` (Proceed button, §4.4 AGENTS.md)
+
+### Diagnóstico y Requerimiento
+El cliente solicitó explícitamente reestructurar el orden visual de la página de lectura de artículos (`app/pages/noticias/[slug].vue`) para reflejar la maqueta periodística tradicional:
+1. **Título arriba** (con categoría, fecha y tiempo de lectura).
+2. **Primer párrafo de la nota** (bajada / copete con tipografía destacada) y barra de autor con botones para compartir.
+3. **FOTO** (imagen destacada en medio, con proporción 16:9 y esquinas redondeadas).
+4. **Segundo párrafo y resto de la nota** (cuerpo editorial con tipografía Newsreader).
+
+### Cambios realizados
+- **`app/pages/noticias/[slug].vue`**:
+  - Reubicado el bloque `<div v-if="article.feature_image">` inmediatamente después de `<header>` y antes de `<div v-html="formattedArticleHtml">`.
+  - Sincronizado el esqueleto de precarga (`skeleton animate-pulse`) para reflejar exactamente esta misma secuencia visual.
+  - Ajustados espaciados verticales (`mb-7 md:mb-8` y `mb-8 md:mb-10`) para una transición limpia entre el encabezado, la fotografía y el cuerpo.
+
+### Verificación
+- `npm run build`: compilación limpia en 14.2s con Nitro y Vue 3.5.46.
+- Comprobación en `http://localhost:3005/noticias/evolucion-tv-regresa-a-sus-origenes-con-portal-oficial`:
+  - Secuencia de renderizado verificada en DOM:
+    1. Título H1 (`Position: 21058`)
+    2. Primer párrafo / Excerpt (`Position: 21332`)
+    3. Barra de autor (`Position: 22153`)
+    4. Foto destacada 16:9 (`Position: 23992`)
+    5. Segundo párrafo / Cuerpo (`Position: 24413`)
+  - Comprobado que el orden visual es exacto al solicitado: `Title < P1 < Author < FOTO < P2` (True).
+
+---
+
+## Sesión 39 — 2026-11-24 · Banner Institucional Oficial entre Header y Artículos
+
+**Rama activa**: `feat/banner-institucional-portada`
+**Autorización**: `plan_banner_institucional_portada.md` (Proceed button, §4.4 AGENTS.md)
+
+### Diagnóstico y Requerimiento
+Integrar el banner gráfico oficial de Evolución TV (*"ETV - La Casa de la Escena Independiente"*, `1024×376 px`) en la portada (`index.vue`), colocado entre la barra de navegación/cabecera y el inicio de la sección de artículos del Hero, optimizado tanto para dispositivos móviles como para pantallas de escritorio.
+
+### Cambios realizados
+- **`public/banner-escena-independiente.jpg` [NEW]**:
+  - Incorporación del archivo gráfico oficial optimizado (`143 KB`, `1024×376 px`, proporción panorámica `2.72:1`).
+- **`app/components/BannerSpot.vue` [NEW]**:
+  - Componente de banner responsivo con `aspect-[2.72/1]`, contenedor `max-w-7xl mx-auto`, esquinas redondeadas `rounded-xl sm:rounded-2xl md:rounded-3xl`, borde sutil y sombra suave con elevación en hover.
+  - Atributos `loading="eager"` y `fetchpriority="high"` para carga instantánea al estar en el pliegue superior.
+- **`app/pages/index.vue`**:
+  - Integrado `<BannerSpot />` en la parte superior del template, inmediatamente antes de `<section>` del Hero editorial.
+
+### Verificación
+- `npm run build`: compilación limpia en 15.4s con Nitro y Vue 3.5.46.
+- Comprobación en `http://localhost:3005/`:
+  - En desktop (`1280px+`): banner centrado y perfectamente alineado con las columnas de noticias.
+  - En mobile (`360px`): escalado proporcionado sin desborde horizontal ni necesidad de scroll lateral.
+  - Recurso estático `/banner-escena-independiente.jpg`: respuesta HTTP 200 OK (`image/jpeg`, 143 KB).
+
+---
+
 ## Sesión 38 — 2026-11-24 · Soporte de Artículos Destacados ("Feature this post") de Ghost CMS en Portada
 
 **Rama activa**: `feat/articulos-destacados-ghost`

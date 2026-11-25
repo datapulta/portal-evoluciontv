@@ -3,6 +3,7 @@ import { ref, computed } from 'vue'
 import { useNews, type Article, type PaginationMeta } from '~/composables/useNews'
 import { useRadio } from '~/composables/useRadio'
 import NewsCard from '~/components/NewsCard.vue'
+import BannerSpot from '~/components/BannerSpot.vue'
 
 const { getArticles } = useNews()
 const { isPlaying, isLoading, currentTrack, togglePlay } = useRadio()
@@ -114,6 +115,9 @@ const submitNewsletter = async () => {
 
 <template>
   <div class="transition-colors duration-200">
+    <!-- Banner Institucional entre Header y Artículos -->
+    <BannerSpot />
+
     <!-- Hero Editorial con Tarjetas de Ligera Curvatura -->
     <section class="max-w-7xl mx-auto px-0 pt-0 pb-6 md:px-4 md:py-8">
       <div v-if="featuredArticle" class="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-8 items-start">
