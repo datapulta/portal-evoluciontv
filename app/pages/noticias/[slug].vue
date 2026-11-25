@@ -150,6 +150,27 @@ const perplexityUrl = computed(() => {
   return `https://www.perplexity.ai/search?q=${encodeURIComponent(prompt)}`
 })
 
+// Omite el primer párrafo del cuerpo si ya se despliega en el encabezado como excerpt/bajada
+const formattedArticleHtml = computed(() => {
+  if (!article.value?.html) return ''
+  const html = article.value.html
+  if (article.value.excerpt) {
+    const cleanExcerpt = article.value.excerpt.trim().replace(/\s+/g, ' ')
+    const firstPRegex = /<p\b[^>]*>(.*?)<\/p>/is
+    const match = html.match(firstPRegex)
+    if (match) {
+      const firstPText = match[1].replace(/<[^>]+>/g, '').trim().replace(/\s+/g, ' ')
+      if (
+        firstPText && cleanExcerpt &&
+        (firstPText.startsWith(cleanExcerpt.substring(0, 40)) || cleanExcerpt.startsWith(firstPText.substring(0, 40)))
+      ) {
+        return html.replace(firstPRegex, '').trim()
+      }
+    }
+  }
+  return html
+})
+
 const newsArticleSchema = computed(() => {
   if (!article.value) return null
   return JSON.stringify({
@@ -409,9 +430,9 @@ const formatDate = (dateStr?: string) => {
 
       <!-- Cuerpo del Artículo con Tipografía Editorial Serif (Newsreader) -->
       <div
-        v-if="article.html"
+        v-if="formattedArticleHtml"
         class="prose-news font-serif text-neutral-800 dark:text-neutral-200 leading-relaxed space-y-6 text-lg md:text-[1.2rem]"
-        v-html="article.html"
+        v-html="formattedArticleHtml"
       ></div>
       <div v-else class="font-serif text-neutral-600 dark:text-neutral-400 text-lg leading-relaxed py-8">
         <p>{{ article.excerpt }}</p>

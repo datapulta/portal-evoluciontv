@@ -24,10 +24,14 @@ La asignación de la nota principal en el Hero del Home se realizaba de manera e
   - Distintivo visual en el Hero: etiqueta dinámica `Destacado` cuando `featured === true` o `Nota Principal` cuando es cronológica.
 - **`app/components/HeaderNav.vue`**:
   - Ticker de *Última Hora* fijado con `order: 'published_at desc'` para reflejar siempre eventos estrictamente cronológicos.
+- **`app/pages/noticias/[slug].vue`**:
+  - Implementado `formattedArticleHtml`: omisión automática del primer `<p>` del cuerpo del artículo cuando coincide sustancialmente con el extracto/bajada del encabezado (`article.excerpt`), evitando lecturas redundantes y permitiendo que el cuerpo comience directamente con el segundo párrafo.
 
 ### Verificación
-- `npm run build`: compilación limpia en 14.3s con Nitro y Vue 3.5.46.
-- Comprobación en `http://localhost:3005/`: artículo *"Evolución TV regresa a sus orígenes con portal oficial"* posicionado en el Hero con distintivo `Destacado`, sin duplicarse en las tarjetas secundarias ni en la cuadrícula inferior.
+- `npm run build`: compilación limpia en 15.3s con Nitro y Vue 3.5.46.
+- Comprobación en `http://localhost:3005/`:
+  - Artículo *"Evolución TV regresa a sus orígenes con portal oficial"* posicionado en el Hero con distintivo `Destacado`, sin duplicarse en las tarjetas secundarias ni en la cuadrícula inferior.
+  - En la página de artículo individual `/noticias/...`, el párrafo inicial *"Luego de 13 años..."* se muestra una sola vez en el encabezado y el cuerpo inicia fluidamente con el segundo párrafo (*"Con fotogalerías, coberturas en vivo..."*).
 
 ---
 
