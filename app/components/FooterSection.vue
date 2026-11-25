@@ -70,6 +70,7 @@ const footerCategories = [
           <li><ProtectedEmail label="Envío de Música y Bandas" subject="Envio de Musica y Bandas" text-class="hover:text-neutral-900 dark:hover:text-white transition-colors cursor-pointer text-xs md:text-sm" /></li>
           <li><NuxtLink to="/codigo-etica" class="hover:text-etv-orange-600 dark:hover:text-etv-orange-400 transition-colors">Código de Ética Periodística</NuxtLink></li>
           <li><NuxtLink to="/privacidad" class="hover:text-etv-orange-600 dark:hover:text-etv-orange-400 transition-colors">Aviso de Privacidad</NuxtLink></li>
+          <li><NuxtLink to="/terminos" class="hover:text-etv-orange-600 dark:hover:text-etv-orange-400 transition-colors">Términos y Condiciones</NuxtLink></li>
         </ul>
       </div>
     </div>
