@@ -4,6 +4,32 @@ Este documento constituye la memoria técnica y bitácora cronológica exhaustiv
 
 ---
 
+## Sesión 41 — 2026-11-24 · Publicación de Cobertura: 40 Años de Tex Tex en La Marakita
+
+**Rama activa**: `docs/publicacion-cobertura-tex-tex`
+**Autorización**: `plan_publicar_articulo_tex_tex_ghost.md` (Proceed button, §4.4 AGENTS.md)
+
+### Diagnóstico y Requerimiento
+Publicación en Ghost CMS de la cobertura periodística del 40 aniversario de Tex Tex en La Marakita, respetando el texto literal íntegro sin alteraciones de redacción ni agregados no solicitados.
+
+### Cambios realizados
+- **Ghost CMS Admin API (`POST /ghost/api/admin/posts/?source=html`)**:
+  - Creado post `6b066375c506c700013dcec9` con status `published`.
+  - Título: *"Tex Tex celebró 40 años de trayectoria en La Marakita"*.
+  - Slug: `tex-tex-celebro-40-anos-de-trayectoria-en-la-marakita`.
+  - Tags asignados: `Coberturas ETV` (`6b04dda1c506c700013dce6f`) y `Más bandas` (`6b04dda1c506c700013dce71`).
+  - Cuerpo HTML: 5 párrafos originales textuales + crédito fotográfico *"📸 Fotos: Carlos Toriz para Evolución TV"*.
+  - Imagen destacada: Imagen de concierto de rock en vivo (`photo-1516450360452-9312f5e86fc7`).
+
+### Verificación
+- Content API (`https://cms-etv.webia.studio/ghost/api/content/posts/...`): Entrega confirmada con HTTP 200 OK.
+- Producción SSR (`https://etv.webia.studio/noticias/tex-tex-celebro-40-anos-de-trayectoria-en-la-marakita`):
+  - HTTP 200 OK.
+  - Orden editorial verificado: Título H1 $\rightarrow$ Primer párrafo (lead) $\rightarrow$ Firma y compartir $\rightarrow$ FOTO en medio $\rightarrow$ Segundo párrafo y resto del cuerpo sin duplicados.
+- Portada (`https://etv.webia.studio/`): El artículo aparece en el Hero junto a la nota destacada.
+
+---
+
 ## Sesión 40 — 2026-11-24 · Reordenamiento Editorial en Página de Lectura de Artículos
 
 **Rama activa**: `feat/layout-editorial-articulo`
