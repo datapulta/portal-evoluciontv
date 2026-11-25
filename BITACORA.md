@@ -1,6 +1,63 @@
-# BITÁCORA DE DESARROLLO Y REGISTRO HISTÓRICO DE CAMBIOS — PANEL EVOLUCIÓN TV
+# BITÁCORA DE DESARROLLO Y REGISTRO HISTÓRICO DE CAMBIOS — PORTAL EVOLUCIÓN TV
 
-Este documento constituye la memoria técnica y bitácora cronológica exhaustiva de todas las intervenciones, sesiones de arquitectura, cambios de código, rediseños UX/UI y despliegues del proyecto **Panel Evolución TV** (Portal web Nuxt v4 + Ghost CMS API + Señal en vivo).
+Este documento constituye la memoria técnica y bitácora cronológica exhaustiva de todas las intervenciones, sesiones de arquitectura, cambios de código, rediseños UX/UI y despliegues del proyecto **Portal Evolución TV** (Portal web Nuxt v4 + Ghost CMS API + Señal en vivo).
+
+---
+
+## Sesión 42 — 2026-11-24 · Renombramiento de Repositorio a 'portal-evoluciontv' y Preparación del Nuevo Panel
+
+**Rama activa**: `docs/renombramiento-portal-evoluciontv`
+**Autorización**: `plan_renombramiento_repositorio_portal_web.md` (Proceed button, §4.4 AGENTS.md)
+
+### Diagnóstico y Requerimiento
+Reordenar la identidad de los repositorios del ecosistema Evolución TV:
+1. El proyecto actual aloja el portal web público y streaming informativo (`https://etv.webia.studio`), por lo que su nombre semánticamente correcto es **`portal-evoluciontv`**.
+2. Liberar el nombre **`panel-evoluciontv`** para el desarrollo del nuevo panel de administración con autenticación independiente.
+
+### Cambios realizados
+- **Git Remoto Local**:
+  - Actualizado `origin` a `https://github.com/datapulta/portal-evoluciontv.git`.
+  - Verificada conectividad y resolución de ramas remotas vía `git ls-remote` y `git fetch`.
+- **Dokploy VPS (`OD0duHt9W9jees8yl_TEa`)**:
+  - `application.saveGitProvider`: actualizado `customGitUrl` a `https://github.com/datapulta/portal-evoluciontv.git`.
+  - `application.update`: actualizado `name` de la aplicación a `portal-evoluciontv`.
+  - Confirmado estado 200 OK en endpoints de configuración.
+- **`package.json`** (Zona Intocable autorizada):
+  - Actualizado `"name": "portal-evoluciontv"`.
+- **`BITACORA.md`**:
+  - Actualizado encabezado y memoria técnica del proyecto.
+
+### Verificación
+- `git remote -v`: apunta a `https://github.com/datapulta/portal-evoluciontv.git`.
+- `node` script Dokploy: `customGitUrl` y `name` confirmados en VPS.
+- `cmd.exe /c npm run build`: compilación limpia en 14s.
+- `https://etv.webia.studio`: HTTP 200 OK activo en producción.
+
+---
+
+## Sesión 41 — 2026-11-24 · Publicación de Cobertura: 40 Años de Tex Tex en La Marakita
+
+**Rama activa**: `docs/publicacion-cobertura-tex-tex`
+**Autorización**: `plan_publicar_articulo_tex_tex_ghost.md` (Proceed button, §4.4 AGENTS.md)
+
+### Diagnóstico y Requerimiento
+Publicación en Ghost CMS de la cobertura periodística del 40 aniversario de Tex Tex en La Marakita, respetando el texto literal íntegro sin alteraciones de redacción ni agregados no solicitados.
+
+### Cambios realizados
+- **Ghost CMS Admin API (`POST /ghost/api/admin/posts/?source=html`)**:
+  - Creado post `6b066375c506c700013dcec9` con status `published`.
+  - Título: *"Tex Tex celebró 40 años de trayectoria en La Marakita"*.
+  - Slug: `tex-tex-celebro-40-anos-de-trayectoria-en-la-marakita`.
+  - Tags asignados: `Coberturas ETV` (`6b04dda1c506c700013dce6f`) y `Más bandas` (`6b04dda1c506c700013dce71`).
+  - Cuerpo HTML: 5 párrafos originales textuales + crédito fotográfico *"📸 Fotos: Carlos Toriz para Evolución TV"*.
+  - Imagen destacada: Imagen de concierto de rock en vivo (`photo-1516450360452-9312f5e86fc7`).
+
+### Verificación
+- Content API (`https://cms-etv.webia.studio/ghost/api/content/posts/...`): Entrega confirmada con HTTP 200 OK.
+- Producción SSR (`https://etv.webia.studio/noticias/tex-tex-celebro-40-anos-de-trayectoria-en-la-marakita`):
+  - HTTP 200 OK.
+  - Orden editorial verificado: Título H1 $\rightarrow$ Primer párrafo (lead) $\rightarrow$ Firma y compartir $\rightarrow$ FOTO en medio $\rightarrow$ Segundo párrafo y resto del cuerpo sin duplicados.
+- Portada (`https://etv.webia.studio/`): El artículo aparece en el Hero junto a la nota destacada.
 
 ---
 
