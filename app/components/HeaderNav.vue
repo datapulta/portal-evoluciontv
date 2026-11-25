@@ -55,7 +55,7 @@ const { data: remoteCategories } = await useAsyncData<NavCategory[]>(
 // Últimas noticias para el ticker rotativo de Última Hora
 const { data: breakingData } = await useAsyncData(
   'header-breaking-news',
-  () => getArticles({ limit: 5 })
+  () => getArticles({ limit: 5, order: 'published_at desc' })
 )
 const breakingItems = computed(() => breakingData.value?.articles || [])
 const breakingIndex = ref(0)

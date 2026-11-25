@@ -15,18 +15,33 @@ const loadingMore = ref(false)
 const currentPage = ref(1)
 const pagination = ref<PaginationMeta | null>(newsResult.value?.pagination || null)
 
-const featuredArticle = computed<Article | null>(() => newsResult.value?.articles?.[0] || null)
+const featuredArticle = computed<Article | null>(() => {
+  const articles = newsResult.value?.articles || []
+  return articles.find(a => a.featured) || articles[0] || null
+})
+
+const remainingArticles = computed<Article[]>(() => {
+  const articles = newsResult.value?.articles || []
+  if (!featuredArticle.value) return articles
+  return articles.filter(a => a.id !== featuredArticle.value?.id)
+})
+
 const secondaryCount = computed(() => {
-  const total = newsResult.value?.articles?.length || 0
+  const total = remainingArticles.value.length
   return total >= 5 ? 3 : 2
 })
+
 const secondaryArticles = computed<Article[]>(() =>
-  newsResult.value?.articles?.slice(1, 1 + secondaryCount.value) || []
+  remainingArticles.value.slice(0, secondaryCount.value)
 )
+
 const allArticles = computed<Article[]>(() => {
-  const base = newsResult.value?.articles?.slice(1 + secondaryCount.value) || []
+  const base = remainingArticles.value.slice(secondaryCount.value)
   if (extraArticles.value.length === 0) return base
-  const seen = new Set(newsResult.value?.articles?.map(a => a.id) || [])
+  const seen = new Set([
+    ...(featuredArticle.value ? [featuredArticle.value.id] : []),
+    ...remainingArticles.value.map(a => a.id)
+  ])
   return [...base, ...extraArticles.value.filter(a => !seen.has(a.id))]
 })
 
@@ -42,7 +57,8 @@ const loadMoreArticles = async () => {
     const nextPage = currentPage.value + 1
     const res = await getArticles({ limit: 8, page: nextPage })
     const existingIds = new Set([
-      ...(newsResult.value?.articles?.map(a => a.id) || []),
+      ...(featuredArticle.value ? [featuredArticle.value.id] : []),
+      ...remainingArticles.value.map(a => a.id),
       ...extraArticles.value.map(a => a.id)
     ])
     const uniqueNew = res.articles.filter(a => !existingIds.has(a.id))
@@ -129,7 +145,7 @@ const submitNewsletter = async () => {
                 </span>
                 <span v-if="featuredArticle.primary_tag" class="text-neutral-300 dark:text-neutral-700">•</span>
                 <span class="text-xs text-neutral-500 dark:text-neutral-400 font-medium">
-                  Nota Principal
+                  {{ featuredArticle.featured ? 'Destacado' : 'Nota Principal' }}
                 </span>
               </div>
 

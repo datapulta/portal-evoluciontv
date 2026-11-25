@@ -4,6 +4,71 @@ Este documento constituye la memoria técnica y bitácora cronológica exhaustiv
 
 ---
 
+## Sesión 38 — 2026-11-24 · Soporte de Artículos Destacados ("Feature this post") de Ghost CMS en Portada
+
+**Rama activa**: `feat/articulos-destacados-ghost`
+**Autorización**: `plan_articulos_destacados_ghost_cms.md` (Proceed button, §4.4 AGENTS.md)
+
+### Diagnóstico y Causa Raíz
+La asignación de la nota principal en el Hero del Home se realizaba de manera estrictamente posicional por fecha de publicación (`articles[0]`), ignorando el interruptor editorial *"Feature this post"* (`featured: true`) de Ghost CMS. Además, las notas secundarias se obtenían con `slice(1)`, lo que generaba riesgo de duplicidad si una nota destacada no era la más reciente.
+
+### Cambios realizados
+- **`app/composables/useNews.ts`**:
+  - Parámetro `order?: string` añadido a `getArticles()`, fijando por defecto `featured desc,published_at desc` en las consultas a la Content API de Ghost.
+  - Ordenamiento prioritario equivalente en artículos de respaldo (`BACKUP_ARTICLES`).
+- **`app/pages/index.vue`**:
+  - `featuredArticle`: selección reactiva de la primera nota con `featured === true` (o la más reciente como fallback).
+  - `remainingArticles`: filtrado dinámico de artículos excluyendo el ID del artículo destacado para garantizar cero notas duplicadas en la portada.
+  - `secondaryArticles`: extracción de las notas secundarias del subconjunto restante.
+  - `allArticles` & `loadMoreArticles`: deduplicación estricta incluyendo el ID del artículo principal.
+  - Distintivo visual en el Hero: etiqueta dinámica `Destacado` cuando `featured === true` o `Nota Principal` cuando es cronológica.
+- **`app/components/HeaderNav.vue`**:
+  - Ticker de *Última Hora* fijado con `order: 'published_at desc'` para reflejar siempre eventos estrictamente cronológicos.
+- **`app/pages/noticias/[slug].vue`**:
+  - Implementado `formattedArticleHtml`: omisión automática del primer `<p>` del cuerpo del artículo cuando coincide sustancialmente con el extracto/bajada del encabezado (`article.excerpt`), evitando lecturas redundantes y permitiendo que el cuerpo comience directamente con el segundo párrafo.
+
+### Verificación
+- `npm run build`: compilación limpia en 15.3s con Nitro y Vue 3.5.46.
+- Comprobación en `http://localhost:3005/`:
+  - Artículo *"Evolución TV regresa a sus orígenes con portal oficial"* posicionado en el Hero con distintivo `Destacado`, sin duplicarse en las tarjetas secundarias ni en la cuadrícula inferior.
+  - En la página de artículo individual `/noticias/...`, el párrafo inicial *"Luego de 13 años..."* se muestra una sola vez en el encabezado y el cuerpo inicia fluidamente con el segundo párrafo (*"Con fotogalerías, coberturas en vivo..."*).
+
+---
+
+## Sesión 37 — 2026-11-24 · Restauración de Texto Original Íntegro en Ghost CMS
+
+**Rama activa**: `feat/setup-nuxt4-ghost-cms`
+**Autorización**: `plan_restaurar_texto_original_articulo_ghost.md` (Proceed button, §4.4 AGENTS.md)
+
+### Diagnóstico y Causa Raíz
+En la publicación inicial del artículo *"Evolución TV regresa a sus orígenes con portal oficial"* (`6b06218fc506c700013dceba`), se incorporaron subtítulos `<h2>`, citas destacadas `<blockquote>` y paráfrasis que no formaban parte de la redacción oficial original de la dirección editorial de Evolución TV.
+
+### Cambios realizados
+- **Ghost CMS Admin API (`/ghost/api/admin/posts/6b06218fc506c700013dceba/?source=html`)**:
+  - Actualizado el cuerpo HTML del post sustituyéndolo de forma literal por los 5 párrafos exactos provistos por el usuario, sin subtítulos intermedios ni citas añadidas.
+  - Conservado título oficial, tags (`EvolucioNotas`, `Más bandas`) y featured image intactos.
+
+### Verificación
+- Content API (`/ghost/api/content/posts/slug/...`): Comprobada entrega de los 5 párrafos limpios sin etiquetas `<h2>`.
+- SSR local (`http://localhost:3005/noticias/evolucion-tv-regresa-a-sus-origenes-con-portal-oficial`): Renderizado verificado con `200 OK`.
+
+---
+
+## Sesión 36 — 2026-11-24 · Página de Contacto Musical, Dominio @evoluciontv.mx, Anti-Spam y Titular Oficial
+
+**Rama activa**: `feat/setup-nuxt4-ghost-cms`
+**Autorización**: `plan_pagina_contacto.md`, `plan_enfoque_musical_bandas_contacto.md`, `plan_dominio_mx_y_proteccion_antispam_emails.md`, `plan_ocultar_menu_horizontal_en_movil.md`, `plan_titular_contacto_evolucion_tv.md` (Proceed button, §4.4 AGENTS.md)
+
+### Cambios realizados
+- **`app/pages/contacto.vue` [NEW]**: Página de contacto orientada a bandas independientes (ska, rock, reggae), prensa y coberturas, sin formularios vulnerables, con botones de copiado y canales oficiales.
+- **Protección Anti-Spam (`app/components/ProtectedEmail.vue` [NEW])**:
+  - Dominio migrado a `@evoluciontv.mx` en todos los archivos de la plataforma.
+  - Ofuscación en cliente (`atob`) y honeypot invisible para crawlers.
+- **`app/components/HeaderNav.vue`**: Navegación horizontal secundaria oculta en móvil (`hidden md:block`) para priorizar el menú hamburguesa.
+- **Titular de Contacto**: Actualizado `h1` en `/contacto` a *"Contacto y Enlace con Evolución TV"*.
+
+---
+
 ## Sesión 35 — 2026-11-24 · Actualización de Texto Institucional en "Quiénes Somos"
 
 **Rama activa**: `feat/setup-nuxt4-ghost-cms` (pendiente autorización de merge a `main` y deploy)
@@ -748,5 +813,53 @@ La página `/radio` presentaba exceso de espacio visual en viewport desktop (≥
 - **Verificación Técnica**:
   - Compilación de producción limpia ejecutada con `npm run build` (0 errores).
   - Verificación visual en servidor de desarrollo local `http://localhost:3005/`.
+
+---
+
+### Sesión 32 — 24 de Noviembre de 2026
+**Objetivo**: Merge de la rama `feat/setup-nuxt4-ghost-cms` hacia `main`, publicación del tag oficial de release **`v1.0.10`** y despliegue a producción en Dokploy VPS.
+- **Autorización**: Aprobación nativa formal del plan `plan_merge_y_release_v1_0_10.md` mediante botón Proceed del operador (§4.4 de AGENTS.md).
+- **Actividades Realizadas**:
+  1. **Merge no fast-forward (`--no-ff`) hacia `main`**:
+     - Commit merge `e622520` integrando 7 conjuntos de mejoras: maquetación de artículos 16:9 arriba, ajustes responsive móvil, textos de quiénes somos, página dedicada `/contacto` sin formularios, enfoque en escena musical independiente (ska, reggae, rock), migración a `@evoluciontv.mx` con protección anti-spam (`ProtectedEmail.vue`) y limpieza de cabecera móvil (`hidden md:block`).
+  2. **Etiquetado Semántico**:
+     - Creación y publicación del tag anotado oficial **`v1.0.10`**.
+  3. **Despliegue y Preservación**:
+     - Despliegue automático en Dokploy VPS (`OD0duHt9W9jees8yl_TEa`) completado con éxito (`status: done`, contenedor activo).
+     - Retorno a la rama de desarrollo `feat/setup-nuxt4-ghost-cms` preservándola intacta conforme a `AGENTS.md` §5.
+- **Verificación Técnica en Producción (`https://etv.webia.studio/`)**:
+  - `HTTP 200 OK` verificado en `https://etv.webia.studio/contacto` con título `<title>Contacto y Bandas Independientes | Evolución TV</title>`.
+  - Verificada la presencia de la ruta en `https://etv.webia.studio/sitemap.xml` y `https://etv.webia.studio/llms.txt`.
+  - `HTTP 200 OK` en `https://etv.webia.studio/quienes-somos` y artículos.
+
+---
+
+### Sesión 33 — 24 de Noviembre de 2026
+**Objetivo**: Reemplazo del titular en `app/pages/contacto.vue` por "Contacto y Enlace con Evolución TV" y ajuste de redacción descriptiva.
+- **Autorización**: Aprobación nativa formal del plan `plan_titular_contacto_evolucion_tv.md` mediante botón Proceed del operador (§4.4 de AGENTS.md).
+- **Actividades Realizadas**:
+  1. Se reemplazó el titular `<h1>` por: *"Contacto y Enlace con Evolución TV"*.
+  2. Se ajustó el párrafo descriptivo a: *"Somos un medio de comunicación independiente dedicado a impulsar la escena musical en México: ska, reggae, rock y cultura alternativa. Sin intermediarios ni formularios: escríbenos directamente para difundir tu música, toquines o colaboraciones."*
+- **Verificación Técnica**:
+  - Compilación de producción limpia ejecutada con `npm run build` (0 errores).
+  - Verificación visual en servidor de desarrollo local `http://localhost:3005/contacto`.
+
+---
+
+### Sesión 34 — 24 de Noviembre de 2026
+**Objetivo**: Redacción, maquetación semántica y publicación en Ghost CMS del artículo oficial: *"Evolución TV regresa a sus orígenes con portal oficial"*.
+- **Autorización**: Aprobación nativa formal del plan `plan_subir_articulo_regreso_origenes_ghost.md` mediante botón Proceed del operador (§4.4 de AGENTS.md).
+- **Actividades Realizadas**:
+  1. **Publicación Programática en Ghost Admin API**:
+     - Generación de token JWT firmado con HMAC-SHA256 (`NEWS_ADMIN_API_KEY`).
+     - Creación del post con ID `6b06218fc506c700013dceba` y slug `evolucion-tv-regresa-a-sus-origenes-con-portal-oficial`.
+     - Tags asignados: `EvolucioNotas` (principal) y `Más bandas` (secundario).
+     - Autor: `Equipo ETV` (mencionando a VicMan Gutiérrez y sus 13 años de trayectoria desde septiembre de 2013).
+     - Imagen destacada de alta definición de concierto en vivo con luces y multitud.
+     - Maquetación con subtítulos `<h2>` (Línea editorial, Música 24/7 y Apertura a bandas consolidadas / tienda oficial) y pullquote destacado.
+- **Verificación Técnica**:
+  - `HTTP 200 OK` en local: `http://localhost:3005/noticias/evolucion-tv-regresa-a-sus-origenes-con-portal-oficial`.
+  - `HTTP 200 OK` en producción: `https://etv.webia.studio/noticias/evolucion-tv-regresa-a-sus-origenes-con-portal-oficial`.
+  - Renderizado verificado en el ticker rotativo de última hora y metadatos NewsArticle Schema.org.
 
 
