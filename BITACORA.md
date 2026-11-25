@@ -4,6 +4,32 @@ Este documento constituye la memoria técnica y bitácora cronológica exhaustiv
 
 ---
 
+## Sesión 39 — 2026-11-24 · Banner Institucional Oficial entre Header y Artículos
+
+**Rama activa**: `feat/banner-institucional-portada`
+**Autorización**: `plan_banner_institucional_portada.md` (Proceed button, §4.4 AGENTS.md)
+
+### Diagnóstico y Requerimiento
+Integrar el banner gráfico oficial de Evolución TV (*"ETV - La Casa de la Escena Independiente"*, `1024×376 px`) en la portada (`index.vue`), colocado entre la barra de navegación/cabecera y el inicio de la sección de artículos del Hero, optimizado tanto para dispositivos móviles como para pantallas de escritorio.
+
+### Cambios realizados
+- **`public/banner-escena-independiente.jpg` [NEW]**:
+  - Incorporación del archivo gráfico oficial optimizado (`143 KB`, `1024×376 px`, proporción panorámica `2.72:1`).
+- **`app/components/BannerSpot.vue` [NEW]**:
+  - Componente de banner responsivo con `aspect-[2.72/1]`, contenedor `max-w-7xl mx-auto`, esquinas redondeadas `rounded-xl sm:rounded-2xl md:rounded-3xl`, borde sutil y sombra suave con elevación en hover.
+  - Atributos `loading="eager"` y `fetchpriority="high"` para carga instantánea al estar en el pliegue superior.
+- **`app/pages/index.vue`**:
+  - Integrado `<BannerSpot />` en la parte superior del template, inmediatamente antes de `<section>` del Hero editorial.
+
+### Verificación
+- `npm run build`: compilación limpia en 15.4s con Nitro y Vue 3.5.46.
+- Comprobación en `http://localhost:3005/`:
+  - En desktop (`1280px+`): banner centrado y perfectamente alineado con las columnas de noticias.
+  - En mobile (`360px`): escalado proporcionado sin desborde horizontal ni necesidad de scroll lateral.
+  - Recurso estático `/banner-escena-independiente.jpg`: respuesta HTTP 200 OK (`image/jpeg`, 143 KB).
+
+---
+
 ## Sesión 38 — 2026-11-24 · Soporte de Artículos Destacados ("Feature this post") de Ghost CMS en Portada
 
 **Rama activa**: `feat/articulos-destacados-ghost`
