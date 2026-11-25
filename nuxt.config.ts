@@ -14,6 +14,10 @@ export default defineNuxtConfig({
     ]
   },
   runtimeConfig: {
+    databaseUrl: process.env.DATABASE_URL || 'postgresql://etv_admin:EtvDbPassword2026SecureKey99@159.195.13.43:5433/panel_evoluciontv',
+    sessionSecret: process.env.NUXT_SESSION_SECRET || 'etv-portal-secret-encryption-key-2026-min-32-chars-long!',
+    googleClientId: process.env.GOOGLE_CLIENT_ID || '',
+    googleClientSecret: process.env.GOOGLE_CLIENT_SECRET || '',
     public: {
       newsApiUrl: process.env.NUXT_PUBLIC_NEWS_API_URL || 'https://cms-etv.webia.studio',
       newsApiKey: process.env.NUXT_PUBLIC_NEWS_API_KEY || ''

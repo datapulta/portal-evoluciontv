@@ -45,21 +45,28 @@ useHead({
           <section class="space-y-2">
             <h2 class="text-lg font-black text-neutral-900 dark:text-white">1. Datos que recopilamos</h2>
             <p>
-              La navegación general por Evolución TV es libre y no requiere registro. Únicamente recabamos tu correo electrónico cuando decides suscribirte voluntariamente a nuestro boletín informativo o cuando nos envías material de tu banda, propuesta musical o mensaje directo a nuestra mesa de redacción.
+              La navegación general por Evolución TV es libre y no requiere registro. Cuando decides crear una cuenta de usuario, suscribirte a nuestro boletín informativo o enviarnos material musical o mensajes a nuestra mesa de redacción, podemos recabar tu nombre, correo electrónico y, en caso de autenticarte con Google, tu fotografía de perfil pública.
             </p>
           </section>
 
           <section class="space-y-2">
-            <h2 class="text-lg font-black text-neutral-900 dark:text-white">2. Almacenamiento local del navegador</h2>
+            <h2 class="text-lg font-black text-neutral-900 dark:text-white">2. Inicio de sesión con Google (OAuth 2.0)</h2>
             <p>
-              Guardamos únicamente preferencias técnicas en el almacenamiento local (<code>localStorage</code>) de tu navegador, como el tema visual seleccionado (modo claro u oscuro) y tus ajustes de volumen o estado del reproductor de Evolución Radio. No vendemos ni compartimos perfiles con terceros.
+              Si eliges registrarte o iniciar sesión mediante <strong>Continuar con Google</strong>, únicamente solicitamos los alcances básicos de identidad (<code>openid</code>, <code>email</code> y <code>profile</code>) para verificar tu cuenta, mostrar tu nombre y avatar en el portal y mantener tu sesión iniciada. No accedemos a tus archivos, contactos ni publicamos contenido en tu nombre.
             </p>
           </section>
 
           <section class="space-y-2">
-            <h2 class="text-lg font-black text-neutral-900 dark:text-white">3. Derechos y contacto</h2>
+            <h2 class="text-lg font-black text-neutral-900 dark:text-white">3. Cookies técnicas y almacenamiento local</h2>
             <p>
-              Puedes solicitar en cualquier momento la baja de nuestro boletín o la eliminación de tu dirección de correo electrónico escribiendo a <ProtectedEmail text-class="text-etv-blue-600 dark:text-etv-blue-400 font-semibold underline hover:text-etv-orange-600 dark:hover:text-etv-orange-400 transition-colors cursor-pointer" />.
+              Utilizamos una cookie técnica estrictamente necesaria (<code>etv_portal_session</code>, con bandera de seguridad <code>HttpOnly</code>) exclusivamente para mantener tu sesión iniciada de forma segura. Además, guardamos preferencias visuales en el almacenamiento local (<code>localStorage</code>) de tu navegador, como el tema claro u oscuro y los ajustes del reproductor de Evolución Radio. No vendemos ni compartimos datos personales con terceros con fines publicitarios.
+            </p>
+          </section>
+
+          <section class="space-y-2">
+            <h2 class="text-lg font-black text-neutral-900 dark:text-white">4. Derechos, eliminación de cuenta y contacto</h2>
+            <p>
+              Puedes solicitar en cualquier momento la baja de nuestro boletín, la desvinculación o eliminación definitiva de tu cuenta y sus datos escribiendo a <ProtectedEmail text-class="text-etv-blue-600 dark:text-etv-blue-400 font-semibold underline hover:text-etv-orange-600 dark:hover:text-etv-orange-400 transition-colors cursor-pointer" />.
             </p>
           </section>
         </div>

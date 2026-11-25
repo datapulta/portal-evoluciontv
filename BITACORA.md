@@ -4,6 +4,36 @@ Este documento constituye la memoria técnica y bitácora cronológica exhaustiv
 
 ---
 
+## Sesión 41 — 2026-11-25 · Sistema de Login de Usuarios Finales, Google OAuth 2.0 y Páginas Legales
+
+**Rama activa**: `feat/auth-usuarios-portal` → `main`  
+**Autorización**: `plan_login_usuarios_portal.md`, `plan_google_oauth_portal.md`, `plan_paginas_legales_y_publicacion_google.md`, `plan_despliegue_auth_portal.md` (Proceed button)
+
+### Diagnóstico y Requerimiento
+Implementar el sistema completo de registro, inicio de sesión, cierre de sesión y perfil para los usuarios finales del portal público (`portal-evoluciontv`), incluyendo autenticación con Google OAuth 2.0 y actualización de páginas legales requeridas para producción.
+
+### Cambios realizados
+- **Configuración y Base de Datos**:
+  - `package.json`, `nuxt.config.ts`, `.env.example`: Agregados `drizzle-orm`, `postgres`, `tsx`, `runtimeConfig` privado (`databaseUrl`, `sessionSecret`, `googleClientId`, `googleClientSecret`).
+  - `server/database/schema.ts`, `index.ts`, `migrate.ts`: Tablas dedicadas `portal_users` (con `password_hash` opcional, `google_id`, `avatar_url`, `auth_provider`) y `portal_login_logs`, aisladas de la tabla `users` del staff administrativo.
+- **Backend Nitro (`/api/auth/*`)**:
+  - `server/utils/password.ts` (`scrypt` + `timingSafeEqual`) y `server/utils/auth.ts` (cookie `HttpOnly` `etv_portal_session`).
+  - `POST /api/auth/register`, `POST /api/auth/login`, `POST /api/auth/logout`, `GET /api/auth/me`.
+  - `GET /api/auth/google` y `GET /api/auth/google/callback` con validación anti-CSRF (`etv_oauth_state`) y vinculación automática por correo verificado.
+- **Frontend Nuxt 4 & Páginas Legales**:
+  - `app/composables/useAuth.ts` y `app/middleware/portal-auth.ts`.
+  - `app/pages/login.vue`, `app/pages/registro.vue`, `app/pages/perfil.vue` y menú de usuario en `app/components/HeaderNav.vue`.
+  - Actualizado `app/pages/privacidad.vue` y creado `app/pages/terminos.vue` enlazado desde `app/components/FooterSection.vue`.
+- **Google Cloud Console**:
+  - Configurado cliente OAuth 2.0 (`Evolucion TV Portal`), URLs legales (`https://etv.webia.studio`, `/privacidad`, `/terminos`) y publicada la aplicación a modo **En producción (Externo)**.
+
+### Verificación
+- `npm run db:migrate` ejecutado con éxito sobre PostgreSQL.
+- `npm run build` compilado limpiamente (`11.2s`).
+- Pruebas E2E de flujo completo (`register` → `me` → `logout` → `login` 401/200), redirección OAuth `302` y rutas `/privacidad` y `/terminos` (`200 OK`) verificadas.
+
+---
+
 ## Sesión 40 — 2026-11-24 · Reordenamiento Editorial en Página de Lectura de Artículos
 
 **Rama activa**: `feat/layout-editorial-articulo`

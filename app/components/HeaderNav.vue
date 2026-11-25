@@ -11,6 +11,24 @@ const route = useRoute()
 const router = useRouter()
 const { isDark, toggleTheme } = useTheme()
 const { getArticles } = useNews()
+const { user, isAuthenticated, fetchUser, logout } = useAuth()
+
+await fetchUser()
+
+const userMenuOpen = ref(false)
+const userInitial = computed(() => {
+  const name = user.value?.name?.trim() || 'U'
+  return name.charAt(0).toUpperCase()
+})
+
+const handleLogout = async () => {
+  userMenuOpen.value = false
+  mobileMenuOpen.value = false
+  await logout()
+  if (route.path === '/perfil') {
+    await router.push('/')
+  }
+}
 
 const currentDate = ref('')
 const mobileMenuOpen = ref(false)
@@ -276,6 +294,57 @@ const isActiveRoute = (to: string) => {
           SEÑAL EN VIVO
         </NuxtLink>
 
+        <!-- Acceso / Menú de Usuario Final (Desktop) -->
+        <div class="hidden md:block relative">
+          <NuxtLink
+            v-if="!isAuthenticated"
+            to="/login"
+            class="inline-flex items-center gap-1.5 bg-etv-orange-500 hover:bg-etv-orange-400 text-neutral-950 font-black text-xs px-3.5 py-2 rounded-xl transition-all shadow-sm"
+          >
+            Acceder
+          </NuxtLink>
+
+          <div v-else class="relative">
+            <button
+              type="button"
+              @click="userMenuOpen = !userMenuOpen"
+              class="inline-flex items-center gap-2 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-900 dark:hover:bg-neutral-800 px-2.5 py-1.5 text-xs font-bold text-neutral-800 dark:text-neutral-200 transition-all cursor-pointer"
+            >
+              <img
+                v-if="user?.avatarUrl"
+                :src="user.avatarUrl"
+                :alt="user.name"
+                referrerpolicy="no-referrer"
+                class="w-6 h-6 rounded-lg object-cover shrink-0"
+              />
+              <span v-else class="w-6 h-6 rounded-lg bg-etv-orange-500 text-neutral-950 font-black flex items-center justify-center text-xs">
+                {{ userInitial }}
+              </span>
+              <span class="max-w-[110px] truncate">{{ user?.name }}</span>
+            </button>
+
+            <div
+              v-if="userMenuOpen"
+              class="absolute right-0 mt-2 w-48 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 shadow-xl py-1.5 z-50"
+            >
+              <NuxtLink
+                to="/perfil"
+                @click="userMenuOpen = false"
+                class="block px-4 py-2 text-xs font-semibold text-neutral-700 dark:text-neutral-200 hover:bg-neutral-100 dark:hover:bg-neutral-800"
+              >
+                Mi Perfil
+              </NuxtLink>
+              <button
+                type="button"
+                @click="handleLogout"
+                class="w-full text-left px-4 py-2 text-xs font-semibold text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 cursor-pointer"
+              >
+                Cerrar Sesión
+              </button>
+            </div>
+          </div>
+        </div>
+
         <!-- Botón menú móvil -->
         <button
           @click="mobileMenuOpen = !mobileMenuOpen; searchOpen = false"
@@ -386,6 +455,51 @@ const isActiveRoute = (to: string) => {
         >
           {{ cat.name }}
         </NuxtLink>
+
+        <div class="pt-3 border-t border-neutral-200 dark:border-neutral-800 space-y-2">
+          <div v-if="!isAuthenticated" class="flex items-center gap-2">
+            <NuxtLink
+              to="/login"
+              @click="mobileMenuOpen = false"
+              class="flex-1 text-center py-2 px-3 rounded-xl bg-etv-orange-500 text-neutral-950 font-black text-xs"
+            >
+              Iniciar Sesión
+            </NuxtLink>
+            <NuxtLink
+              to="/registro"
+              @click="mobileMenuOpen = false"
+              class="flex-1 text-center py-2 px-3 rounded-xl border border-neutral-300 dark:border-neutral-700 text-neutral-800 dark:text-neutral-200 font-bold text-xs"
+            >
+              Registrarse
+            </NuxtLink>
+          </div>
+          <div v-else class="flex items-center justify-between gap-2">
+            <NuxtLink
+              to="/perfil"
+              @click="mobileMenuOpen = false"
+              class="flex items-center gap-2 text-xs font-bold text-neutral-800 dark:text-neutral-200"
+            >
+              <img
+                v-if="user?.avatarUrl"
+                :src="user.avatarUrl"
+                :alt="user.name"
+                referrerpolicy="no-referrer"
+                class="w-6 h-6 rounded-lg object-cover shrink-0"
+              />
+              <span v-else class="w-6 h-6 rounded-lg bg-etv-orange-500 text-neutral-950 font-black flex items-center justify-center">
+                {{ userInitial }}
+              </span>
+              <span>{{ user?.name }}</span>
+            </NuxtLink>
+            <button
+              type="button"
+              @click="handleLogout"
+              class="text-xs font-bold text-red-600 dark:text-red-400 px-2.5 py-1.5 rounded-lg bg-red-50 dark:bg-red-950/30 cursor-pointer"
+            >
+              Cerrar Sesión
+            </button>
+          </div>
+        </div>
 
         <div class="pt-3 border-t border-neutral-200 dark:border-neutral-800 flex items-center justify-between">
           <span class="text-xs font-bold text-neutral-500 dark:text-neutral-400 uppercase tracking-wider">Síguenos</span>
