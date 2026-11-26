@@ -14,7 +14,11 @@ export default defineEventHandler((event) => {
 
   const query = getQuery(event)
   const rawRedirect = typeof query.redirect === 'string' ? query.redirect : '/'
-  const safeRedirect = rawRedirect.startsWith('/') && !rawRedirect.startsWith('//') ? rawRedirect : '/'
+  const isMobileDeepLink = rawRedirect === 'evoluciontv://auth/callback'
+  const safeRedirect =
+    isMobileDeepLink || (rawRedirect.startsWith('/') && !rawRedirect.startsWith('//'))
+      ? rawRedirect
+      : '/'
 
   const state = randomBytes(24).toString('hex')
   const statePayload = JSON.stringify({ state, redirect: safeRedirect })

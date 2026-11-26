@@ -4,6 +4,18 @@ Este documento constituye la memoria técnica y bitácora cronológica exhaustiv
 
 ---
 
+## Sesión 49 — 2026-11-26 · Soporte Deep Link `evoluciontv://auth/callback` para Google OAuth Android
+
+**Rama activa**: `feat/android-oauth-deeplink` · **Tag**: `v1.0.18`  
+**Autorización**: `plan_ajustes_header_radio_y_google_auth.md` (Proceed button)
+
+### Cambios realizados
+- **`server/api/auth/google.get.ts` y `server/api/auth/google/callback.get.ts`**:
+  - Permitido `evoluciontv://auth/callback` como destino seguro de redirección OAuth para la aplicación nativa Android.
+  - Al autenticarse desde la app móvil, redirige al esquema `evoluciontv://auth/callback` adjuntando `id`, `name`, `email` y `avatarUrl` del usuario ya registrado en `portal_users` y `portal_login_logs`.
+
+---
+
 ## Sesión 48 — 2026-11-25 · Regla Bloqueante de Bitácora en `AGENTS.md` y Regularización Histórica
 
 **Rama activa**: `docs/bitacora-y-regla-obligatoria` · **Tag**: `v1.0.17`  
