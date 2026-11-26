@@ -137,3 +137,6 @@ Solo se permite ejecutar sin autorización previa la **inspección de solo lectu
 > 3. **Preservación Permanente de Ramas (PROHIBIDO ELIMINAR RAMAS)**:
 >    - Bajo ninguna circunstancia se deben eliminar las ramas creadas tras hacer merge. Cada rama representa un registro histórico auditable.
 > 4. **Aprobación Escalonada hacia Main/Master**: El merge hacia la rama principal se realiza **únicamente** tras la validación de compilación (`npm run build`) y la autorización explícita del usuario.
+> 5. **Una Rama por Función / Característica (Aislamiento de Alcance)**: Cada nueva función, rediseño o corrección debe desarrollarse en su propia rama semántica (`feat/<funcion>`, `style/<diseno>`, `fix/<correccion>`, `docs/<documentacion>`). Nunca agrupes múltiples funciones distintas en una misma rama.
+> 6. **Merge `--no-ff` Obligatorio hacia `main`**: Toda integración a `main` debe ejecutarse con `git merge --no-ff <rama> -m "merge: <rama> a main (<resumen>)"` para preservar el nodo de unión en el historial y facilitar la lectura a todo el equipo de programadores.
+> 7. **Publicación de Ramas en GitHub**: Además de `main`, toda rama de trabajo creada debe subirse al repositorio remoto (`git push origin <rama>`), manteniendo en GitHub el mapa completo de funciones desarrolladas.
