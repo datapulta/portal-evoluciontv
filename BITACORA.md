@@ -4,6 +4,65 @@ Este documento constituye la memoria técnica y bitácora cronológica exhaustiv
 
 ---
 
+## Sesión 48 — 2026-11-25 · Regla Bloqueante de Bitácora en `AGENTS.md` y Regularización Histórica
+
+**Rama activa**: `docs/bitacora-y-regla-obligatoria` · **Tag**: `v1.0.17`  
+**Autorización**: Instrucción explícita del usuario (`"necesito que sea de ley, obligatorio que registren en bitacora cada cambio"`).
+
+### Cambios realizados
+- **`AGENTS.md`**: Agregada la Regla 9 (BLOQUEANTE) exigiendo registrar cada cambio en `BITACORA.md` antes de hacer `merge --no-ff` a `main` y etiquetar el release.
+- **`BITACORA.md`**: Regularizadas y ordenadas cronológicamente las Sesiones 44 a 48.
+
+---
+
+## Sesión 47 — 2026-11-25 · Rediseño UX/UI Split Editorial en `/login` y `/registro`
+
+**Rama activa**: `style/redisenar-ux-login` · **Tag**: `v1.0.16`  
+**Autorización**: `plan_rediseno_ux_login_portal.md` (Proceed button)
+
+### Cambios realizados
+- **`app/pages/login.vue` y `app/pages/registro.vue`**:
+  - Eliminado `min-h-[calc(100vh-14rem)]` para evitar el vacío vertical excesivo.
+  - Implementada tarjeta **Split Editorial** de 2 columnas (`max-w-4xl`) con propuesta de valor *Comunidad ETV*, botón destacado **"Continuar con Google"**, soporte dinámico para `emailAuthEnabled` y enlaces a `/terminos` y `/privacidad`.
+- **Despliegue**: Compilación exitosa (`12.2s`) y despliegue en Dokploy verificado (`200 OK` en `https://etv.webia.studio/login` y `/registro`).
+
+---
+
+## Sesión 46 — 2026-11-25 · Interruptor Dinámico para Desactivar Login/Registro por Correo
+
+**Rama activa**: `feat/toggle-email-auth-portal` · **Tag**: `v1.0.15`  
+**Autorización**: `plan_toggle_email_auth_portal.md` (Proceed button)
+
+### Cambios realizados
+- **`server/database/schema.ts` y `migrate.ts`**: Agregada tabla `portal_settings` en PostgreSQL con clave `email_auth_enabled`.
+- **`server/utils/portalSettings.ts` y `server/api/auth/config.get.ts`**: Nuevo endpoint `GET /api/auth/config` y bloqueo `403` en `POST /api/auth/login` y `POST /api/auth/register` cuando está desactivado.
+- **`app/pages/login.vue`, `registro.vue` y `HeaderNav.vue`**: Ocultan el formulario de correo/contraseña en tiempo real cuando `emailAuthEnabled === false`, dejando únicamente Google OAuth.
+
+---
+
+## Sesión 45 — 2026-11-25 · Regla Obligatoria de Ramas por Cambio y Tags Semánticos
+
+**Rama activa**: `docs/regla-tags-y-ramas-git` · **Tag**: `v1.0.14`  
+**Autorización**: Instrucción explícita del usuario.
+
+### Cambios realizados
+- **`AGENTS.md`**: Endurecida la regla 5 (aislamiento de una rama por cambio) y agregada la regla 8 (Tag Semántico Obligatorio `vX.Y.Z` en cada merge a `main`).
+
+---
+
+## Sesión 44 — 2026-11-25 · Sistema de Login de Usuarios Finales, Google OAuth 2.0 y Páginas Legales
+
+**Rama activa**: `feat/auth-usuarios-portal` · **Tag**: `v1.0.13`  
+**Autorización**: `plan_login_usuarios_portal.md`, `plan_google_oauth_portal.md`, `plan_paginas_legales_y_publicacion_google.md`, `plan_despliegue_auth_portal.md` (Proceed button)
+
+### Cambios realizados
+- **Configuración y Base de Datos**: Agregados `drizzle-orm`, `postgres`, `tsx`, `runtimeConfig` privado (`databaseUrl`, `sessionSecret`, `googleClientId`, `googleClientSecret`) y tablas `portal_users` + `portal_login_logs`.
+- **Backend Nitro (`/api/auth/*`)**: `register`, `login`, `logout`, `me`, `google` y `google/callback` con hashing `scrypt`, cookie `HttpOnly` `etv_portal_session` y validación anti-CSRF `etv_oauth_state`.
+- **Frontend & Páginas Legales**: `useAuth.ts`, `portal-auth.ts`, `login.vue`, `registro.vue`, `perfil.vue`, `HeaderNav.vue`, actualización de `privacidad.vue`, creación de `terminos.vue` y enlace en `FooterSection.vue`.
+- **Google Cloud & Dokploy**: Publicada app OAuth en producción (`Evolucion TV Portal`), sincronizadas variables `NUXT_*` en Dokploy y verificado `https://etv.webia.studio`.
+
+---
+
 ## Sesión 43 — 2026-11-24 · Estándar de Ramas por Función y Merge `--no-ff` para Trabajo en Equipo
 
 **Rama activa**: `docs/estandar-ramas-equipo`
@@ -75,36 +134,6 @@ Publicación en Ghost CMS de la cobertura periodística del 40 aniversario de Te
   - HTTP 200 OK.
   - Orden editorial verificado: Título H1 $\rightarrow$ Primer párrafo (lead) $\rightarrow$ Firma y compartir $\rightarrow$ FOTO en medio $\rightarrow$ Segundo párrafo y resto del cuerpo sin duplicados.
 - Portada (`https://etv.webia.studio/`): El artículo aparece en el Hero junto a la nota destacada.
-
----
-
-## Sesión 41 — 2026-11-25 · Sistema de Login de Usuarios Finales, Google OAuth 2.0 y Páginas Legales
-
-**Rama activa**: `feat/auth-usuarios-portal` → `main`  
-**Autorización**: `plan_login_usuarios_portal.md`, `plan_google_oauth_portal.md`, `plan_paginas_legales_y_publicacion_google.md`, `plan_despliegue_auth_portal.md` (Proceed button)
-
-### Diagnóstico y Requerimiento
-Implementar el sistema completo de registro, inicio de sesión, cierre de sesión y perfil para los usuarios finales del portal público (`portal-evoluciontv`), incluyendo autenticación con Google OAuth 2.0 y actualización de páginas legales requeridas para producción.
-
-### Cambios realizados
-- **Configuración y Base de Datos**:
-  - `package.json`, `nuxt.config.ts`, `.env.example`: Agregados `drizzle-orm`, `postgres`, `tsx`, `runtimeConfig` privado (`databaseUrl`, `sessionSecret`, `googleClientId`, `googleClientSecret`).
-  - `server/database/schema.ts`, `index.ts`, `migrate.ts`: Tablas dedicadas `portal_users` (con `password_hash` opcional, `google_id`, `avatar_url`, `auth_provider`) y `portal_login_logs`, aisladas de la tabla `users` del staff administrativo.
-- **Backend Nitro (`/api/auth/*`)**:
-  - `server/utils/password.ts` (`scrypt` + `timingSafeEqual`) y `server/utils/auth.ts` (cookie `HttpOnly` `etv_portal_session`).
-  - `POST /api/auth/register`, `POST /api/auth/login`, `POST /api/auth/logout`, `GET /api/auth/me`.
-  - `GET /api/auth/google` y `GET /api/auth/google/callback` con validación anti-CSRF (`etv_oauth_state`) y vinculación automática por correo verificado.
-- **Frontend Nuxt 4 & Páginas Legales**:
-  - `app/composables/useAuth.ts` y `app/middleware/portal-auth.ts`.
-  - `app/pages/login.vue`, `app/pages/registro.vue`, `app/pages/perfil.vue` y menú de usuario en `app/components/HeaderNav.vue`.
-  - Actualizado `app/pages/privacidad.vue` y creado `app/pages/terminos.vue` enlazado desde `app/components/FooterSection.vue`.
-- **Google Cloud Console**:
-  - Configurado cliente OAuth 2.0 (`Evolucion TV Portal`), URLs legales (`https://etv.webia.studio`, `/privacidad`, `/terminos`) y publicada la aplicación a modo **En producción (Externo)**.
-
-### Verificación
-- `npm run db:migrate` ejecutado con éxito sobre PostgreSQL.
-- `npm run build` compilado limpiamente (`11.2s`).
-- Pruebas E2E de flujo completo (`register` → `me` → `logout` → `login` 401/200), redirección OAuth `302` y rutas `/privacidad` y `/terminos` (`200 OK`) verificadas.
 
 ---
 
