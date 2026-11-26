@@ -3,8 +3,16 @@ import { portalUsers, portalLoginLogs } from '../../database/schema'
 import { useDb } from '../../database'
 import { verifyPassword } from '../../utils/password'
 import { usePortalSession } from '../../utils/auth'
+import { isEmailAuthEnabled } from '../../utils/portalSettings'
 
 export default defineEventHandler(async (event) => {
+  if (!(await isEmailAuthEnabled())) {
+    throw createError({
+      statusCode: 403,
+      statusMessage: 'El inicio de sesión con correo y contraseña está desactivado. Usa "Continuar con Google".',
+    })
+  }
+
   const body = await readBody(event)
   const { email, password } = body || {}
 
