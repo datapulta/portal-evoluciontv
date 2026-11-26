@@ -13,6 +13,11 @@ if (isAuthenticated.value) {
   await navigateTo('/perfil')
 }
 
+const { data: authConfig } = await useAsyncData('portal-auth-config', () =>
+  $fetch<{ emailAuthEnabled: boolean; googleAuthEnabled: boolean }>('/api/auth/config')
+)
+const emailAuthEnabled = computed(() => authConfig.value?.emailAuthEnabled ?? true)
+
 useHead({
   title: 'Crear Cuenta | Evolución TV',
   meta: [
@@ -109,111 +114,117 @@ async function handleSubmit() {
           <span>Continuar con Google</span>
         </a>
 
-        <div class="relative my-5">
-          <div class="absolute inset-0 flex items-center">
-            <div class="w-full border-t border-neutral-200 dark:border-neutral-800"></div>
-          </div>
-          <div class="relative flex justify-center text-xs uppercase tracking-wider">
-            <span class="bg-white dark:bg-neutral-900 px-3 text-neutral-400 font-semibold">o regístrate con tu correo</span>
-          </div>
-        </div>
-
-        <form @submit.prevent="handleSubmit" class="space-y-4">
-          <div>
-            <label for="register-name" class="block text-xs font-bold uppercase tracking-wider text-neutral-600 dark:text-neutral-400 mb-1.5">
-              Nombre completo
-            </label>
-            <input
-              id="register-name"
-              v-model="name"
-              type="text"
-              autocomplete="name"
-              required
-              placeholder="Ej. Carlos Mendoza"
-              class="w-full rounded-xl border border-neutral-300 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-950 px-4 py-2.5 text-sm text-neutral-900 dark:text-white placeholder:text-neutral-400 focus:border-etv-blue-500 focus:outline-none focus:ring-2 focus:ring-etv-blue-500/20 transition-all"
-            />
+        <template v-if="emailAuthEnabled">
+          <div class="relative my-5">
+            <div class="absolute inset-0 flex items-center">
+              <div class="w-full border-t border-neutral-200 dark:border-neutral-800"></div>
+            </div>
+            <div class="relative flex justify-center text-xs uppercase tracking-wider">
+              <span class="bg-white dark:bg-neutral-900 px-3 text-neutral-400 font-semibold">o regístrate con tu correo</span>
+            </div>
           </div>
 
-          <div>
-            <label for="register-email" class="block text-xs font-bold uppercase tracking-wider text-neutral-600 dark:text-neutral-400 mb-1.5">
-              Correo electrónico
-            </label>
-            <input
-              id="register-email"
-              v-model="email"
-              type="email"
-              autocomplete="email"
-              required
-              placeholder="tu@correo.com"
-              class="w-full rounded-xl border border-neutral-300 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-950 px-4 py-2.5 text-sm text-neutral-900 dark:text-white placeholder:text-neutral-400 focus:border-etv-blue-500 focus:outline-none focus:ring-2 focus:ring-etv-blue-500/20 transition-all"
-            />
-          </div>
-
-          <div>
-            <label for="register-password" class="block text-xs font-bold uppercase tracking-wider text-neutral-600 dark:text-neutral-400 mb-1.5">
-              Contraseña (mín. 8 caracteres)
-            </label>
-            <div class="relative">
+          <form @submit.prevent="handleSubmit" class="space-y-4">
+            <div>
+              <label for="register-name" class="block text-xs font-bold uppercase tracking-wider text-neutral-600 dark:text-neutral-400 mb-1.5">
+                Nombre completo
+              </label>
               <input
-                id="register-password"
-                v-model="password"
+                id="register-name"
+                v-model="name"
+                type="text"
+                autocomplete="name"
+                required
+                placeholder="Ej. Carlos Mendoza"
+                class="w-full rounded-xl border border-neutral-300 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-950 px-4 py-2.5 text-sm text-neutral-900 dark:text-white placeholder:text-neutral-400 focus:border-etv-blue-500 focus:outline-none focus:ring-2 focus:ring-etv-blue-500/20 transition-all"
+              />
+            </div>
+
+            <div>
+              <label for="register-email" class="block text-xs font-bold uppercase tracking-wider text-neutral-600 dark:text-neutral-400 mb-1.5">
+                Correo electrónico
+              </label>
+              <input
+                id="register-email"
+                v-model="email"
+                type="email"
+                autocomplete="email"
+                required
+                placeholder="tu@correo.com"
+                class="w-full rounded-xl border border-neutral-300 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-950 px-4 py-2.5 text-sm text-neutral-900 dark:text-white placeholder:text-neutral-400 focus:border-etv-blue-500 focus:outline-none focus:ring-2 focus:ring-etv-blue-500/20 transition-all"
+              />
+            </div>
+
+            <div>
+              <label for="register-password" class="block text-xs font-bold uppercase tracking-wider text-neutral-600 dark:text-neutral-400 mb-1.5">
+                Contraseña (mín. 8 caracteres)
+              </label>
+              <div class="relative">
+                <input
+                  id="register-password"
+                  v-model="password"
+                  :type="showPassword ? 'text' : 'password'"
+                  autocomplete="new-password"
+                  required
+                  minlength="8"
+                  placeholder="••••••••"
+                  class="w-full rounded-xl border border-neutral-300 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-950 pl-4 pr-11 py-2.5 text-sm text-neutral-900 dark:text-white placeholder:text-neutral-400 focus:border-etv-blue-500 focus:outline-none focus:ring-2 focus:ring-etv-blue-500/20 transition-all"
+                />
+                <button
+                  type="button"
+                  @click="showPassword = !showPassword"
+                  :aria-label="showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'"
+                  class="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-200 cursor-pointer"
+                >
+                  <EyeOff v-if="showPassword" class="w-4 h-4" />
+                  <Eye v-else class="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+
+            <div>
+              <label for="register-confirm" class="block text-xs font-bold uppercase tracking-wider text-neutral-600 dark:text-neutral-400 mb-1.5">
+                Confirmar contraseña
+              </label>
+              <input
+                id="register-confirm"
+                v-model="confirmPassword"
                 :type="showPassword ? 'text' : 'password'"
                 autocomplete="new-password"
                 required
                 minlength="8"
                 placeholder="••••••••"
-                class="w-full rounded-xl border border-neutral-300 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-950 pl-4 pr-11 py-2.5 text-sm text-neutral-900 dark:text-white placeholder:text-neutral-400 focus:border-etv-blue-500 focus:outline-none focus:ring-2 focus:ring-etv-blue-500/20 transition-all"
+                class="w-full rounded-xl border border-neutral-300 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-950 px-4 py-2.5 text-sm text-neutral-900 dark:text-white placeholder:text-neutral-400 focus:border-etv-blue-500 focus:outline-none focus:ring-2 focus:ring-etv-blue-500/20 transition-all"
               />
-              <button
-                type="button"
-                @click="showPassword = !showPassword"
-                :aria-label="showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'"
-                class="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-200 cursor-pointer"
-              >
-                <EyeOff v-if="showPassword" class="w-4 h-4" />
-                <Eye v-else class="w-4 h-4" />
-              </button>
             </div>
-          </div>
 
-          <div>
-            <label for="register-confirm" class="block text-xs font-bold uppercase tracking-wider text-neutral-600 dark:text-neutral-400 mb-1.5">
-              Confirmar contraseña
-            </label>
-            <input
-              id="register-confirm"
-              v-model="confirmPassword"
-              :type="showPassword ? 'text' : 'password'"
-              autocomplete="new-password"
-              required
-              minlength="8"
-              placeholder="••••••••"
-              class="w-full rounded-xl border border-neutral-300 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-950 px-4 py-2.5 text-sm text-neutral-900 dark:text-white placeholder:text-neutral-400 focus:border-etv-blue-500 focus:outline-none focus:ring-2 focus:ring-etv-blue-500/20 transition-all"
-            />
-          </div>
-
-          <button
-            type="submit"
-            :disabled="submitting"
-            class="w-full mt-2 inline-flex items-center justify-center gap-2 rounded-xl bg-etv-orange-500 hover:bg-etv-orange-400 disabled:opacity-60 disabled:cursor-not-allowed text-neutral-950 font-black text-sm px-5 py-3 transition-all shadow-sm cursor-pointer"
-          >
-            <UserPlus class="w-4 h-4" />
-            <span>{{ submitting ? 'Creando cuenta...' : 'Registrarme' }}</span>
-          </button>
-        </form>
-
-        <div class="mt-6 pt-5 border-t border-neutral-200 dark:border-neutral-800 text-center">
-          <p class="text-sm text-neutral-600 dark:text-neutral-400">
-            ¿Ya tienes una cuenta?
-            <NuxtLink
-              :to="{ path: '/login', query: route.query.redirect ? { redirect: route.query.redirect } : undefined }"
-              class="inline-flex items-center gap-1 font-bold text-etv-blue-600 dark:text-etv-blue-400 hover:underline ml-1"
+            <button
+              type="submit"
+              :disabled="submitting"
+              class="w-full mt-2 inline-flex items-center justify-center gap-2 rounded-xl bg-etv-orange-500 hover:bg-etv-orange-400 disabled:opacity-60 disabled:cursor-not-allowed text-neutral-950 font-black text-sm px-5 py-3 transition-all shadow-sm cursor-pointer"
             >
-              <ArrowLeft class="w-3.5 h-3.5" />
-              Iniciar sesión
-            </NuxtLink>
-          </p>
-        </div>
+              <UserPlus class="w-4 h-4" />
+              <span>{{ submitting ? 'Creando cuenta...' : 'Registrarme' }}</span>
+            </button>
+          </form>
+
+          <div class="mt-6 pt-5 border-t border-neutral-200 dark:border-neutral-800 text-center">
+            <p class="text-sm text-neutral-600 dark:text-neutral-400">
+              ¿Ya tienes una cuenta?
+              <NuxtLink
+                :to="{ path: '/login', query: route.query.redirect ? { redirect: route.query.redirect } : undefined }"
+                class="inline-flex items-center gap-1 font-bold text-etv-blue-600 dark:text-etv-blue-400 hover:underline ml-1"
+              >
+                <ArrowLeft class="w-3.5 h-3.5" />
+                Iniciar sesión
+              </NuxtLink>
+            </p>
+          </div>
+        </template>
+
+        <p v-else class="mt-5 text-center text-xs text-neutral-500 dark:text-neutral-400">
+          El registro en el portal está habilitado únicamente con tu cuenta de Google.
+        </p>
       </div>
     </div>
   </section>

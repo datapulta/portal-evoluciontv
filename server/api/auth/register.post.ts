@@ -3,10 +3,18 @@ import { portalUsers, portalLoginLogs } from '../../database/schema'
 import { useDb } from '../../database'
 import { hashPassword } from '../../utils/password'
 import { usePortalSession } from '../../utils/auth'
+import { isEmailAuthEnabled } from '../../utils/portalSettings'
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
 export default defineEventHandler(async (event) => {
+  if (!(await isEmailAuthEnabled())) {
+    throw createError({
+      statusCode: 403,
+      statusMessage: 'El registro con correo y contraseña está desactivado. Usa "Continuar con Google".',
+    })
+  }
+
   const body = await readBody(event)
   const { name, email, password } = body || {}
 

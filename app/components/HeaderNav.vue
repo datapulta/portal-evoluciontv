@@ -15,6 +15,11 @@ const { user, isAuthenticated, fetchUser, logout } = useAuth()
 
 await fetchUser()
 
+const { data: authConfig } = await useAsyncData('portal-auth-config', () =>
+  $fetch<{ emailAuthEnabled: boolean; googleAuthEnabled: boolean }>('/api/auth/config')
+)
+const emailAuthEnabled = computed(() => authConfig.value?.emailAuthEnabled ?? true)
+
 const userMenuOpen = ref(false)
 const userInitial = computed(() => {
   const name = user.value?.name?.trim() || 'U'
@@ -466,6 +471,7 @@ const isActiveRoute = (to: string) => {
               Iniciar Sesión
             </NuxtLink>
             <NuxtLink
+              v-if="emailAuthEnabled"
               to="/registro"
               @click="mobileMenuOpen = false"
               class="flex-1 text-center py-2 px-3 rounded-xl border border-neutral-300 dark:border-neutral-700 text-neutral-800 dark:text-neutral-200 font-bold text-xs"

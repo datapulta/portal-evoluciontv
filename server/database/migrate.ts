@@ -44,6 +44,20 @@ async function runMigration() {
       );
     `
 
+    await sql`
+      CREATE TABLE IF NOT EXISTS portal_settings (
+        key VARCHAR(100) PRIMARY KEY,
+        value TEXT NOT NULL,
+        updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW()
+      );
+    `
+
+    await sql`
+      INSERT INTO portal_settings (key, value)
+      VALUES ('email_auth_enabled', 'true')
+      ON CONFLICT (key) DO NOTHING;
+    `
+
     console.log('Portal auth migration completed successfully!')
   } catch (error) {
     console.error('Migration failed:', error)

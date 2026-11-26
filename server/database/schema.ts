@@ -26,3 +26,9 @@ export const portalLoginLogs = pgTable('portal_login_logs', {
 
 export type PortalUser = typeof portalUsers.$inferSelect
 export type NewPortalUser = typeof portalUsers.$inferInsert
+
+export const portalSettings = pgTable('portal_settings', {
+  key: varchar('key', { length: 100 }).primaryKey(),
+  value: text('value').notNull(),
+  updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
+})
