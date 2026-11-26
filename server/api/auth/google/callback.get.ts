@@ -42,10 +42,12 @@ export default defineEventHandler(async (event) => {
     return sendRedirect(event, '/login?error=google_auth_failed', 302)
   }
 
+  const isMobileDeepLink = parsedState.redirect === 'evoluciontv://auth/callback'
   const safeRedirect =
-    typeof parsedState.redirect === 'string' &&
-    parsedState.redirect.startsWith('/') &&
-    !parsedState.redirect.startsWith('//')
+    isMobileDeepLink ||
+    (typeof parsedState.redirect === 'string' &&
+      parsedState.redirect.startsWith('/') &&
+      !parsedState.redirect.startsWith('//'))
       ? parsedState.redirect
       : '/'
 
@@ -158,6 +160,17 @@ export default defineEventHandler(async (event) => {
     email: user.email,
     name: user.name,
   })
+
+  if (isMobileDeepLink) {
+    const mobileUri = new URL('evoluciontv://auth/callback')
+    mobileUri.searchParams.set('id', String(user.id))
+    mobileUri.searchParams.set('name', user.name)
+    mobileUri.searchParams.set('email', user.email)
+    if (user.avatarUrl) {
+      mobileUri.searchParams.set('avatarUrl', user.avatarUrl)
+    }
+    return sendRedirect(event, mobileUri.toString(), 302)
+  }
 
   return sendRedirect(event, safeRedirect, 302)
 })
