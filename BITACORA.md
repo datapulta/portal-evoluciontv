@@ -4,6 +4,20 @@ Este documento constituye la memoria técnica y bitácora cronológica exhaustiv
 
 ---
 
+## Sesión 50 — 2026-11-26 · Limpieza y Ajuste Visual en `/en-vivo` (Sin Parrilla, Sin Investigaciones, Sin Footer)
+
+**Rama activa**: `style/limpiar-seccion-en-vivo` · **Tag**: `v1.0.19`  
+**Autorización**: `plan_limpieza_en_vivo_portal.md` (Proceed button)
+
+### Cambios realizados
+- **`app/pages/en-vivo.vue`**:
+  - Corregido el descuadre en móvil de *"Evolución Noticias - Edición Central"* cambiando el badge superior `EVOLUCIÓN TV SEÑAL DE VIDEO` a flujo vertical normal y ampliando la altura mínima responsiva de la cabina (`min-h-[360px] sm:min-h-[430px]`).
+  - Eliminados los bloques **"Parrilla de Hoy"** e **"Investigaciones de la Redacción"**, dejando la cabina centrada en `max-w-5xl`.
+- **`app/app.vue`**:
+  - Ocultado `<FooterSection />` en `/en-vivo` (además de `/radio`) para una navegación limpia.
+
+---
+
 ## Sesión 49 — 2026-11-26 · Soporte Deep Link `evoluciontv://auth/callback` para Google OAuth Android
 
 **Rama activa**: `feat/android-oauth-deeplink` · **Tag**: `v1.0.18`  
