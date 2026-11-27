@@ -8,6 +8,7 @@ import { useTheme } from '~/composables/useTheme'
 
 const route = useRoute()
 const isRadioPage = computed(() => route.path === '/radio')
+const hideFooter = computed(() => route.path === '/radio' || route.path === '/en-vivo')
 const { isDark } = useTheme()
 
 useHead({
@@ -41,8 +42,8 @@ useHead({
       <NuxtPage />
     </main>
 
-    <!-- Pie de Página (oculto en /radio para una experiencia limpia) -->
-    <FooterSection v-if="!isRadioPage" />
+    <!-- Pie de Página (oculto en /radio y /en-vivo para una experiencia limpia) -->
+    <FooterSection v-if="!hideFooter" />
 
     <!-- Reproductor Flotante Persistente Evolución Radio -->
     <ClientOnly>
